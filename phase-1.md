@@ -1,11 +1,11 @@
 # HMH Labz - Phase 1 Development Tasks
 
 ## Epic 1: Database & API Core (Vercel)
-- [ ] **Task 1.1:** Initialize Node.js project with Vercel configuration (`vercel.json`).
-- [ ] **Task 1.2:** Install Prisma client, connect to NEON DB, and push the initial `User` and `Insight` schema.
-- [ ] **Task 1.3:** Implement JWT-based Authentication APIs (`POST /api/auth/login`, `POST /api/auth/register`).
-- [ ] **Task 1.4:** Implement Role-Based Access Control (RBAC) middleware to protect Vercel API routes based on JWT payload (SUPERADMIN, ADMIN, MODERATOR, USER).
-- [ ] **Task 1.5:** Create CRUD API routes for Insights (`GET`, `POST`, `PUT`, `DELETE` under `/api/insights`).
+- [x] **Task 1.1:** Initialize Node.js project with Vercel configuration (`vercel.json`).
+- [x] **Task 1.2:** Install Prisma client, connect to NEON DB, and push the initial `User` and `Insight` schema.
+- [x] **Task 1.3:** Implement JWT-based Authentication APIs (`POST /api/auth/login`, `POST /api/auth/register`).
+- [x] **Task 1.4:** Implement Role-Based Access Control (RBAC) middleware to protect Vercel API routes based on JWT payload (SUPERADMIN, ADMIN, MODERATOR, USER).
+- [x] **Task 1.5:** Create CRUD API routes for Insights (`GET`, `POST`, `PUT`, `DELETE` under `/api/insights`).
 
 ## Epic 2: Integrations (Vercel API)
 - [ ] **Task 2.1:** Integrate Vercel Blob Storage API for uploading Insight cover images. Create an upload endpoint (`POST /api/upload`).
