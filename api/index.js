@@ -2,11 +2,30 @@ import express from 'express';
 import cors from 'cors';
 import prisma from '../lib/db';
 import { hashPassword, comparePassword, generateToken, requireRole } from '../lib/auth';
+import { put } from '@vercel/blob';
+import { sendWelcomeEmail } from '../lib/brevo';
+import { syncUserToHubSpot } from '../lib/hubspot';
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// --- Integration Routes ---
+
+app.post('/api/upload', requireRole(['SUPERADMIN', 'ADMIN', 'MODERATOR']), async (req, res) => {
+  const { filename, contentType } = req.query;
+  
+  try {
+    const blob = await put(filename, req, {
+      access: 'public',
+      contentType: contentType,
+    });
+    return res.status(200).json(blob);
+  } catch (error) {
+    return res.status(500).json({ message: 'Upload failed', error });
+  }
+});
 
 // --- Auth Routes ---
 
@@ -22,6 +41,11 @@ app.post('/api/auth/register', async (req, res) => {
     const user = await prisma.user.create({
       data: { email, password: hashedPassword, name, role: 'USER' }
     });
+
+    // --- Background Integrations ---
+    // (We don't await these to prevent delaying the response)
+    sendWelcomeEmail(email, name || "User");
+    syncUserToHubSpot(email, name || "User");
 
     const token = generateToken(user.id);
     res.status(201).json({ token, user: { id: user.id, email: user.email, role: user.role } });

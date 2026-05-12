@@ -11,6 +11,8 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@getbrevo/brevo": "^5.0.4",
+    "@hubspot/api-client": "^13.5.0",
     "@prisma/client": "^7.8.0",
     "@vercel/blob": "^2.3.3",
     "bcryptjs": "^3.0.3",

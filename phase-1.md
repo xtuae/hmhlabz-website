@@ -9,9 +9,9 @@
 - [x] **Task 1.6:** Add CRUD routes for Insights (`GET`, `POST`, `PUT`, `DELETE` under `/insights`) within the same router instance.
 
 ## Epic 2: Integrations (Added to Single Function)
-- [ ] **Task 2.1:** Add a route within the single API function (`/upload`) to integrate Vercel Blob Storage for Insight cover images.
-- [ ] **Task 2.2:** Integrate Brevo API within the router for transactional emails (e.g., Welcome email).
-- [ ] **Task 2.3:** Integrate HubSpot API within the router to push new registered users as Contacts.
+- [x] **Task 2.1:** Add a route within the single API function (`/upload`) to integrate Vercel Blob Storage for Insight cover images.
+- [x] **Task 2.2:** Integrate Brevo API within the router for transactional emails (e.g., Welcome email).
+- [x] **Task 2.3:** Integrate HubSpot API within the router to push new registered users as Contacts.
 
 ## Epic 3: Public Frontend (React Vite)
 - [ ] **Task 3.1:** Initialize Vite React project. Configure TailwindCSS and React Router.
