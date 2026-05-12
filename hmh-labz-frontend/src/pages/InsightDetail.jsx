@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api';
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer';
 import { motion } from 'framer-motion';
-import { Calendar, User, ArrowLeft, Loader2, Share2 } from 'lucide-react';
+import { Calendar, User, Clock, ArrowLeft, Loader2 } from 'lucide-react';
 
 const InsightDetail = () => {
   const { slug } = useParams();
@@ -25,85 +27,100 @@ const InsightDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-12 h-12 text-primary animate-spin" />
+      <div className="min-h-screen bg-brand-paper flex items-center justify-center">
+        <Loader2 className="animate-spin text-brand-terra" size={48} />
       </div>
     );
   }
 
   if (!insight) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center text-center px-6">
-        <h1 className="text-4xl font-bold mb-4">Insight Not Found</h1>
-        <p className="text-slate-400 mb-8">The article you're looking for doesn't exist or has been removed.</p>
-        <Link to="/insights" className="btn-primary flex items-center gap-2">
-          <ArrowLeft className="w-5 h-5" /> Back to Insights
-        </Link>
+      <div className="min-h-screen bg-brand-paper flex flex-col items-center justify-center p-6 text-center">
+        <h2 className="text-4xl font-black mb-4">Report Not Found</h2>
+        <Link to="/insights" className="text-brand-terra font-bold hover:underline uppercase tracking-widest">Return to Base</Link>
       </div>
     );
   }
 
   return (
-    <article className="pt-32 pb-24 min-h-screen">
-      <div className="max-w-4xl mx-auto px-6">
-        <Link to="/insights" className="inline-flex items-center gap-2 text-slate-400 hover:text-primary transition-colors mb-12 font-semibold">
-          <ArrowLeft className="w-4 h-4" /> Back to Insights
-        </Link>
+    <div className="bg-brand-paper min-h-screen">
+      <Navbar />
+      
+      <main className="pt-32 pb-20">
+        <div className="max-w-4xl mx-auto px-6">
+          <Link to="/insights" className="inline-flex items-center gap-2 text-brand-terra font-black text-xs uppercase tracking-[0.2em] mb-12 hover:translate-x-[-4px] transition-transform">
+            <ArrowLeft size={14} /> Back to Insights
+          </Link>
 
-        <header className="mb-12">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-bold mb-8 leading-tight"
-          >
-            {insight.title}
-          </motion.h1>
+          <header className="mb-16">
+            <div className="flex items-center gap-4 mb-8">
+              <span className="px-4 py-2 bg-brand-terra text-white text-[10px] font-black uppercase tracking-widest rounded-full">Report</span>
+              <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">v1.0.48</span>
+            </div>
+            
+            <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.9] text-brand-ink mb-10">
+              {insight.title}
+            </h1>
 
-          <div className="flex flex-wrap items-center gap-6 text-slate-400 font-medium">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                <User className="w-5 h-5" />
+            <div className="flex flex-wrap items-center gap-10 py-8 border-y border-brand-ink/5">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-brand-tan flex items-center justify-center text-brand-ink">
+                  <User size={18} />
+                </div>
+                <div>
+                  <p className="text-[8px] font-black uppercase tracking-widest text-gray-400">Analyst</p>
+                  <p className="text-sm font-bold">{insight.author?.firstName || 'HMH Labz'}</p>
+                </div>
               </div>
-              <span>{insight.author?.name || 'HMH Team'}</span>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-brand-tan flex items-center justify-center text-brand-ink">
+                  <Calendar size={18} />
+                </div>
+                <div>
+                  <p className="text-[8px] font-black uppercase tracking-widest text-gray-400">Deployed</p>
+                  <p className="text-sm font-bold">{new Date(insight.createdAt).toLocaleDateString()}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-brand-tan flex items-center justify-center text-brand-ink">
+                  <Clock size={18} />
+                </div>
+                <div>
+                  <p className="text-[8px] font-black uppercase tracking-widest text-gray-400">Complexity</p>
+                  <p className="text-sm font-bold">12 min read</p>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Calendar className="w-5 h-5" />
-              <span>{new Date(insight.createdAt).toLocaleDateString()}</span>
-            </div>
-            <button className="ml-auto p-2 hover:bg-white/5 rounded-lg transition-all">
-              <Share2 className="w-5 h-5" />
-            </button>
+          </header>
+
+          <div className="aspect-video w-full rounded-[40px] overflow-hidden mb-16 shadow-2xl shadow-brand-ink/5">
+            <img 
+              src={insight.coverImage || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80'} 
+              alt={insight.title}
+              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+            />
           </div>
-        </header>
 
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="aspect-video rounded-[40px] overflow-hidden mb-16 shadow-2xl shadow-primary/10"
-        >
-          <img 
-            src={insight.coverImage || 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80'} 
-            alt={insight.title}
-            className="w-full h-full object-cover"
-          />
-        </motion.div>
+          <article className="prose prose-xl prose-brand max-w-none prose-headings:font-black prose-headings:tracking-tighter prose-p:font-medium prose-p:text-brand-ink/70 prose-p:leading-relaxed prose-strong:text-brand-terra">
+            <div dangerouslySetInnerHTML={{ __html: insight.content }} />
+          </article>
 
-        <div className="prose prose-invert prose-lg max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary hover:prose-a:text-primary/80 transition-colors">
-          <div dangerouslySetInnerHTML={{ __html: insight.content }} />
-        </div>
-
-        <div className="mt-20 pt-10 border-t border-white/5">
-          <h4 className="text-xl font-bold mb-8">Share this insight</h4>
-          <div className="flex gap-4">
-            {['Twitter', 'LinkedIn', 'Facebook'].map((platform) => (
-              <button key={platform} className="px-6 py-3 rounded-xl bg-white/5 hover:bg-primary hover:text-white transition-all font-semibold">
-                {platform}
+          <footer className="mt-24 pt-12 border-t border-brand-ink/5">
+            <div className="bg-brand-ink text-white p-12 rounded-[40px] flex flex-col md:flex-row items-center justify-between gap-8">
+              <div>
+                <h4 className="text-2xl font-bold mb-2">Ready to implement these strategies?</h4>
+                <p className="text-gray-400">Initialize a consultation with our build specialists.</p>
+              </div>
+              <button className="bg-brand-terra text-white px-10 py-5 rounded-full font-black uppercase tracking-widest text-sm hover:brightness-110 transition-all whitespace-nowrap">
+                Initialize Connection
               </button>
-            ))}
-          </div>
+            </div>
+          </footer>
         </div>
-      </div>
-    </article>
+      </main>
+
+      <Footer />
+    </div>
   );
 };
 
