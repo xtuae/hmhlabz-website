@@ -1,8 +1,12 @@
+process.on('uncaughtException', (err) => {
+  console.error('CRITICAL UNCAUGHT EXCEPTION:', err);
+});
+
 console.log("API Booting: Checking environment...");
 
 import express from 'express';
 import cors from 'cors';
-import prisma from '../lib/db.js';
+import { getPrisma } from '../lib/db.js';
 import { hashPassword, comparePassword, generateToken, requireRole } from '../lib/auth.js';
 import { put } from '@vercel/blob';
 import { sendWelcomeEmail } from '../lib/brevo.js';
@@ -14,7 +18,7 @@ app.use(cors());
 app.use(express.json());
 
 // --- Root Route (Terminal UI) ---
-
+// This route is purely static and DOES NOT trigger a database connection.
 app.get('/', (req, res) => {
   res.send(`
     <html>
@@ -65,6 +69,7 @@ app.post('/api/auth/register', async (req, res) => {
   if (!email || !password) return res.status(400).json({ message: 'Email and password required' });
 
   try {
+    const prisma = getPrisma();
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) return res.status(400).json({ message: 'User already exists' });
 
@@ -74,13 +79,13 @@ app.post('/api/auth/register', async (req, res) => {
     });
 
     // --- Background Integrations ---
-    // (We don't await these to prevent delaying the response)
     sendWelcomeEmail(email, name || "User");
     syncUserToHubSpot(email, name || "User");
 
     const token = generateToken(user.id);
     res.status(201).json({ token, user: { id: user.id, email: user.email, role: user.role } });
   } catch (error) {
+    console.error('Registration Error:', error);
     res.status(500).json({ message: 'Error registering user' });
   }
 });
@@ -88,6 +93,7 @@ app.post('/api/auth/register', async (req, res) => {
 app.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;
   try {
+    const prisma = getPrisma();
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user || !(await comparePassword(password, user.password))) {
       return res.status(401).json({ message: 'Invalid credentials' });
@@ -95,6 +101,7 @@ app.post('/api/auth/login', async (req, res) => {
     const token = generateToken(user.id);
     res.status(200).json({ token, user: { id: user.id, email: user.email, role: user.role } });
   } catch (error) {
+    console.error('Login Error:', error);
     res.status(500).json({ message: 'Error logging in' });
   }
 });
@@ -103,6 +110,7 @@ app.post('/api/auth/login', async (req, res) => {
 
 app.get('/api/insights', async (req, res) => {
   try {
+    const prisma = getPrisma();
     const insights = await prisma.insight.findMany({
       where: { published: true },
       include: { author: { select: { name: true } } },
@@ -110,12 +118,14 @@ app.get('/api/insights', async (req, res) => {
     });
     res.json(insights);
   } catch (error) {
+    console.error('Fetch Insights Error:', error);
     res.status(500).json({ message: 'Error fetching insights' });
   }
 });
 
 app.get('/api/insights/:id', async (req, res) => {
   try {
+    const prisma = getPrisma();
     const insight = await prisma.insight.findUnique({
       where: { id: req.params.id },
       include: { author: { select: { name: true } } }
@@ -123,6 +133,7 @@ app.get('/api/insights/:id', async (req, res) => {
     if (!insight) return res.status(404).json({ message: 'Not found' });
     res.json(insight);
   } catch (error) {
+    console.error('Fetch Insight Error:', error);
     res.status(500).json({ message: 'Error fetching insight' });
   }
 });
@@ -130,32 +141,38 @@ app.get('/api/insights/:id', async (req, res) => {
 app.post('/api/insights', requireRole(['SUPERADMIN', 'ADMIN', 'MODERATOR']), async (req, res) => {
   const { title, slug, excerpt, content, coverImage, published } = req.body;
   try {
+    const prisma = getPrisma();
     const insight = await prisma.insight.create({
       data: { title, slug, excerpt, content, coverImage, published, authorId: req.user.id }
     });
     res.status(201).json(insight);
   } catch (error) {
+    console.error('Create Insight Error:', error);
     res.status(500).json({ message: 'Error creating insight' });
   }
 });
 
 app.put('/api/insights/:id', requireRole(['SUPERADMIN', 'ADMIN', 'MODERATOR']), async (req, res) => {
   try {
+    const prisma = getPrisma();
     const insight = await prisma.insight.update({
       where: { id: req.params.id },
       data: req.body
     });
     res.json(insight);
   } catch (error) {
+    console.error('Update Insight Error:', error);
     res.status(500).json({ message: 'Error updating insight' });
   }
 });
 
 app.delete('/api/insights/:id', requireRole(['SUPERADMIN', 'ADMIN']), async (req, res) => {
   try {
+    const prisma = getPrisma();
     await prisma.insight.delete({ where: { id: req.params.id } });
     res.json({ message: 'Deleted' });
   } catch (error) {
+    console.error('Delete Insight Error:', error);
     res.status(500).json({ message: 'Error deleting insight' });
   }
 });
