@@ -1,3 +1,5 @@
+console.log("API Booting: Checking environment...");
+
 import express from 'express';
 import cors from 'cors';
 import prisma from '../lib/db.js';
