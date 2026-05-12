@@ -1,10 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import prisma from '../lib/db';
-import { hashPassword, comparePassword, generateToken, requireRole } from '../lib/auth';
+import prisma from '../lib/db.js';
+import { hashPassword, comparePassword, generateToken, requireRole } from '../lib/auth.js';
 import { put } from '@vercel/blob';
-import { sendWelcomeEmail } from '../lib/brevo';
-import { syncUserToHubSpot } from '../lib/hubspot';
+import { sendWelcomeEmail } from '../lib/brevo.js';
+import { syncUserToHubSpot } from '../lib/hubspot.js';
 
 const app = express();
 
