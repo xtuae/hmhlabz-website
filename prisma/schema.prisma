@@ -1,0 +1,56 @@
+// schema.prisma
+
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Role-Based Access Control
+enum Role {
+  SUPERADMIN
+  ADMIN
+  MODERATOR
+  USER
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String    // Hashed using bcrypt
+  name      String?
+  role      Role      @default(USER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Relations
+  insights  Insight[]
+}
+
+model Insight {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  excerpt     String?
+  content     String   // Markdown or Rich Text HTML
+  coverImage  String?  // Vercel Blob URL
+  published   Boolean  @default(false)
+  
+  // Relations
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id])
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Optional: If you want legal pages to be editable via Admin rather than hardcoded
+model Page {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique // e.g., 'privacy-policy', 'terms-of-service'
+  content     String
+  updatedAt   DateTime @updatedAt
+}
