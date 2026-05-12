@@ -2,6 +2,10 @@ process.on('uncaughtException', (err) => {
   console.error('CRITICAL UNCAUGHT EXCEPTION:', err);
 });
 
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('UNHANDLED REJECTION at:', promise, 'reason:', reason);
+});
+
 console.log("API Booting: Checking environment...");
 
 import express from 'express';
