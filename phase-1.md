@@ -14,7 +14,7 @@
 - [x] **Task 2.3:** Integrate HubSpot API within the router to push new registered users as Contacts.
 
 ## Epic 3: Public Frontend (React Vite)
-- [ ] **Task 3.1:** Initialize Vite React project. Configure TailwindCSS and React Router.
+- [x] **Task 3.1:** Initialize Vite React project. Configure TailwindCSS and React Router.
 - [ ] **Task 3.2:** Build the single-page application (SPA) landing page sections (Hero, About, Services, Contact).
 - [ ] **Task 3.3:** Build the `/insights` feed page fetching data from the API and the dynamic `/insights/:slug` article page.
 - [ ] **Task 3.4:** Build static Legal Pages (Privacy Policy, Terms & Conditions).

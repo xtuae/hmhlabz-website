@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  background-color: #020617;
+  color: white;
+}
+
+body {
+  @apply font-sans;
+}
+
+.glass {
+  @apply bg-slate-900/60 backdrop-blur-md border border-white/10;
+}
+
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-500;
+}
+
+.btn-primary {
+  @apply px-6 py-3 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold hover:shadow-lg hover:shadow-indigo-500/25 transition-all active:scale-95;
+}
