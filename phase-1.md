@@ -15,9 +15,9 @@
 
 ## Epic 3: Public Frontend (React Vite)
 - [x] **Task 3.1:** Initialize Vite React project. Configure TailwindCSS and React Router.
-- [ ] **Task 3.2:** Build the single-page application (SPA) landing page sections (Hero, About, Services, Contact).
-- [ ] **Task 3.3:** Build the `/insights` feed page fetching data from the API and the dynamic `/insights/:slug` article page.
-- [ ] **Task 3.4:** Build static Legal Pages (Privacy Policy, Terms & Conditions).
+- [x] **Task 3.2:** Build the single-page application (SPA) landing page sections (Hero, About, Services, Contact).
+- [x] **Task 3.3:** Build the `/insights` feed page fetching data from the API and the dynamic `/insights/:slug` article page.
+- [x] **Task 3.4:** Build static Legal Pages (Privacy Policy, Terms & Conditions).
 - [ ] **Task 3.5:** Implement state management (Zustand or Context) for standard `USER` login/session handling.
 
 ## Epic 4: Admin Portal (React Vite - `/labz-admin/`)

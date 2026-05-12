@@ -132,6 +132,28 @@ app.get('/api/insights', async (req, res) => {
   }
 });
 
+app.get('/api/insights/:slugOrId', async (req, res) => {
+  try {
+    const { getPrisma } = await import('../lib/db.js');
+    const prisma = getPrisma();
+    const insight = await prisma.insight.findFirst({
+      where: {
+        OR: [
+          { id: req.params.slugOrId },
+          { slug: req.params.slugOrId }
+        ],
+        published: true
+      },
+      include: { author: { select: { name: true } } }
+    });
+    if (!insight) return res.status(404).json({ message: 'Not found' });
+    res.json(insight);
+  } catch (error) {
+    console.error('Fetch Insight Error:', error);
+    res.status(500).json({ message: 'Error fetching insight' });
+  }
+});
+
 // ... Other routes would also use dynamic imports for lib/db.js and lib/auth.js ...
 
 export default app;
