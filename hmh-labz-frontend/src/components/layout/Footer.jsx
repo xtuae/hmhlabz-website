@@ -1,71 +1,80 @@
-import { Mail, Github, Twitter, Linkedin, Terminal } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import logo from '../../assets/logo.png';
+import { Twitter, Github, Linkedin, Instagram } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="bg-surface border-t border-white/5 pt-20 pb-10">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
-          <div className="col-span-1 md:col-span-1">
-            <Link to="/" className="flex items-center gap-2 text-2xl font-bold tracking-tighter mb-6">
-              <Terminal className="text-primary w-8 h-8" />
-              <span>HMH LABZ</span>
-            </Link>
-            <p className="text-slate-400 mb-8 max-w-sm">
+    <footer className="bg-brand-cream border-t border-brand-dark/5 pt-32 pb-12">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-16 mb-32">
+          <div className="md:col-span-4">
+            <img src={logo} alt="HMH Labz" className="h-10 md:h-12 w-auto mb-10" />
+            <p className="text-brand-dark/50 text-xl font-medium leading-relaxed max-w-sm mb-10">
               Architecting the next generation of digital infrastructure and intelligent software solutions.
             </p>
             <div className="flex gap-4">
-              {[Twitter, Github, Linkedin].map((Icon, i) => (
-                <a key={i} href="#" className="p-2 rounded-lg bg-white/5 hover:bg-primary/20 hover:text-primary transition-all">
-                  <Icon className="w-5 h-5" />
+              {[Twitter, Github, Linkedin, Instagram].map((Icon, i) => (
+                <a key={i} href="#" className="w-12 h-12 rounded-xl bg-brand-dark/5 flex items-center justify-center text-brand-dark hover:bg-brand-orange hover:text-white transition-all duration-300">
+                  <Icon size={20} />
                 </a>
               ))}
             </div>
           </div>
 
-          <div>
-            <h4 className="font-bold mb-6 text-lg">Company</h4>
-            <ul className="space-y-4 text-slate-400">
-              <li><Link to="/" className="hover:text-white transition-colors">About Us</Link></li>
-              <li><Link to="/#services" className="hover:text-white transition-colors">Services</Link></li>
-              <li><Link to="/insights" className="hover:text-white transition-colors">Insights</Link></li>
-              <li><Link to="/" className="hover:text-white transition-colors">Careers</Link></li>
+          <div className="md:col-span-2">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-brand-orange mb-8">Navigation</h4>
+            <ul className="space-y-4">
+              {['Services', 'About', 'Insights', 'Contact'].map((item) => (
+                <li key={item}>
+                  <Link to={item === 'Insights' ? '/insights' : `/#${item.toLowerCase()}`} className="text-lg font-bold text-brand-dark hover:text-brand-orange transition-colors">
+                    {item}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          <div>
-            <h4 className="font-bold mb-6 text-lg">Legal</h4>
-            <ul className="space-y-4 text-slate-400">
-              <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-              <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
-              <li><Link to="/#contact" className="hover:text-white transition-colors">Cookie Policy</Link></li>
+          <div className="md:col-span-2">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-brand-orange mb-8">Legal</h4>
+            <ul className="space-y-4">
+              {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((item) => (
+                <li key={item}>
+                  <Link to="/privacy" className="text-lg font-bold text-brand-dark hover:text-brand-orange transition-colors">
+                    {item}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          <div>
-            <h4 className="font-bold mb-6 text-lg">Subscribe</h4>
-            <p className="text-slate-400 mb-4">Stay updated with our latest insights.</p>
+          <div className="md:col-span-4">
+            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-brand-orange mb-8">Newsletter</h4>
+            <p className="text-brand-dark/50 font-medium mb-8 text-lg">Stay updated with our latest research and reports.</p>
             <div className="relative">
               <input 
                 type="email" 
-                placeholder="email@example.com" 
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-primary transition-all"
+                placeholder="email@hmhlabz.com" 
+                className="w-full bg-brand-dark/5 border border-brand-dark/5 rounded-2xl px-6 py-5 outline-none focus:border-brand-orange transition-all font-bold placeholder:text-brand-dark/20"
               />
-              <button className="absolute right-2 top-2 p-1.5 bg-primary rounded-lg">
-                <ArrowRight className="w-5 h-5" />
+              <button className="absolute right-2 top-2 bottom-2 bg-brand-dark text-white px-6 rounded-xl font-bold hover:bg-brand-orange transition-all">
+                Join
               </button>
             </div>
           </div>
         </div>
 
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-sm">
-          <p>© {new Date().getFullYear()} HMH Labz. All rights reserved.</p>
-          <p>Designed with excellence for the digital frontier.</p>
+        <div className="pt-12 border-t border-brand-dark/5 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-brand-dark/40 font-bold text-sm">
+            © {new Date().getFullYear()} HMH Labz. Built for the frontier.
+          </p>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+            <p className="text-brand-dark/60 font-black text-[10px] uppercase tracking-widest">System Status: Optimal</p>
+          </div>
         </div>
       </div>
     </footer>
   );
 };
 
-import { ArrowRight } from 'lucide-react';
 export default Footer;

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Terminal } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import logo from '../../assets/logo.png';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -21,50 +22,49 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-background/80 backdrop-blur-md border-b border-white/10 py-4' : 'bg-transparent py-6'}`}>
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <Link to="/" className="flex items-center gap-2 text-2xl font-bold tracking-tighter">
-          <Terminal className="text-primary w-8 h-8" />
-          <span>HMH LABZ</span>
+    <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-brand-cream/90 backdrop-blur-xl border-b border-brand-dark/5 py-4' : 'bg-transparent py-8'}`}>
+      <div className="max-w-[1440px] mx-auto px-6 md:px-12 flex justify-between items-center">
+        <Link to="/" className="flex items-center group">
+          <img src={logo} alt="HMH Labz" className="h-10 md:h-12 w-auto object-contain" />
         </Link>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-12">
           {navLinks.map((link) => (
             <Link 
               key={link.name} 
               to={link.href} 
-              className="text-sm font-medium hover:text-primary transition-colors text-slate-300"
+              className="text-[15px] font-medium hover:text-brand-orange transition-colors text-brand-dark/70 hover:text-brand-dark"
             >
               {link.name}
             </Link>
           ))}
-          <button className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-full text-sm font-semibold transition-all">
-            Get Started
+          <button className="bg-brand-dark text-white px-8 py-3.5 rounded-full text-sm font-bold hover:bg-brand-orange transition-all duration-300 transform hover:scale-105 shadow-xl shadow-brand-dark/10">
+            Let's Talk
           </button>
         </div>
 
         {/* Mobile Toggle */}
-        <button className="md:hidden text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          {isMenuOpen ? <X /> : <Menu />}
+        <button className="lg:hidden text-brand-dark" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-surface border-b border-white/10 p-6 flex flex-col gap-4 animate-in slide-in-from-top duration-300">
+        <div className="lg:hidden fixed inset-0 top-[88px] bg-brand-cream z-40 p-8 flex flex-col gap-6 animate-in fade-in slide-in-from-top-4 duration-300">
           {navLinks.map((link) => (
             <Link 
               key={link.name} 
               to={link.href} 
-              className="text-lg font-medium"
+              className="text-3xl font-bold text-brand-dark border-b border-brand-dark/5 pb-4"
               onClick={() => setIsMenuOpen(false)}
             >
               {link.name}
             </Link>
           ))}
-          <button className="bg-primary w-full py-3 rounded-xl font-bold mt-4">
-            Get Started
+          <button className="bg-brand-orange text-white w-full py-5 rounded-2xl font-bold text-xl mt-4">
+            Start Your Project
           </button>
         </div>
       )}
