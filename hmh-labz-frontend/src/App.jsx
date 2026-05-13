@@ -9,7 +9,7 @@ import UserDashboard from './pages/UserDashboard';
 
 function App() {
   return (
-    <Router>
+    <Router basename={import.meta.env.VITE_BASE_PATH || '/'}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/insights" element={<Insights />} />
