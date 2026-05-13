@@ -1,0 +1,42 @@
+
+> hmh-labz-frontend@0.0.0 build
+> vite build
+
+vite v8.0.12 building client environment for production...
+[2Ktransforming...Error: Cannot apply unknown utility class `bg-brand-cream`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
+    at onInvalidCandidate (/Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/tailwindcss/dist/lib.js:21:1314)
+    at Ne (/Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/tailwindcss/dist/lib.js:16:38783)
+    at /Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/tailwindcss/dist/lib.js:21:355
+    at zr (/Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/tailwindcss/dist/lib.js:3:1733)
+    at I (/Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/tailwindcss/dist/lib.js:3:1377)
+    at Ee (/Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/tailwindcss/dist/lib.js:21:172)
+    at vn (/Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/tailwindcss/dist/lib.js:38:294)
+    at async kn (/Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/tailwindcss/dist/lib.js:38:631)
+    at async Xr (/Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/@tailwindcss/node/dist/index.js:10:3415)
+    at async E (/Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/@tailwindcss/postcss/dist/index.js:10:3983)
+✓ 2209 modules transformed.
+✗ Build failed in 668ms
+error during build:
+Build failed with 1 error:
+
+[plugin vite:css] /Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/src/index.css:1:0
+CssSyntaxError: [postcss] tailwindcss: /Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/src/index.css:1:1: Cannot apply unknown utility class `bg-brand-cream`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
+    at Input.error (/Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/postcss/lib/input.js:135:16)
+    at Root.error (/Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/postcss/lib/node.js:146:32)
+    at Object.Once (/Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/@tailwindcss/postcss/dist/index.js:10:6917)
+    at async LazyResult.runAsync (/Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/postcss/lib/lazy-result.js:293:11)
+    at async runPostCSS (file:///Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/vite/dist/node/chunks/node.js:21045:19)
+    at async compilePostCSS (file:///Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/vite/dist/node/chunks/node.js:21029:6)
+    at async compileCSS (file:///Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/vite/dist/node/chunks/node.js:20959:26)
+    at async TransformPluginContextImpl.handler (file:///Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/vite/dist/node/chunks/node.js:20472:47)
+    at async plugin (file:///Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/rolldown/dist/shared/bindingify-input-options-zrVFGksD.mjs:1185:16)
+    at async plugin.<computed> (file:///Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/rolldown/dist/shared/bindingify-input-options-zrVFGksD.mjs:1625:12)
+    at aggregateBindingErrorsIntoJsError (file:///Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/rolldown/dist/shared/error-BrnLyQ-g.mjs:48:18)
+    at unwrapBindingResult (file:///Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/rolldown/dist/shared/error-BrnLyQ-g.mjs:18:128)
+    at #build (file:///Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/rolldown/dist/shared/rolldown-build-D_ShytiL.mjs:3257:34)
+    at async buildEnvironment (file:///Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/vite/dist/node/chunks/node.js:33052:64)
+    at async Object.build (file:///Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/vite/dist/node/chunks/node.js:33474:19)
+    at async Object.buildApp (file:///Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/vite/dist/node/chunks/node.js:33471:153)
+    at async CAC.<anonymous> (file:///Volumes/Mac-HMH/Desktop/hmhlabz-new/hmh-labz-frontend/node_modules/vite/dist/node/cli.js:778:3) {
+  errors: [Getter/Setter]
+}

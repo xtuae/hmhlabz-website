@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import client from '../api/client';
 import { motion } from 'framer-motion';
-import { Plus, Edit, Trash2, Eye, Loader2, Image as ImageIcon } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, Loader2, Image as ImageIcon, Circle } from 'lucide-react';
 
 const ManageInsights = () => {
   const [insights, setInsights] = useState([]);
