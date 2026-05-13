@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import client from '../api/client';
 import { motion } from 'framer-motion';
-import { Plus, Edit, Trash2, Eye, Loader2, Image as ImageIcon, Circle } from 'lucide-react';
+import { Plus, Edit, Trash2, Loader2, Image as ImageIcon, Circle } from 'lucide-react';
 
 const ManageInsights = () => {
   const [insights, setInsights] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchInsights();
@@ -34,6 +36,17 @@ const ManageInsights = () => {
     }
   };
 
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    if (diffDays === 0) return 'Today';
+    if (diffDays === 1) return 'Yesterday';
+    if (diffDays < 30) return `${diffDays} days ago`;
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
+
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-end">
@@ -41,7 +54,10 @@ const ManageInsights = () => {
           <h3 className="text-3xl font-bold tracking-tighter">Insight <span className="font-serif italic text-brand-orange">Editorial.</span></h3>
           <p className="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mt-2">Manage your knowledge base</p>
         </div>
-        <button className="bg-brand-charcoal text-white px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-orange transition-all flex items-center gap-2 shadow-xl shadow-brand-charcoal/10">
+        <button
+          onClick={() => navigate('/insights/new')}
+          className="bg-brand-charcoal text-white px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-brand-orange transition-all flex items-center gap-2 shadow-xl shadow-brand-charcoal/10"
+        >
           <Plus size={16} /> New Draft
         </button>
       </div>
@@ -68,27 +84,47 @@ const ManageInsights = () => {
                     <ImageIcon size={48} />
                   </div>
                 )}
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1.5 rounded-full text-[8px] font-black uppercase tracking-widest text-brand-charcoal shadow-sm">
-                  Technology
+                <div className={`absolute top-4 left-4 backdrop-blur px-3 py-1.5 rounded-full text-[8px] font-black uppercase tracking-widest shadow-sm ${
+                  insight.published
+                    ? 'bg-green-50/90 text-green-600'
+                    : 'bg-yellow-50/90 text-yellow-600'
+                }`}>
+                  {insight.published ? 'Published' : 'Draft'}
                 </div>
               </div>
               <div className="p-8">
                 <h4 className="text-xl font-bold mb-2 line-clamp-2 min-h-[3.5rem]">{insight.title}</h4>
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-8 flex items-center gap-2">
-                  <Circle size={8} className="fill-green-500 text-green-500" /> Published 4 days ago
+                  <Circle size={8} className={`${insight.published ? 'fill-green-500 text-green-500' : 'fill-yellow-500 text-yellow-500'}`} />
+                  {formatDate(insight.createdAt)}
                 </p>
                 <div className="flex justify-between items-center pt-6 border-t border-gray-50">
                   <div className="flex items-center gap-4">
-                    <button className="text-gray-400 hover:text-brand-orange transition-colors"><Edit size={18} /></button>
-                    <button onClick={() => handleDelete(insight.id)} className="text-gray-400 hover:text-red-500 transition-colors"><Trash2 size={18} /></button>
+                    <button
+                      onClick={() => navigate(`/insights/edit/${insight.id}`)}
+                      className="text-gray-400 hover:text-brand-orange transition-colors"
+                    >
+                      <Edit size={18} />
+                    </button>
+                    <button onClick={() => handleDelete(insight.id)} className="text-gray-400 hover:text-red-500 transition-colors">
+                      <Trash2 size={18} />
+                    </button>
                   </div>
-                  <button className="text-[10px] font-black uppercase tracking-widest text-brand-orange hover:underline">Edit Content</button>
+                  <button
+                    onClick={() => navigate(`/insights/edit/${insight.id}`)}
+                    className="text-[10px] font-black uppercase tracking-widest text-brand-orange hover:underline"
+                  >
+                    Edit Content
+                  </button>
                 </div>
               </div>
             </motion.div>
           ))}
           
-          <button className="border-2 border-dashed border-gray-200 rounded-[32px] flex flex-col items-center justify-center p-12 hover:border-brand-orange hover:bg-brand-orange/5 transition-all group min-h-[400px]">
+          <button
+            onClick={() => navigate('/insights/new')}
+            className="border-2 border-dashed border-gray-200 rounded-[32px] flex flex-col items-center justify-center p-12 hover:border-brand-orange hover:bg-brand-orange/5 transition-all group min-h-[400px]"
+          >
             <div className="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center mb-4 group-hover:bg-brand-orange group-hover:text-white transition-all">
               <Plus size={32} />
             </div>

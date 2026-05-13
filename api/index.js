@@ -154,6 +154,108 @@ app.get('/api/insights/:slugOrId', async (req, res) => {
   }
 });
 
-// ... Other routes would also use dynamic imports for lib/db.js and lib/auth.js ...
+// --- Insight CRUD (Authenticated) ---
+
+app.post('/api/insights', async (req, res) => {
+  try {
+    const { getPrisma } = await import('../lib/db.js');
+    const { requireRole } = await import('../lib/auth.js');
+
+    return requireRole(['SUPERADMIN', 'ADMIN'])(req, res, async () => {
+      const prisma = getPrisma();
+      const { title, slug, excerpt, content, coverImage, published } = req.body;
+
+      if (!title || !slug) {
+        return res.status(400).json({ message: 'Title and slug are required.' });
+      }
+
+      const existing = await prisma.insight.findUnique({ where: { slug } });
+      if (existing) {
+        return res.status(409).json({ message: 'An insight with this slug already exists.' });
+      }
+
+      const insight = await prisma.insight.create({
+        data: {
+          title,
+          slug,
+          excerpt: excerpt || null,
+          content: content || '',
+          coverImage: coverImage || null,
+          published: published || false,
+          authorId: req.user.id,
+        },
+      });
+
+      res.status(201).json(insight);
+    });
+  } catch (error) {
+    console.error('Create Insight Error:', error);
+    res.status(500).json({ message: 'Error creating insight' });
+  }
+});
+
+app.put('/api/insights/:id', async (req, res) => {
+  try {
+    const { getPrisma } = await import('../lib/db.js');
+    const { requireRole } = await import('../lib/auth.js');
+
+    return requireRole(['SUPERADMIN', 'ADMIN'])(req, res, async () => {
+      const prisma = getPrisma();
+      const { title, slug, excerpt, content, coverImage, published } = req.body;
+
+      const existing = await prisma.insight.findUnique({ where: { id: req.params.id } });
+      if (!existing) {
+        return res.status(404).json({ message: 'Insight not found.' });
+      }
+
+      // If slug changed, check for conflicts
+      if (slug && slug !== existing.slug) {
+        const slugConflict = await prisma.insight.findUnique({ where: { slug } });
+        if (slugConflict) {
+          return res.status(409).json({ message: 'An insight with this slug already exists.' });
+        }
+      }
+
+      const insight = await prisma.insight.update({
+        where: { id: req.params.id },
+        data: {
+          ...(title !== undefined && { title }),
+          ...(slug !== undefined && { slug }),
+          ...(excerpt !== undefined && { excerpt }),
+          ...(content !== undefined && { content }),
+          ...(coverImage !== undefined && { coverImage }),
+          ...(published !== undefined && { published }),
+        },
+      });
+
+      res.status(200).json(insight);
+    });
+  } catch (error) {
+    console.error('Update Insight Error:', error);
+    res.status(500).json({ message: 'Error updating insight' });
+  }
+});
+
+app.delete('/api/insights/:id', async (req, res) => {
+  try {
+    const { getPrisma } = await import('../lib/db.js');
+    const { requireRole } = await import('../lib/auth.js');
+
+    return requireRole(['SUPERADMIN', 'ADMIN'])(req, res, async () => {
+      const prisma = getPrisma();
+
+      const existing = await prisma.insight.findUnique({ where: { id: req.params.id } });
+      if (!existing) {
+        return res.status(404).json({ message: 'Insight not found.' });
+      }
+
+      await prisma.insight.delete({ where: { id: req.params.id } });
+      res.status(200).json({ message: 'Insight deleted.' });
+    });
+  } catch (error) {
+    console.error('Delete Insight Error:', error);
+    res.status(500).json({ message: 'Error deleting insight' });
+  }
+});
 
 export default app;

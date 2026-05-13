@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import DashboardOverview from './pages/DashboardOverview';
 import ManageInsights from './pages/ManageInsights';
 import ManageUsers from './pages/ManageUsers';
+import InsightForm from './pages/InsightForm';
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
         }>
           <Route path="/" element={<DashboardOverview />} />
           <Route path="/insights" element={<ManageInsights />} />
+          <Route path="/insights/new" element={<InsightForm />} />
+          <Route path="/insights/edit/:id" element={<InsightForm />} />
           
           {/* Superadmin Only Routes */}
           <Route path="/users" element={
