@@ -1,74 +1,91 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
-import logo from '../../assets/logo.png';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const navLinks = [
-    { name: 'Services', href: '/#services' },
-    { name: 'About', href: '/#about' },
-    { name: 'Insights', href: '/insights' },
-    { name: 'Contact', href: '/#contact' },
+  const items = [
+    { label: 'Approach', path: '/#approach' },
+    { label: 'Services', path: '/#services' },
+    { label: 'Insights', path: '/insights' },
+    { label: 'About', path: '/about' }
   ];
 
+  const isActive = (path) => {
+    if (path.startsWith('/#')) {
+      return location.pathname === '/' && location.hash === path.substring(1);
+    }
+    return location.pathname === path;
+  };
+
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-brand-cream/90 backdrop-blur-xl border-b border-brand-dark/5 py-4' : 'bg-transparent py-8'}`}>
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12 flex justify-between items-center">
-        <Link to="/" className="flex items-center group">
-          <img src={logo} alt="HMH Labz" className="h-10 md:h-12 w-auto object-contain" />
-        </Link>
+    <>
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-paper/85 backdrop-blur-md border-b border-ink/10" : ""}`}>
+        <div className="px-6 md:px-10 lg:px-14 h-[68px] sm:h-[76px] flex items-center justify-between max-w-7xl mx-auto">
+          <Link to="/" className="flex-shrink-0">
+            <img src="https://www.hmhlabz.com/wp-content/uploads/hmh-labz-black.png" alt="HMH Labz" className="h-5 sm:h-6 w-auto object-contain" />
+          </Link>
 
-        {/* Desktop Links */}
-        <div className="hidden lg:flex items-center gap-12">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.name} 
-              to={link.href} 
-              className="text-[15px] font-medium hover:text-brand-orange transition-colors text-brand-dark/70 hover:text-brand-dark"
-            >
-              {link.name}
-            </Link>
-          ))}
-          <button className="bg-brand-dark text-white px-8 py-3.5 rounded-full text-sm font-bold hover:bg-brand-orange transition-all duration-300 transform hover:scale-105 shadow-xl shadow-brand-dark/10">
-            Let's Talk
+          <div className="hidden md:flex items-center gap-8 text-[13px] text-ink font-bold uppercase tracking-widest">
+            {items.map((it) => (
+              <Link key={it.label} to={it.path} className="relative group py-2">
+                <span className={isActive(it.path) ? 'text-terra' : ''}>{it.label}</span>
+                <span className={`absolute left-0 bottom-1 h-px bg-terra transition-all duration-300 ${isActive(it.path) ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
+              </Link>
+            ))}
+            <button className="ml-4 px-6 py-3 bg-ink text-paper rounded-full hover:bg-terra transition-all hover:scale-105 active:scale-95">
+              Book Fit Call
+            </button>
+          </div>
+
+          <button onClick={() => setIsMobileMenuOpen(true)} className="md:hidden flex flex-col justify-center gap-1.5 w-8 h-8 group">
+            <span className="w-full h-[2px] bg-ink group-hover:bg-terra transition-colors"></span>
+            <span className="w-full h-[2px] bg-ink group-hover:bg-terra transition-colors"></span>
           </button>
         </div>
+      </nav>
 
-        {/* Mobile Toggle */}
-        <button className="lg:hidden text-brand-dark" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="lg:hidden fixed inset-0 top-[88px] bg-brand-cream z-40 p-8 flex flex-col gap-6 animate-in fade-in slide-in-from-top-4 duration-300">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.name} 
-              to={link.href} 
-              className="text-3xl font-bold text-brand-dark border-b border-brand-dark/5 pb-4"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {link.name}
-            </Link>
-          ))}
-          <button className="bg-brand-orange text-white w-full py-5 rounded-2xl font-bold text-xl mt-4">
-            Start Your Project
-          </button>
-        </div>
-      )}
-    </nav>
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div 
+            initial={{ x: '100%' }} 
+            animate={{ x: 0 }} 
+            exit={{ x: '100%' }} 
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }} 
+            className="fixed inset-0 z-[100] bg-paper flex flex-col p-6"
+          >
+            <div className="flex items-center justify-between mb-20">
+              <img src="https://www.hmhlabz.com/wp-content/uploads/hmh-labz-black.png" alt="HMH Labz" className="h-6 object-contain" />
+              <button onClick={() => setIsMobileMenuOpen(false)} className="w-10 h-10 border border-ink/10 rounded-full text-2xl flex items-center justify-center">&times;</button>
+            </div>
+            <div className="flex flex-col gap-10">
+              {['Home', ...items.map(i => i.label)].map(m => (
+                <Link 
+                  key={m} 
+                  to={m === 'Home' ? '/' : items.find(i => i.label === m).path}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-left font-sans font-bold text-5xl tracking-tighter text-ink hover:text-terra transition-colors"
+                >
+                  {m}
+                </Link>
+              ))}
+            </div>
+            <button className="mt-auto w-full py-5 bg-terra text-paper rounded-full font-mono font-bold text-xs uppercase tracking-widest shadow-xl shadow-terra/20">
+              Book a Fit Call →
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

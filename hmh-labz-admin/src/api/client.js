@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { useAuthStore } from '../store/authStore';
 
 const client = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'https://api.hmhlabz.com',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -10,7 +11,7 @@ const client = axios.create({
 // Request interceptor for API calls
 client.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('admin_token');
+    const token = useAuthStore.getState().token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -26,8 +27,8 @@ client.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('admin_token');
-      localStorage.removeItem('admin_user');
+      const { logout } = useAuthStore.getState();
+      logout();
       window.location.href = '/labz-admin/login';
     }
     return Promise.reject(error);

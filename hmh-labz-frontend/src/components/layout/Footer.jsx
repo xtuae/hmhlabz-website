@@ -1,76 +1,38 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../../assets/logo.png';
-import { Globe, Cpu, Layers, MessageSquare } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="bg-brand-paper border-t border-brand-ink/5 pt-32 pb-12">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-16 mb-32">
-          <div className="md:col-span-4">
-            <img src={logo} alt="HMH Labz" className="h-10 md:h-12 w-auto mb-10" />
-            <p className="text-brand-ink/50 text-xl font-medium leading-relaxed max-w-sm mb-10">
-              Architecting the next generation of digital infrastructure and intelligent software solutions.
+    <footer className="bg-ink text-paper/65 px-6 py-28 relative z-10 text-left">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-12 gap-12 sm:gap-16 pb-20 border-b border-paper/10">
+          <div className="md:col-span-6">
+            <Link to="/" className="block mb-8">
+              <img src="https://www.hmhlabz.com/wp-content/uploads/hmh-icon.webp" alt="HMH Labz" className="h-10 w-auto invert brightness-0" />
+            </Link>
+            <p className="font-serif italic text-paper/40 leading-relaxed max-w-sm text-xl text-left">
+              Strategy + build, in one team. We tell you what to do, then we ship it.
             </p>
-            <div className="flex gap-4">
-              {[Globe, Cpu, Layers, MessageSquare].map((Icon, i) => (
-                <a key={i} href="#" className="w-12 h-12 rounded-xl bg-brand-ink/5 flex items-center justify-center text-brand-ink hover:bg-brand-terra hover:text-white transition-all duration-300">
-                  <Icon size={20} />
-                </a>
-              ))}
-            </div>
           </div>
-
-          <div className="md:col-span-2">
-            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-brand-terra mb-8">Navigation</h4>
-            <ul className="space-y-4">
-              {['Services', 'About', 'Insights', 'Contact'].map((item) => (
-                <li key={item}>
-                  <Link to={item === 'Insights' ? '/insights' : `/#${item.toLowerCase()}`} className="text-lg font-bold text-brand-ink hover:text-brand-terra transition-colors">
-                    {item}
-                  </Link>
-                </li>
-              ))}
+          <div className="md:col-span-3 text-left">
+            <h5 className="font-mono uppercase text-xs font-bold text-terra mb-8">Approach</h5>
+            <ul className="space-y-4 text-sm text-paper/85">
+              <li><Link to="/#approach" className="hover:text-terra transition-colors">Diagnose</Link></li>
+              <li><Link to="/#approach" className="hover:text-terra transition-colors">Recommend</Link></li>
+              <li><Link to="/#approach" className="hover:text-terra transition-colors">Ship</Link></li>
             </ul>
           </div>
-
-          <div className="md:col-span-2">
-            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-brand-terra mb-8">Legal</h4>
-            <ul className="space-y-4">
-              {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((item) => (
-                <li key={item}>
-                  <Link to="/privacy" className="text-lg font-bold text-brand-ink hover:text-brand-terra transition-colors">
-                    {item}
-                  </Link>
-                </li>
-              ))}
+          <div className="md:col-span-3 text-left">
+            <h5 className="font-mono uppercase text-xs font-bold text-terra mb-8">Contact</h5>
+            <ul className="space-y-4 text-sm text-paper/85">
+              <li><a href="mailto:hello@hmhlabz.com" className="hover:text-terra transition-colors">hello@hmhlabz.com</a></li>
+              <li><button className="hover:text-terra transition-colors text-left">Book Fit Call</button></li>
             </ul>
-          </div>
-
-          <div className="md:col-span-4">
-            <h4 className="text-xs font-black uppercase tracking-[0.2em] text-brand-terra mb-8">Newsletter</h4>
-            <p className="text-brand-ink/50 font-medium mb-8 text-lg">Stay updated with our latest research and reports.</p>
-            <div className="relative">
-              <input 
-                type="email" 
-                placeholder="email@hmhlabz.com" 
-                className="w-full bg-brand-ink/5 border border-brand-ink/5 rounded-2xl px-6 py-5 outline-none focus:border-brand-terra transition-all font-bold placeholder:text-brand-ink/20"
-              />
-              <button className="absolute right-2 top-2 bottom-2 bg-brand-ink text-white px-6 rounded-xl font-bold hover:bg-brand-terra transition-all">
-                Join
-              </button>
-            </div>
           </div>
         </div>
-
-        <div className="pt-12 border-t border-brand-ink/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-brand-ink/40 font-bold text-sm">
-            © {new Date().getFullYear()} HMH Labz. Built for the frontier.
-          </p>
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-            <p className="text-brand-ink/60 font-black text-[10px] uppercase tracking-widest">System Status: Optimal</p>
-          </div>
+        <div className="pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="font-mono text-[10px] uppercase text-paper/40">© 2026 HMH LABZ</p>
+          <span className="font-mono text-[10px] uppercase text-paper/40">Operating 100% Remote</span>
         </div>
       </div>
     </footer>

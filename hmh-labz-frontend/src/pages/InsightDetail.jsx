@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import api from '../api';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
-import { motion } from 'framer-motion';
-import { Calendar, User, Clock, ArrowLeft, Loader2 } from 'lucide-react';
+import Reveal from '../components/ui/Reveal';
+import MonoLabel from '../components/ui/MonoLabel';
+import api from '../api';
 
 const InsightDetail = () => {
   const { slug } = useParams();
@@ -27,98 +27,65 @@ const InsightDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-brand-paper flex items-center justify-center">
-        <Loader2 className="animate-spin text-brand-terra" size={48} />
+      <div className="bg-paper min-h-screen flex items-center justify-center">
+        <span className="font-mono text-ink/40 animate-pulse uppercase tracking-[0.3em]">Loading Article...</span>
       </div>
     );
   }
 
   if (!insight) {
     return (
-      <div className="min-h-screen bg-brand-paper flex flex-col items-center justify-center p-6 text-center">
-        <h2 className="text-4xl font-black mb-4">Report Not Found</h2>
-        <Link to="/insights" className="text-brand-terra font-bold hover:underline uppercase tracking-widest">Return to Base</Link>
+      <div className="bg-paper min-h-screen flex flex-col items-center justify-center">
+        <h1 className="text-4xl font-bold mb-8">Article not found</h1>
+        <Link to="/insights" className="text-terra underline">Back to Insights</Link>
       </div>
     );
   }
 
   return (
-    <div className="bg-brand-paper min-h-screen">
+    <div className="bg-paper selection:bg-terra selection:text-paper min-h-screen relative">
       <Navbar />
-      
-      <main className="pt-32 pb-20">
-        <div className="max-w-4xl mx-auto px-6">
-          <Link to="/insights" className="inline-flex items-center gap-2 text-brand-terra font-black text-xs uppercase tracking-[0.2em] mb-12 hover:translate-x-[-4px] transition-transform">
-            <ArrowLeft size={14} /> Back to Insights
-          </Link>
-
-          <header className="mb-16">
-            <div className="flex items-center gap-4 mb-8">
-              <span className="px-4 py-2 bg-brand-terra text-white text-[10px] font-black uppercase tracking-widest rounded-full">Report</span>
-              <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">v1.0.48</span>
-            </div>
-            
-            <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.9] text-brand-ink mb-10">
+      <main className="pt-20 text-left">
+        <header className="px-6 md:px-10 lg:px-14 pt-16 sm:pt-24 pb-20 sm:pb-32 max-w-7xl mx-auto">
+          <Reveal>
+            <Link to="/insights" className="font-mono text-ink/40 hover:text-terra transition-colors text-xs uppercase tracking-widest mb-10 block">
+              ← Back to insights
+            </Link>
+            <MonoLabel color="terra">{insight.category || 'Field Notes'}</MonoLabel>
+            <h1 className="mt-10 font-sans font-bold text-ink tracking-tight leading-[0.94] max-w-[20ch]" style={{ fontSize: "clamp(42px, 7vw, 92px)" }}>
               {insight.title}
             </h1>
+            <p className="mt-12 max-w-[44ch] text-ink/65 text-xl sm:text-2xl leading-relaxed font-light">
+              {insight.excerpt}
+            </p>
+          </Reveal>
+        </header>
 
-            <div className="flex flex-wrap items-center gap-10 py-8 border-y border-brand-ink/5">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-brand-tan flex items-center justify-center text-brand-ink">
-                  <User size={18} />
-                </div>
-                <div>
-                  <p className="text-[8px] font-black uppercase tracking-widest text-gray-400">Analyst</p>
-                  <p className="text-sm font-bold">{insight.author?.firstName || 'HMH Labz'}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-brand-tan flex items-center justify-center text-brand-ink">
-                  <Calendar size={18} />
-                </div>
-                <div>
-                  <p className="text-[8px] font-black uppercase tracking-widest text-gray-400">Deployed</p>
-                  <p className="text-sm font-bold">{new Date(insight.createdAt).toLocaleDateString()}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-brand-tan flex items-center justify-center text-brand-ink">
-                  <Clock size={18} />
-                </div>
-                <div>
-                  <p className="text-[8px] font-black uppercase tracking-widest text-gray-400">Complexity</p>
-                  <p className="text-sm font-bold">12 min read</p>
-                </div>
-              </div>
+        <section className="px-6 md:px-10 lg:px-14 pb-32 max-w-7xl mx-auto border-t border-ink/10 pt-16 sm:pt-24">
+          <div className="grid lg:grid-cols-12 gap-16 items-start">
+            <div className="lg:col-span-8">
+              <Reveal>
+                <div 
+                  className="prose prose-lg prose-ink max-w-none prose-headings:font-sans prose-headings:font-bold prose-p:text-ink/80 prose-p:leading-relaxed prose-p:font-light"
+                  dangerouslySetInnerHTML={{ __html: insight.content }}
+                />
+              </Reveal>
             </div>
-          </header>
-
-          <div className="aspect-video w-full rounded-[40px] overflow-hidden mb-16 shadow-2xl shadow-brand-ink/5">
-            <img 
-              src={insight.coverImage || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80'} 
-              alt={insight.title}
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
-            />
+            
+            <aside className="lg:col-span-4 sticky top-32">
+              <Reveal delay={0.2}>
+                <div className="p-8 rounded-[2.5rem] bg-ink text-paper text-left">
+                  <MonoLabel color="terra">Next engagement</MonoLabel>
+                  <h4 className="text-xl font-bold mt-4 mb-6 leading-tight">Ready to ship your own AI system?</h4>
+                  <button className="w-full py-4 bg-terra text-paper rounded-full font-mono text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-terra/20">
+                    Book a fit call →
+                  </button>
+                </div>
+              </Reveal>
+            </aside>
           </div>
-
-          <article className="prose prose-xl prose-brand max-w-none prose-headings:font-black prose-headings:tracking-tighter prose-p:font-medium prose-p:text-brand-ink/70 prose-p:leading-relaxed prose-strong:text-brand-terra">
-            <div dangerouslySetInnerHTML={{ __html: insight.content }} />
-          </article>
-
-          <footer className="mt-24 pt-12 border-t border-brand-ink/5">
-            <div className="bg-brand-ink text-white p-12 rounded-[40px] flex flex-col md:flex-row items-center justify-between gap-8">
-              <div>
-                <h4 className="text-2xl font-bold mb-2">Ready to implement these strategies?</h4>
-                <p className="text-gray-400">Initialize a consultation with our build specialists.</p>
-              </div>
-              <button className="bg-brand-terra text-white px-10 py-5 rounded-full font-black uppercase tracking-widest text-sm hover:brightness-110 transition-all whitespace-nowrap">
-                Initialize Connection
-              </button>
-            </div>
-          </footer>
-        </div>
+        </section>
       </main>
-
       <Footer />
     </div>
   );

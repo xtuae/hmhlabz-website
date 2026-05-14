@@ -1,11 +1,14 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /labz-admin/
+  RewriteBase /
+  
+  # Ignore the /labz-admin/ directory
+  RewriteRule ^labz-admin/ - [L,NC]
   
   # Handle React Router
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME} !-l
-  RewriteRule . /labz-admin/index.html [L]
+  RewriteRule . /index.html [L]
 </IfModule>

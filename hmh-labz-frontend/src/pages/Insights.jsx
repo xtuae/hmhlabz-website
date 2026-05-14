@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer';
+import Reveal from '../components/ui/Reveal';
+import MonoLabel from '../components/ui/MonoLabel';
 import api from '../api';
-import { motion } from 'framer-motion';
-import { Calendar, User, ArrowRight, Loader2 } from 'lucide-react';
 
 const Insights = () => {
+  const [filter, setFilter] = useState('all');
   const [insights, setInsights] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -22,68 +25,95 @@ const Insights = () => {
     fetchInsights();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-12 h-12 text-primary animate-spin" />
-      </div>
-    );
-  }
+  const filtered = insights.filter(a => filter === 'all' || a.category === filter);
 
   return (
-    <div className="pt-32 pb-24 min-h-screen">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="mb-16">
-          <h1 className="text-5xl font-bold mb-4">Latest <span className="gradient-text">Insights</span></h1>
-          <p className="text-slate-400 max-w-2xl text-lg">Exploring the intersection of technology, strategy, and business growth.</p>
-        </div>
+    <div className="bg-paper selection:bg-terra selection:text-paper min-h-screen relative">
+      <Navbar />
+      <main className="pt-20 text-left">
+        <header className="px-6 md:px-10 lg:px-14 pt-[120px] sm:pt-[140px] pb-16 sm:pb-24 max-w-7xl mx-auto">
+          <Reveal>
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <MonoLabel>N° 05 — Insight</MonoLabel>
+              <span className="font-mono text-ink/40 uppercase text-xs tracking-widest">
+                {insights.length} entries · 2024 → 2026
+              </span>
+            </div>
+            <h1 className="mt-10 sm:mt-12 font-sans font-bold text-ink leading-[0.94] max-w-[22ch]" style={{ fontSize: "clamp(56px, 9vw, 144px)" }}>
+              Field notes, <span className="font-serif italic text-terra font-normal">playbooks,</span> and case notes.
+            </h1>
+            <p className="mt-10 max-w-[58ch] text-ink/65 text-[17px] sm:text-[19px] leading-[1.6]">
+              Writing from inside service-business AI engagements. What we see in the wild, what we ship, and what we'd do differently next time.
+            </p>
+            <div className="mt-14 sm:mt-20 flex items-center flex-wrap gap-3 border-y border-ink/12 py-5">
+              <span className="font-mono text-ink/45 mr-3 uppercase text-xs">Filter</span>
+              {['all', 'Field Notes', 'Playbook', 'Case Note'].map(t => (
+                <button 
+                  key={t} 
+                  onClick={() => setFilter(t)} 
+                  className={`px-4 py-2 rounded-full font-mono text-[10px] uppercase tracking-widest border transition-colors ${filter === t ? 'bg-ink text-paper border-ink' : 'border-ink/15 hover:border-ink'}`}
+                >
+                  {t === 'all' ? 'All' : t}
+                </button>
+              ))}
+              <span className="ml-auto font-mono text-ink/40 hidden sm:inline">↓ Newest first</span>
+            </div>
+          </Reveal>
+        </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-          {insights.map((insight, i) => (
-            <motion.article 
-              key={insight.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              className="flex flex-col group cursor-pointer"
-            >
-              <Link to={`/insights/${insight.slug}`}>
-                <div className="relative aspect-[16/10] rounded-3xl overflow-hidden mb-6">
-                  <img 
-                    src={insight.coverImage || 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80'} 
-                    alt={insight.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-
-                <div className="flex items-center gap-4 text-xs text-slate-400 mb-4 font-semibold uppercase tracking-widest">
-                  <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {new Date(insight.createdAt).toLocaleDateString()}</span>
-                  <span className="flex items-center gap-1"><User className="w-3 h-3" /> {insight.author?.name || 'HMH Team'}</span>
-                </div>
-
-                <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors leading-tight">
-                  {insight.title}
-                </h3>
-                
-                <p className="text-slate-400 mb-6 line-clamp-3 leading-relaxed">
-                  {insight.excerpt}
-                </p>
-
-                <div className="mt-auto flex items-center gap-2 text-primary font-bold">
-                  Read Article <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Link>
-            </motion.article>
-          ))}
-        </div>
-        
-        {insights.length === 0 && (
-          <div className="text-center py-20 glass rounded-3xl">
-            <p className="text-slate-400 text-lg">No insights published yet. Check back soon!</p>
-          </div>
-        )}
-      </div>
+        <section className="px-6 md:px-10 lg:px-14 pb-20 sm:pb-28 max-w-7xl mx-auto">
+          {loading ? (
+            <div className="flex justify-center py-20">
+              <span className="font-mono text-ink/40 animate-pulse uppercase tracking-[0.3em]">Loading Insights...</span>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+              {filtered.map((insight, i) => (
+                <Reveal key={insight.id} delay={i * 0.1} className="group block cursor-pointer">
+                  <Link to={`/insights/${insight.slug}`}>
+                    <div className="relative rounded-2xl overflow-hidden border border-ink/10 bg-cream aspect-[4/5] mb-8">
+                      <img 
+                        src={insight.coverImage || 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80'} 
+                        alt={insight.title}
+                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                      />
+                    </div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <MonoLabel color="terra">{insight.category || 'Field Notes'}</MonoLabel>
+                      <span className="w-1 h-1 rounded-full bg-ink/20"></span>
+                      <MonoLabel className="text-ink/45">{new Date(insight.createdAt).toLocaleDateString()}</MonoLabel>
+                    </div>
+                    <h2 className="font-sans font-bold text-ink leading-[1.1] group-hover:text-terra transition-colors text-2xl sm:text-3xl">
+                      {insight.title}
+                    </h2>
+                    <p className="mt-4 text-ink/65 text-lg leading-relaxed line-clamp-2">
+                      {insight.excerpt}
+                    </p>
+                    <div className="flex items-center justify-between pt-6 border-t border-ink/12 mt-8">
+                      <div className="flex items-center gap-3">
+                        <span className="w-8 h-8 rounded-full bg-ink text-paper flex items-center justify-center font-serif italic text-sm">
+                          {insight.author?.name?.charAt(0) || 'H'}
+                        </span>
+                        <div>
+                          <div className="text-xs font-bold text-ink">{insight.author?.name || 'HMH Team'}</div>
+                        </div>
+                      </div>
+                      <span className="font-mono text-[10px] uppercase font-bold text-ink/55 group-hover:translate-x-2 transition-transform">Read article →</span>
+                    </div>
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
+          )}
+          
+          {!loading && filtered.length === 0 && (
+            <div className="text-center py-20 border-2 border-dashed border-ink/5 rounded-[40px]">
+              <p className="text-ink/30 font-mono uppercase tracking-widest italic">No articles found in this category.</p>
+            </div>
+          )}
+        </section>
+      </main>
+      <Footer />
     </div>
   );
 };

@@ -6,12 +6,14 @@ import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import Login from './pages/Login';
 import UserDashboard from './pages/UserDashboard';
+import About from './pages/About';
 
 function App() {
   return (
     <Router basename={import.meta.env.VITE_BASE_PATH || '/'}>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="/insights" element={<Insights />} />
         <Route path="/insights/:slug" element={<InsightDetail />} />
         <Route path="/privacy" element={<Privacy />} />
