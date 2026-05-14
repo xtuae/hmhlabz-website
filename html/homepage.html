@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HMH Labz — Strategy + build, in one team.</title>
+    <meta name="description"
+        content="HMH Labz is a strategy + build studio. We diagnose what your business needs, then we ship it.">
+    <link rel="icon" href="https://www.hmhlabz.com/wp-content/uploads/LOGO-HMHLABZ.png" type="image/png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&display=swap"
+        rel="stylesheet">
+
+    <!-- React, ReactDOM, Babel, Tailwind, and Framer Motion -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/framer-motion@10.16.4/dist/framer-motion.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Geist', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                        serif: ['Fraunces', 'ui-serif', 'Georgia', 'serif'],
+                        mono: ['Geist Mono', 'ui-monospace', 'monospace'],
+                    },
+                    colors: {
+                        paper: '#F4F1EA',
+                        cream: '#EDE6D3',
+                        ink: '#161513',
+                        terra: '#C2410C',
+                        'terra-deep': '#9A330A',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;
+            background: #F4F1EA;
+            color: #161513;
+            font-feature-settings: "ss01", "cv11";
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* paper grain */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 100;
+            background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMjAiIGhlaWdodD0iMjIwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC44NSIgbnVtT2N0YXZlcz0iMiIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjxmZUNvbG9yTWF0cml4IHZhbHVlcz0iMCAwIDAgMCAwLjA4ICAwIDAgMCAwIDAuMDcgIDAgMCAwIDAgMC4wNiAgMCAwIDAgMC4wNCAwIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI24pIi8+PC9zdmc+");
+            background-size: 220px 220px;
+            opacity: 0.04;
+            mix-blend-mode: multiply;
+        }
+
+        @keyframes hmh-marquee {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        .frauncesItalic {
+            font-family: 'Fraunces', serif;
+            font-style: italic;
+        }
+
+        ::selection {
+            background: #C2410C;
+            color: #F4F1EA;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #161513;
+            opacity: 0.2;
+            border-radius: 999px;
+            border: 3px solid #F4F1EA;
+        }
+
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+
+        #root {
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef, createContext, useContext, Fragment, useMemo } = React;
+        const { motion, AnimatePresence } = window.Motion;
+
+        // --- Contexts ---
+        const NavigationCtx = createContext({ page: 'home', setPage: () => { } });
+        const ModalCtx = createContext({ open: () => { }, close: () => { }, isOpen: false });
+
+        // --- Shared Primitives ---
+        function MonoLabel({ children, color = "ink", className = "" }) {
+            const c = color === "terra" ? "text-terra" : color === "paper" ? "text-paper/70" : "text-ink/55";
+            return <span className={`font-mono uppercase tracking-[0.22em] text-[10px] sm:text-[11px] font-bold ${c} ${className}`}>{children}</span>;
+        }
+
+        const Reveal = ({ children, delay = 0, className = "", direction = "up" }) => {
+            const pos = direction === "up" ? { y: 24 } : direction === "down" ? { y: -24 } : direction === "left" ? { x: 24 } : { x: -24 };
+            return (
+                <motion.div
+                    className={className}
+                    initial={{ opacity: 0, ...pos }}
+                    whileInView={{ opacity: 1, x: 0, y: 0 }}
+                    viewport={{ once: true, margin: "-5%" }}
+                    transition={{ duration: 0.8, delay, ease: [0.21, 0.45, 0.32, 0.9] }}
+                >
+                    {children}
+                </motion.div>
+            );
+        };
+
+        // --- Navbar Component ---
+        function Navbar() {
+            const { setPage, page } = useContext(NavigationCtx);
+            const { open } = useContext(ModalCtx);
+            const [scrolled, setScrolled] = useState(false);
+            const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+            useEffect(() => {
+                const onScroll = () => setScrolled(window.scrollY > 24);
+                window.addEventListener("scroll", onScroll, { passive: true });
+                return () => window.removeEventListener("scroll", onScroll);
+            }, []);
+
+            const navigate = (p, anchor) => {
+                setPage(p);
+                setIsMobileMenuOpen(false);
+                window.scrollTo({ top: 0, behavior: 'instant' });
+                if (anchor) {
+                    setTimeout(() => {
+                        const el = document.getElementById(anchor);
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }, 150);
+                }
+            };
+
+            const items = [
+                { label: 'Approach', p: 'home', a: 'approach' },
+                { label: 'Services', p: 'home', a: 'services' },
+                { label: 'Insights', p: 'insights' },
+                { label: 'About', p: 'about' }
+            ];
+
+            return (
+                <>
+                    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-paper/85 backdrop-blur-md border-b border-ink/10" : ""}`}>
+                        <div className="px-6 md:px-10 lg:px-14 h-[68px] sm:h-[76px] flex items-center justify-between max-w-7xl mx-auto">
+                            <button onClick={() => navigate('home')} className="flex-shrink-0">
+                                <img src="https://www.hmhlabz.com/wp-content/uploads/hmh-labz-black.png" alt="HMH Labz" className="h-5 sm:h-6 w-auto object-contain" />
+                            </button>
+                            <div className="hidden md:flex items-center gap-8 text-[13px] text-ink font-bold uppercase tracking-widest">
+                                {items.map((it) => (
+                                    <button key={it.label} onClick={() => navigate(it.p, it.a)} className="relative group py-2">
+                                        <span className={page === it.label.toLowerCase() ? 'text-terra' : ''}>{it.label}</span>
+                                        <span className={`absolute left-0 bottom-1 h-px bg-terra transition-all duration-300 ${page === it.label.toLowerCase() ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
+                                    </button>
+                                ))}
+                                <button onClick={() => open()} className="ml-4 px-6 py-3 bg-ink text-paper rounded-full hover:bg-terra transition-all hover:scale-105 active:scale-95">Book Fit Call</button>
+                            </div>
+                            <button onClick={() => setIsMobileMenuOpen(true)} className="md:hidden flex flex-col justify-center gap-1.5 w-8 h-8 group">
+                                <span className="w-full h-[2px] bg-ink group-hover:bg-terra transition-colors"></span>
+                                <span className="w-full h-[2px] bg-ink group-hover:bg-terra transition-colors"></span>
+                            </button>
+                        </div>
+                    </nav>
+
+                    <AnimatePresence>
+                        {isMobileMenuOpen && (
+                            <motion.div initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }} transition={{ type: 'spring', damping: 25, stiffness: 200 }} className="fixed inset-0 z-[100] bg-paper flex flex-col p-6">
+                                <div className="flex items-center justify-between mb-20">
+                                    <img src="https://www.hmhlabz.com/wp-content/uploads/hmh-labz-black.png" alt="HMH Labz" className="h-6 object-contain" />
+                                    <button onClick={() => setIsMobileMenuOpen(false)} className="w-10 h-10 border border-ink/10 rounded-full text-2xl flex items-center justify-center">&times;</button>
+                                </div>
+                                <div className="flex flex-col gap-10">
+                                    {['Home', ...items.map(i => i.label)].map(m => (
+                                        <button key={m} onClick={() => {
+                                            const match = items.find(i => i.label === m);
+                                            navigate(match ? match.p : 'home', match ? match.a : 'top');
+                                        }} className="text-left font-sans font-bold text-5xl tracking-tighter text-ink hover:text-terra transition-colors">{m}</button>
+                                    ))}
+                                </div>
+                                <button onClick={() => { setIsMobileMenuOpen(false); open(); }} className="mt-auto w-full py-5 bg-terra text-paper rounded-full font-mono font-bold text-xs uppercase tracking-widest shadow-xl shadow-terra/20">Book a Fit Call →</button>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </>
+            );
+        }
+
+        // --- Core Page Sections (HOMEPAGE) ---
+
+        function Homepage() {
+            const { open } = useContext(ModalCtx);
+            const { setPage } = useContext(NavigationCtx);
+
+            return (
+                <main>
+                    <section id="top" className="relative px-6 md:px-10 lg:px-14 pt-[108px] sm:pt-[124px] pb-10 sm:pb-14">
+                        <div className="mt-4 sm:mt-8 relative">
+                            <h1 className="font-sans font-bold text-ink tracking-[-0.04em] leading-[0.88] text-center break-words" style={{ fontSize: "clamp(60px, 10.5vw, 180px)" }}>
+                                Strategy<span className="text-terra px-1 sm:px-2">+</span>build,<br />
+                                <span className="whitespace-nowrap">in <span className="relative inline-block"><em className="font-serif italic font-normal not-italic text-terra" style={{ fontStyle: "italic" }}>one team.</em><svg aria-hidden="true" viewBox="0 0 360 22" preserveAspectRatio="none" className="absolute left-[2%] right-0 -bottom-[0.05em] w-[96%] h-[0.2em] pointer-events-none"><path d="M 4 14 Q 60 4, 120 11 T 240 10 T 356 8" fill="none" stroke="#C2410C" strokeWidth="3" strokeLinecap="round" opacity="0.85"></path></svg></span></span>
+                            </h1>
+                        </div>
+                        <div className="mt-12 sm:mt-16 max-w-3xl mx-auto text-center">
+                            <div className="w-14 h-[2px] bg-terra mx-auto mb-7 sm:mb-9"></div>
+                            <p className="font-sans text-ink/70 leading-[1.55] font-light" style={{ fontSize: "clamp(17px, 1.6vw, 21px)" }}>We tell you what to do, then we ship it. For service businesses where operations have broken under growth — too much manual work, too many duct-taped tools, too much depending on people remembering things.</p>
+                            <div className="mt-10 sm:mt-12 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
+                                <button type="button" onClick={open} className="bg-terra hover:bg-terra-deep text-paper px-10 sm:px-12 py-5 rounded-full font-mono font-bold text-[11px] uppercase tracking-[0.28em] transition-colors shadow-lg shadow-terra/20">Book a 20-min Fit Call →</button>
+                                <div className="flex items-center gap-3 font-mono uppercase tracking-[0.22em] text-[10px] font-bold text-ink/40 whitespace-nowrap"><span>No Deck</span><span className="w-1 h-1 bg-ink/15 rounded-full"></span><span>No Pitch</span><span className="w-1 h-1 bg-ink/15 rounded-full"></span><span>20 Minutes</span></div>
+                            </div>
+                        </div>
+                        <div className="mt-20 sm:mt-28 grid grid-cols-12 gap-4 sm:gap-5 items-stretch max-w-7xl mx-auto">
+                            <div className="relative flex flex-col rounded-2xl overflow-hidden bg-ink text-paper border-2 border-ink col-span-12 sm:col-span-6 lg:col-span-4 text-left">
+                                <div className="flex items-center justify-between px-5 sm:px-6 py-3 border-b border-paper/20"><span className="font-mono uppercase tracking-[0.16em] text-[11px] sm:text-[12px] text-paper/70 ">Ops time reclaimed</span><span className="font-mono text-[10px] uppercase tracking-[0.16em] text-paper/45">FIG. 01</span></div>
+                                <div className="flex-1 px-5 sm:px-6 py-6 sm:py-7 flex flex-col"><div className="flex-1 flex items-center justify-center"><div className="font-sans font-bold leading-none tracking-[-0.04em] text-paper" style={{ fontSize: "clamp(72px, 10vw, 132px)" }}>84<span className="text-terra">%</span></div></div><p className="mt-4 font-sans text-[13px] sm:text-[14px] leading-[1.5] text-paper/65 max-w-[24ch]">average reduction in manual workflow time after a sprint.</p></div>
+                                <div className="px-5 sm:px-6 py-3 border-t border-paper/20 font-mono text-[10px] uppercase tracking-[0.16em] text-paper/45 flex items-center justify-between gap-3"><span>Post-sprint</span><span className="text-terra">↓ 84%</span></div>
+                            </div>
+                            <div className="relative flex flex-col rounded-2xl overflow-hidden bg-cream text-ink border-2 border-ink col-span-12 sm:col-span-6 lg:col-span-4 text-left">
+                                <div className="flex items-center justify-between px-5 sm:px-6 py-3 border-b border-ink/20"><span className="font-mono uppercase tracking-[0.16em] text-[11px] sm:text-[12px] text-ink/55 ">Unlocked '24 — '26</span><span className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink/45">FIG. 02</span></div>
+                                <div className="flex-1 px-5 sm:px-6 py-6 sm:py-7 flex flex-col"><div className="flex-1 flex items-center justify-center"><div className="flex items-baseline gap-1.5"><span className="font-serif italic text-terra leading-none" style={{ fontSize: "clamp(34px, 4vw, 56px)" }}>$</span><span className="font-sans font-bold text-ink leading-none tracking-[-0.04em]" style={{ fontSize: "clamp(72px, 10vw, 132px)" }}>2.4</span><span className="font-serif italic text-ink leading-none ml-0.5" style={{ fontSize: "clamp(44px, 5vw, 72px)" }}>M</span></div></div><p className="mt-4 font-sans text-[13px] sm:text-[14px] leading-[1.5] text-ink/70 max-w-[26ch]">unlocked across client engagements, cumulative.</p></div>
+                                <div className="px-5 sm:px-6 py-3 border-t border-ink/20 font-mono text-[10px] uppercase tracking-[0.16em] text-ink/45 flex items-center justify-between gap-3"><span>Cumulative</span><span className="text-terra">Q2 '26 →</span></div>
+                            </div>
+                            <div className="relative flex flex-col rounded-2xl overflow-hidden bg-paper text-ink border-2 border-ink col-span-12 lg:col-span-4 text-left">
+                                <div className="flex items-center justify-between px-5 sm:px-6 py-3 border-b border-ink/20"><span className="font-mono uppercase tracking-[0.16em] text-[11px] sm:text-[12px] text-ink/55 ">What we ship in</span><span className="font-mono text-[10px] uppercase tracking-[0.16em] text-ink/45">FIG. 03</span></div>
+                                <div className="flex-1 px-5 sm:px-6 py-6 sm:py-7 flex flex-col"><div className="flex-1 flex items-center justify-center"><div className="flex items-baseline gap-2 flex-wrap justify-center"><span className="font-sans font-bold text-ink leading-none tracking-[-0.04em]" style={{ fontSize: "clamp(72px, 10vw, 132px)" }}>2</span><span className="font-serif italic text-terra leading-none" style={{ fontSize: "clamp(44px, 6vw, 80px)" }}>—</span><span className="font-sans font-bold text-ink leading-none tracking-[-0.04em]" style={{ fontSize: "clamp(72px, 10vw, 132px)" }}>12</span><span className="font-serif italic text-ink/70 leading-none ml-1" style={{ fontSize: "clamp(22px, 2.4vw, 28px)" }}>weeks</span></div></div><p className="mt-4 font-sans text-[13px] sm:text-[14px] leading-[1.5] text-ink/70 max-w-[26ch]">from first diagnostic to shipped systems.</p></div>
+                                <div className="px-5 sm:px-6 py-3 border-t border-ink/20 font-mono text-[10px] uppercase tracking-[0.16em] text-ink/45 flex items-center justify-between gap-3"><span>Wk 02</span><span className="text-terra">Wk 12 ✓</span></div>
+                            </div>
+                        </div>
+                        <div className="mt-12 sm:mt-16 max-w-7xl mx-auto text-left">
+                            <div className="flex items-center justify-between mb-3"><span className="font-mono uppercase tracking-[0.16em] text-[11px] sm:text-[12px] text-ink/55 "><span className="text-ink/40">B —</span> Currently shipping</span><span className="font-mono uppercase tracking-[0.16em] text-[11px] sm:text-[12px] text-ink/55 "><span className="text-ink/40">→</span> Scroll</span></div>
+                            <div className="relative overflow-hidden border-y border-ink/15 py-4 sm:py-5">
+                                <div className="flex" style={{ animation: "hmh-marquee 36s linear infinite" }}>
+                                    <div className="flex items-center gap-10 shrink-0 pr-10">
+                                        {["RAG assistants", "Document automation", "Client portals", "Internal tools", "Workflow orchestration", "AI lead scoring", "Intake triage", "Knowledge bases"].map((it, k) => (
+                                            <span key={k} className="flex items-center gap-10"><span className="font-serif italic text-[18px] sm:text-[20px] text-ink/80 leading-none whitespace-nowrap">{it}</span><span className="inline-block w-1 h-1 rounded-full bg-terra shrink-0"></span></span>
+                                        ))}
+                                    </div>
+                                    <div className="flex items-center gap-10 shrink-0 pr-10">
+                                        {["RAG assistants", "Document automation", "Client portals", "Internal tools", "Workflow orchestration", "AI lead scoring", "Intake triage", "Knowledge bases"].map((it, k) => (
+                                            <span key={k + 'd'} className="flex items-center gap-10"><span className="font-serif italic text-[18px] sm:text-[20px] text-ink/80 leading-none whitespace-nowrap">{it}</span><span className="inline-block w-1 h-1 rounded-full bg-terra shrink-0"></span></span>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="pointer-events-none absolute inset-y-0 left-0 w-12 sm:w-24 bg-gradient-to-r from-paper to-transparent"></div>
+                                <div className="pointer-events-none absolute inset-y-0 right-0 w-12 sm:w-24 bg-gradient-to-l from-paper to-transparent"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="approach" className="bg-cream border-y border-ink/10 px-6 md:px-10 lg:px-14 py-24 sm:py-32">
+                        <Reveal className="max-w-3xl mb-20 sm:mb-24 mx-auto text-left">
+                            <span className="font-mono uppercase tracking-[0.22em] text-[11px] font-semibold text-ink/55">01 — Approach</span>
+                            <h2 className="mt-8 font-sans font-bold text-ink leading-[1.04] tracking-[-0.028em]" style={{ fontSize: "clamp(36px, 5.4vw, 64px)" }}>Most studios <em className="font-serif italic font-normal not-italic " style={{ fontStyle: "italic" }}>talk.</em><br />Most consultants <em className="font-serif italic font-normal not-italic text-terra" style={{ fontStyle: "italic" }}>vanish.</em><br />We do both — <em className="font-serif italic font-normal not-italic " style={{ fontStyle: "italic" }}>properly.</em></h2>
+                            <p className="mt-8 max-w-[56ch] font-sans text-[16px] sm:text-[18px] leading-[1.6] text-ink/65">One linear process. The same team carries every step — so nothing gets lost between strategy and shipping.</p>
+                        </Reveal>
+                        <div className="grid md:grid-cols-3 gap-5 sm:gap-6 max-w-7xl mx-auto">
+                            {[
+                                { n: "01", tag: "Diagnose", t: "Find what's actually broken.", b: "We map your workflows, interview your team, and isolate the bottlenecks worth fixing first. Not a generic audit — a real one.", out: "Workflow map" },
+                                { n: "02", tag: "Recommend", t: "Score the highest-ROI fix.", b: "Every opportunity gets a clear number — impact, feasibility, cost, time. You walk away knowing what to do first, and why.", out: "Scored roadmap" },
+                                { n: "03", tag: "Ship", t: "Build the system that solves it.", b: "Custom platforms, client portals, AI workflows, document automation. The same team that diagnosed it ships it. No handoffs.", out: "Live system", dark: true }
+                            ].map((s, i) => (
+                                <Reveal key={s.n} delay={i * 0.1} className={`bg-${s.dark ? 'ink' : 'paper'} text-${s.dark ? 'paper' : 'ink'} rounded-2xl overflow-hidden border border-ink/12 flex flex-col transition-transform hover:scale-[1.02] text-left`}>
+                                    <div className={`flex items-center justify-between px-7 py-3 border-b border-${s.dark ? 'paper/15' : 'ink/12'}`}><span className="font-mono uppercase tracking-[0.16em] text-[11px] sm:text-[12px] text-ink/55 ">{s.tag}</span><span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink/40">FIG. {s.n}</span></div>
+                                    <div className="px-7 py-9 flex-1 flex flex-col"><div className="flex items-baseline gap-3"><span className="font-serif italic text-terra" style={{ fontSize: "clamp(48px, 4.6vw, 64px)", lineHeight: 1 }}>{s.n}</span></div><h3 className="mt-6 font-sans font-semibold text-[22px] sm:text-[24px] tracking-[-0.01em] leading-[1.2]">{s.t}</h3><p className={`mt-4 text-[14px] sm:text-[15px] leading-[1.6] ${s.dark ? 'text-paper/65' : 'text-ink/65'}`}>{s.b}</p></div>
+                                    <div className={`px-7 py-3 border-t border-${s.dark ? 'paper/15' : 'ink/12'} flex items-center justify-between`}><span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink/40">Output</span><span className="font-serif italic text-[15px] text-terra">{s.out}</span></div>
+                                </Reveal>
+                            ))}
+                        </div>
+                    </section>
+
+                    <section className="bg-paper px-6 md:px-10 lg:px-14 py-28 sm:py-40 text-center">
+                        <Reveal className="max-w-5xl mx-auto text-center">
+                            <div className="flex justify-center"><span className="font-mono uppercase tracking-[0.22em] text-[11px] font-semibold text-ink/55">02 — The cost of waiting</span></div>
+                            <h2 className="mt-10 font-sans font-bold text-ink leading-[1.06] tracking-[-0.028em] max-w-4xl mx-auto" style={{ fontSize: 'clamp(34px, 5vw, 60px)' }}>Every hour you spend doing it <em className="font-serif italic font-normal not-italic " style={{ fontStyle: "italic" }}>manually</em> is an hour your business <em className="font-serif italic font-normal not-italic text-terra" style={{ fontStyle: "italic" }}>doesn't grow.</em></h2>
+                            <div className="mt-16 flex items-center justify-center gap-3"><span className="relative inline-flex h-2.5 w-2.5"><span className="absolute inset-0 rounded-full bg-terra/40 animate-ping"></span><span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-terra"></span></span><span className="font-mono uppercase tracking-[0.16em] text-[11px] sm:text-[12px] text-ink/55 ">Hours lost to manual work · Live</span></div>
+                            <div className="mt-6 font-sans font-bold text-ink tabular-nums tracking-[-0.04em] leading-none" style={{ fontSize: 'clamp(72px, 12vw, 192px)' }}>2,848,673</div>
+                            <p className="mt-5 font-serif italic text-ink/45" style={{ fontSize: 'clamp(18px, 1.8vw, 24px)' }}>and counting, since you opened this page.</p>
+                        </Reveal>
+                        <Reveal delay={0.12} className="mt-24 max-w-4xl mx-auto text-left">
+                            <div className="relative bg-cream rounded-2xl overflow-hidden border border-ink/10"><span className="absolute left-0 top-0 bottom-0 w-2 bg-terra"></span><div className="px-10 sm:px-16 py-14 sm:py-20 text-left"><span className="block font-serif italic text-terra mb-6" style={{ fontSize: 'clamp(48px, 5vw, 80px)', lineHeight: 0.6 }}>“</span><p className="font-serif italic text-ink leading-[1.18] tracking-[-0.01em]" style={{ fontSize: 'clamp(26px, 3.2vw, 40px)' }}>It's all in someone's head is the most expensive sentence in your business.</p></div></div>
+                        </Reveal>
+                    </section>
+
+                    <section id="services" className="bg-ink text-paper px-6 md:px-10 lg:px-14 py-28 sm:py-36">
+                        <Reveal className="mb-20 sm:mb-24 max-w-4xl mx-auto text-left">
+                            <span className="font-mono uppercase tracking-[0.22em] text-[11px] font-semibold text-terra">03 — How we work</span>
+                            <h2 className="mt-8 font-sans font-bold leading-[1.04] tracking-[-0.028em]" style={{ fontSize: "clamp(36px, 5.4vw, 68px)" }}>Three ways we work<br /><em className="font-serif italic font-normal not-italic text-terra" style={{ fontStyle: 'italic' }}>with you.</em></h2>
+                            <p className="mt-6 text-paper/55 text-[16px] sm:text-[18px] font-sans leading-[1.6] max-w-[52ch]">Each engagement stands alone. Most clients start with the Audit.</p>
+                        </Reveal>
+                        <div className="grid lg:grid-cols-3 gap-6 items-stretch max-w-7xl mx-auto text-left">
+                            {[
+                                { n: "01", tag: "Tier 01 · Wedge", title: "AI Opportunity Audit", sub: "Clarity, before commitment.", walk: "A prioritised list of what to fix, and what to ignore.", scale: "● ○ ○" },
+                                { n: "02", tag: "Tier 02 · Build", title: "Implementation Sprint", sub: "One system. Shipped.", walk: "One high-impact system live in production, owned by you.", scale: "● ● ○", featured: true },
+                                { n: "03", tag: "Tier 03 · Flagship", title: "Digital Transformation", sub: "Operations, end to end.", walk: "A system designed around your operations, not a template.", scale: "● ● ●" }
+                            ].map((t, i) => (
+                                <Reveal key={t.n} delay={i * 0.1} className={`relative rounded-2xl overflow-hidden flex flex-col ${t.featured ? 'bg-paper/[0.07] border-2 border-terra lg:scale-[1.03] lg:-translate-y-2 shadow-2xl z-10' : 'bg-paper/[0.04] border border-paper/15'}`}>
+                                    {t.featured && <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-terra text-paper px-5 py-1.5 text-[10px] font-mono font-bold uppercase tracking-[0.22em] rounded-b-full whitespace-nowrap">Most common entry</div>}
+                                    <div className="flex items-center justify-between px-7 pt-7 pb-3 border-b border-paper/10 "><span className="font-mono uppercase tracking-[0.16em] text-[11px] sm:text-[12px] text-terra ">{t.tag}</span><span className="font-serif italic text-paper/15" style={{ fontSize: '44px', lineHeight: 1 }}>{t.n}</span></div>
+                                    <div className="px-7 py-8 flex-1 flex flex-col">
+                                        <h3 className="font-serif text-paper" style={{ fontSize: "clamp(28px, 2.6vw, 34px)", lineHeight: 1.1 }}>{t.title}</h3>
+                                        <p className="mt-2 font-serif italic text-terra text-[18px]">{t.sub}</p>
+                                        <div className="mt-8 grid grid-cols-3 gap-4 py-5 border-y border-paper/10">
+                                            <div><div className="font-mono text-[9px] uppercase tracking-[0.2em] text-paper/40 mb-2">Timeline</div><div className="text-[14px] font-medium text-paper">2-12 wks</div></div>
+                                            <div><div className="font-mono text-[9px] uppercase tracking-[0.2em] text-paper/40 mb-2">Shape</div><div className="text-[14px] font-medium text-paper">Fixed fee</div></div>
+                                            <div><div className="font-mono text-[9px] uppercase tracking-[0.2em] text-paper/40 mb-2">Scale</div><div className="text-[14px] font-medium text-paper">{t.scale}</div></div>
+                                        </div>
+                                        <div className={`mt-8 p-5 rounded-xl border-l-2 border-terra ${t.featured ? 'bg-terra/10' : 'bg-paper/[0.04]'}`}><h4 className={`font-mono text-[10px] uppercase tracking-[0.2em] mb-2 ${t.featured ? 'text-terra' : 'text-paper/40'}`}>You walk away with</h4><p className="text-[14px] text-paper leading-[1.5]">{t.walk}</p></div>
+                                        <div className="flex-1"></div>
+                                        <button onClick={() => open()} className={`mt-8 w-full py-4 rounded-full font-mono text-[10px] uppercase tracking-[0.22em] font-semibold transition-all ${t.featured ? 'bg-terra text-paper hover:bg-terra-deep' : 'border border-paper/25 text-paper hover:bg-paper hover:text-ink'}`}>Discuss this →</button>
+                                    </div>
+                                </Reveal>
+                            ))}
+                        </div>
+                        <p className="mt-20 text-center text-paper/45 text-[15px] font-sans">Not sure which one fits? <button onClick={() => open()} className="text-paper underline underline-offset-8 decoration-terra/50 hover:decoration-terra">That's exactly what the Fit Call is for →</button></p>
+                    </section>
+
+                    <section className="bg-paper px-6 md:px-10 lg:px-14 py-28 sm:py-36 text-left max-w-7xl mx-auto">
+                        <Reveal className="max-w-3xl mb-20 sm:mb-24 mx-auto text-left">
+                            <span className="font-mono uppercase tracking-[0.22em] text-[11px] font-semibold text-ink/55">04 — Why HMH Labz</span>
+                            <h2 className="mt-8 font-sans font-bold leading-[1.06] tracking-[-0.028em] text-ink" style={{ fontSize: "clamp(36px, 5.2vw, 64px)" }}>Strategy and build<br /><em className="font-serif italic font-normal not-italic text-terra" style={{ fontStyle: 'italic' }}>in the same team.</em><br />No handoffs.</h2>
+                            <p className="mt-8 max-w-[54ch] text-ink/60 text-[16px] sm:text-[18px] leading-[1.6]">Four principles we hold to, even when it's commercially inconvenient.</p>
+                        </Reveal>
+                        <div className="grid md:grid-cols-2 gap-5 sm:gap-6 max-w-7xl mx-auto">
+                            {[
+                                { n: "01", t: "We don't pitch from a template.", b: "Every engagement starts with diagnosis. If we can't articulate the problem clearly, we don't propose a solution.", r: "i." },
+                                { n: "02", t: "Strategy and build live in the same team.", b: "The person who recommends the system is responsible for shipping it. No handoffs to a separate delivery team.", r: "ii." },
+                                { n: "03", t: "We tell you when AI is the wrong answer.", b: "Often the highest-ROI move is a process fix or a hiring change. We'll say so, even when it's not in our interest.", r: "iii." },
+                                { n: "04", t: "Built for the long term.", b: "We document, we hand over, and we leave you with a system your team can actually own — not a black box.", r: "iv." }
+                            ].map((p, i) => (
+                                <Reveal key={p.n} delay={i * 0.08} className="bg-cream rounded-2xl overflow-hidden border border-ink/10 transition-transform hover:scale-[1.01]">
+                                    <div className="flex items-center justify-between px-7 py-3 border-b border-ink/10"><span className="font-mono uppercase tracking-[0.16em] text-[11px] sm:text-[12px] text-terra ">Principle 0{p.n}</span><span className="font-serif italic text-terra text-[22px]">{p.r}</span></div>
+                                    <div className="px-7 py-9"><h4 className="font-sans font-semibold text-ink text-[22px] sm:text-[24px] tracking-[-0.01em] leading-[1.25]">{p.t}</h4><p className="mt-4 text-ink/65 text-[14px] sm:text-[15px] leading-[1.6]">{p.b}</p></div>
+                                </Reveal>
+                            ))}
+                        </div>
+                    </section>
+
+                    <section id="book" className="bg-cream border-y border-ink/10 px-6 md:px-10 lg:px-14 py-32 sm:py-40">
+                        <div className="max-w-4xl mx-auto text-center">
+                            <h2 className="font-sans font-bold leading-[1.04] tracking-[-0.03em] text-ink" style={{ fontSize: "clamp(42px, 6.8vw, 96px)" }}>Not sure if your business is<br /><em className="font-serif italic font-normal not-italic text-terra" style={{ fontStyle: 'italic' }}>ready?</em></h2>
+                            <p className="mt-10 max-w-[52ch] mx-auto text-ink/65 text-[17px] sm:text-[19px] leading-[1.6]">That's exactly what the Fit Call is for. 20 minutes. No deck. No pitch. Just a clear answer about whether AI or digital systems would actually move the needle for a business like yours.</p>
+                            <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-8">
+                                <button onClick={() => open()} className="bg-terra hover:bg-terra-deep text-paper px-12 py-5 rounded-full font-mono font-bold text-[11px] uppercase tracking-[0.3em] transition-colors shadow-lg">Book a 20-min Fit Call →</button>
+                                <div className="flex flex-col items-start gap-1"><span className="font-mono text-[11px] uppercase tracking-[0.22em] font-semibold text-ink/45">No sales pitch.</span><span className="font-mono text-[11px] uppercase tracking-[0.22em] font-semibold text-ink/45">Just reality.</span></div>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            );
+        }
+
+        // --- Insights Navigation & Pages ---
+
+        function InsightsPage() {
+            const [filter, setFilter] = useState('all');
+            const { setPage } = useContext(NavigationCtx);
+            const articles = [
+                { tag: "Field Notes", date: "Mar · 2026", read: "8 min", title: "Why most legal-tech AI pilots stall before month three.", desc: "Three patterns we keep seeing — overscoped pilots, no clear owner on the firm side, and unclear \"done.\"", author: "Naveen Hari", role: "Partner", initial: "N", featured: true },
+                { tag: "Playbook", date: "Feb · 2026", read: "11 min", title: "Mapping a recruitment workflow before automating it.", desc: "The cost of automating the wrong step is higher than not automating at all.", type: "browser" },
+                { tag: "Case Note", date: "Jan · 2026", read: "7 min", title: "What \"documented hand-off\" actually means in practice.", desc: "A six-month-old hand-off should still let a new ops hire pick up the system.", type: "docs" }
+            ];
+            const filtered = articles.filter(a => filter === 'all' || a.tag === filter);
+
+            return (
+                <main className="pt-20 text-left">
+                    <header className="px-6 md:px-10 lg:px-14 pt-[120px] sm:pt-[140px] pb-16 sm:pb-24 max-w-7xl mx-auto">
+                        <Reveal>
+                            <div className="flex items-center justify-between flex-wrap gap-4"><MonoLabel>N° 05 — Insight</MonoLabel><span className="font-mono text-ink/40 uppercase text-xs tracking-widest">12 entries · 2024 → 2026</span></div>
+                            <h1 className="mt-10 sm:mt-12 font-sans font-bold text-ink leading-[0.94] max-w-[22ch]" style={{ fontSize: "clamp(56px, 9vw, 144px)" }}>Field notes, <span className="frauncesItalic text-terra">playbooks,</span> and case notes.</h1>
+                            <p className="mt-10 max-w-[58ch] text-ink/65 text-[17px] sm:text-[19px] leading-[1.6]">Writing from inside service-business AI engagements. What we see in the wild, what we ship, and what we'd do differently next time.</p>
+                            <div className="mt-14 sm:mt-20 flex items-center flex-wrap gap-3 border-y border-ink/12 py-5">
+                                <span className="font-mono text-ink/45 mr-3 uppercase text-xs">Filter</span>
+                                {['all', 'Field Notes', 'Playbook', 'Case Note'].map(t => (
+                                    <button key={t} onClick={() => setFilter(t)} className={`px-4 py-2 rounded-full font-mono text-[10px] uppercase tracking-widest border transition-colors ${filter === t ? 'bg-ink text-paper border-ink' : 'border-ink/15 hover:border-ink'}`}>{t === 'all' ? 'All' : t}</button>
+                                ))}
+                                <span className="ml-auto mono text-ink/40 hidden sm:inline">↓ Newest first</span>
+                            </div>
+                        </Reveal>
+                    </header>
+                    <section className="px-6 md:px-10 lg:px-14 pb-20 sm:pb-28 max-w-7xl mx-auto">
+                        {articles.filter(a => a.featured).map(f => (
+                            <Reveal key={f.title} className="group block cursor-pointer" onClick={() => { setPage('article'); window.scrollTo(0, 0); }}>
+                                <div className="grid md:grid-cols-12 gap-8 md:gap-12 items-stretch">
+                                    <div className="md:col-span-7 relative rounded-2xl overflow-hidden border border-ink/10 bg-cream aspect-[5/4] md:aspect-[16/10]"><svg viewBox="0 0 400 300" className="absolute inset-0 w-full h-full"><rect width="400" height="300" fill="#EDE6D3" /><g transform="translate(60 70) rotate(-4)"><rect width="160" height="200" fill="#F4F1EA" stroke="#161513" strokeWidth="0.5" /></g><g transform="translate(180 60) rotate(5)"><rect width="160" height="210" fill="#EDE6D3" stroke="#161513" strokeWidth="0.5" /><rect x="20" y="22" width="120" height="3" fill="#C2410C" /></g><g transform="translate(280 28)"><rect width="92" height="22" fill="#161513" /><text x="46" y="14" fontFamily="monospace" fontSize="8" fill="#F4F1EA" letterSpacing="2" textAnchor="middle">FEATURED</text></g></svg></div>
+                                    <div className="md:col-span-5 flex flex-col justify-between">
+                                        <div><div className="flex items-center gap-3"><MonoLabel color="terra">{f.tag}</MonoLabel><span className="w-1 h-1 rounded-full bg-ink/20"></span><MonoLabel className="text-ink/45">{f.date}</MonoLabel></div><h2 className="mt-8 font-sans font-bold text-ink leading-[1.02] group-hover:text-terra transition-colors" style={{ fontSize: "clamp(34px, 4.4vw, 56px)" }}>{f.title.split('stall')[0]}<span className="frauncesItalic text-terra">stall</span>{f.title.split('stall')[1]}</h2><p className="mt-6 text-ink/65 text-lg leading-relaxed">{f.desc}</p></div>
+                                        <div className="flex items-center justify-between pt-6 border-t border-ink/12 mt-10"><div className="flex items-center gap-3"><span className="w-10 h-10 rounded-full bg-ink text-paper flex items-center justify-center font-serif italic text-lg">{f.initial}</span><div><div className="text-sm font-bold text-ink">{f.author}</div><div className="font-mono text-[10px] uppercase text-ink/45">{f.role}</div></div></div><span className="font-mono text-[10px] uppercase font-bold text-ink/55 group-hover:translate-x-2 transition-transform">Read article →</span></div>
+                                    </div>
+                                </div>
+                            </Reveal>
+                        ))}
+                    </section>
+                </main>
+            );
+        }
+
+        function InsightDetailPage() {
+            const { setPage } = useContext(NavigationCtx);
+            const { open } = useContext(ModalCtx);
+            return (
+                <main className="pt-20 text-left">
+                    <header className="px-6 md:px-10 lg:px-14 pt-16 sm:pt-24 pb-20 sm:pb-32 max-w-7xl mx-auto">
+                        <Reveal><button onClick={() => setPage('insights')} className="mono text-ink/40 hover:text-terra transition-colors text-xs uppercase tracking-widest mb-10 block">← Back to insights</button><MonoLabel color="terra">Field Notes</MonoLabel><h1 className="mt-10 font-sans font-bold text-ink tracking-tight leading-[0.94] max-w-[20ch]" style={{ fontSize: "clamp(42px, 7vw, 92px)" }}>Why most legal-tech AI pilots <span className="frauncesItalic text-terra">stall</span> before month three.</h1><p className="mt-12 max-w-[44ch] text-ink/65 text-xl sm:text-2xl leading-relaxed font-light">Three patterns we keep seeing — overscoped pilots, no clear owner on the firm side, and unclear "done."</p></Reveal>
+                    </header>
+                    <section className="px-6 md:px-10 lg:px-14 pb-32 max-w-7xl mx-auto border-t border-ink/10 pt-16 sm:pt-24">
+                        <div className="grid lg:grid-cols-12 gap-16 items-start"><div className="lg:col-span-8 space-y-8 text-lg sm:text-xl text-ink/80 leading-relaxed font-light"><p className="font-serif italic text-2xl text-ink leading-snug">AI in the legal world has moved past the "can it do this?" phase. Now, it's firmly in the "how do we actually roll this out?" phase. And most firms are failing.</p><p>LLMs are remarkably good at summarizing discovery documents. The failure happens in the wetware — the people and processes.</p><div className="bg-cream rounded-3xl p-8 sm:p-12 border border-ink/5 my-12"><MonoLabel color="terra" className="block mb-4">Field Insight</MonoLabel><p className="text-ink font-serif italic text-2xl">"The narrower the aperture, the sharper the ROI."</p></div><p>A real pilot is "extracting the expiration dates from 500 agreements in 10 days." Not "solving discovery."</p></div><aside className="lg:col-span-4 sticky top-32"><div className="p-8 rounded-[2.5rem] bg-ink text-paper text-left"><MonoLabel color="terra">Next engagement</MonoLabel><h4 className="text-xl font-bold mt-4 mb-6 leading-tight">Ready to ship your own AI system?</h4><button onClick={() => open()} className="w-full py-4 bg-terra text-paper rounded-full font-mono text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-terra/20">Book a fit call →</button></div></aside></div>
+                    </section>
+                </main>
+            );
+        }
+
+        function AboutPage() {
+            return (
+                <main className="pt-20 text-left">
+                    <header className="px-6 md:px-10 lg:px-14 pt-16 sm:pt-24 pb-20 sm:pb-32 max-w-7xl mx-auto">
+                        <div className="grid lg:grid-cols-12 gap-16 items-center"><div className="lg:col-span-7"><Reveal><MonoLabel>N° 01 — Mission</MonoLabel><h1 className="mt-10 sm:mt-12 font-sans font-bold text-ink tracking-tight leading-[0.94]" style={{ fontSize: "clamp(42px, 7vw, 100px)" }}>Strategy + build, <span className="frauncesItalic text-terra">in one team.</span></h1><p className="mt-10 max-w-[48ch] text-ink/65 text-xl sm:text-2xl leading-relaxed">We founded HMH Labz to kill the traditional agency hand-off. The architects who diagnose your problems are the engineers who build the solutions.</p></Reveal></div><div className="lg:col-span-5 relative"><Reveal delay={0.2} direction="left"><div className="aspect-[4/5] rounded-[3rem] bg-cream border border-ink/10 overflow-hidden relative"><svg viewBox="0 0 400 500" className="absolute inset-0 w-full h-full"><rect width="400" height="500" fill="#EDE6D3" /><g transform="translate(100 150)"><circle cx="100" cy="80" r="60" fill="#161513" opacity="0.1" /><path d="M40 250 Q100 200 160 250 L160 350 L40 350 Z" fill="#161513" opacity="0.1" /></g><text x="200" y="460" fontFamily="Fraunces" fontStyle="italic" fontSize="14" fill="#C2410C" textAnchor="middle">EST. 2020</text></svg></div></Reveal></div></div>
+                    </header>
+                    <section className="bg-ink text-paper py-32 px-6"><div className="max-w-7xl mx-auto"><div className="grid md:grid-cols-12 gap-12 sm:gap-20 items-start"><div className="md:col-span-5"><Reveal><MonoLabel color="terra">The Philosophy</MonoLabel><h2 className="mt-8 text-4xl sm:text-6xl font-black leading-tight tracking-tight">Scale shouldn't mean <Italic color="terra">bloat.</Italic></h2></Reveal></div><div className="md:col-span-7"><Reveal delay={0.2}><div className="space-y-10 text-paper/60 text-lg sm:text-xl leading-relaxed font-light"><p>At HMH Labz, we hire only senior technical leads. When you discuss your architecture with us, you're talking to the person who will be writing the PRs. This model reclaimed 84% of ops time for our clients last year.</p></div></Reveal></div></div></div></section>
+                </main>
+            );
+        }
+
+        // --- Shell ---
+
+        function Footer() {
+            const { setPage } = useContext(NavigationCtx);
+            const { open } = useContext(ModalCtx);
+            return (
+                <footer className="bg-ink text-paper/65 px-6 py-28 relative z-10 text-left">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="grid md:grid-cols-12 gap-12 sm:gap-16 pb-20 border-b border-paper/10">
+                            <div className="md:col-span-6"><button onClick={() => { setPage('home'); window.scrollTo(0, 0); }} className="block mb-8"><img src="https://www.hmhlabz.com/wp-content/uploads/hmh-icon.webp" alt="HMH Labz" className="h-10 w-auto invert brightness-0" /></button><p className="font-serif italic text-paper/40 leading-relaxed max-w-sm text-xl text-left">Strategy + build, in one team. We tell you what to do, then we ship it.</p></div>
+                            <div className="md:col-span-3 text-left"><h5 className="font-mono uppercase text-xs font-bold text-terra mb-8">Approach</h5><ul className="space-y-4 text-sm text-paper/85"><li><button onClick={() => { setPage('home'); setTimeout(() => document.getElementById('approach')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>Diagnose</button></li><li><button onClick={() => { setPage('home'); setTimeout(() => document.getElementById('approach')?.scrollIntoView({ behavior: 'smooth' }), 150); }}>Recommend</button></li></ul></div>
+                            <div className="md:col-span-3 text-left"><h5 className="font-mono uppercase text-xs font-bold text-terra mb-8">Contact</h5><ul className="space-y-4 text-sm text-paper/85"><li><a href="mailto:hello@hmhlabz.com">hello@hmhlabz.com</a></li><li><button onClick={() => open()}>Book Fit Call</button></li></ul></div>
+                        </div>
+                        <div className="pt-10 flex flex-col md:flex-row justify-between items-center gap-6"><p className="font-mono text-[10px] uppercase text-paper/40">© 2026 HMH LABZ</p><span className="font-mono text-[10px] uppercase text-paper/40">Dubai · Chennai</span></div>
+                    </div>
+                </footer>
+            );
+        }
+
+        function FitCallModal() {
+            const { isOpen, close } = useContext(ModalCtx);
+            const [sent, setSent] = useState(false);
+            if (!isOpen) return null;
+            return (
+                <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 text-left">
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={close} className="absolute inset-0 bg-ink/95 backdrop-blur-xl" />
+                    <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="relative w-full max-w-lg bg-paper rounded-[2.5rem] p-8 sm:p-14 shadow-2xl overflow-hidden">
+                        <button onClick={close} className="absolute top-6 right-6 text-2xl text-ink/30 hover:text-ink transition-colors">&times;</button>
+                        {!sent ? (
+                            <Fragment>
+                                <MonoLabel color="terra">Fit Call</MonoLabel>
+                                <h3 className="text-3xl font-bold mt-4 mb-10 text-ink leading-tight">Schedule your session</h3>
+                                <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); setSent(true); }}>
+                                    <div className="grid sm:grid-cols-2 gap-4"><input required placeholder="Name" className="w-full bg-ink/5 border border-ink/10 p-4 rounded-xl outline-none focus:border-terra text-ink" /><input required type="email" placeholder="Email" className="w-full bg-ink/5 border border-ink/10 p-4 rounded-xl focus:border-terra text-ink" /></div>
+                                    <div className="grid sm:grid-cols-2 gap-4"><input required placeholder="Business Name" className="w-full bg-ink/5 border border-ink/10 p-4 rounded-xl focus:border-terra text-ink" /><input required placeholder="Phone No" type="tel" className="w-full bg-ink/5 border border-ink/10 p-4 rounded-xl focus:border-terra text-ink" /></div>
+                                    <div className="grid sm:grid-cols-2 gap-4">
+                                        <select required defaultValue="" className="w-full bg-ink/5 border border-ink/10 p-4 rounded-xl focus:border-terra text-ink cursor-pointer"><option value="" disabled>No. of Employees</option><option value="1-10">1-10</option><option value="11-50">11-50</option><option value="51-200">51-200</option></select>
+                                        <select required defaultValue="" className="w-full bg-ink/5 border border-ink/10 p-4 rounded-xl focus:border-terra text-ink cursor-pointer"><option value="" disabled>Tier looking for</option><option value="Tier 01">Tier 01 · Wedge</option><option value="Tier 02">Tier 02 · Build</option><option value="Tier 03">Tier 03 · Flagship</option></select>
+                                    </div>
+                                    <textarea placeholder="Anything else we should know?" className="w-full bg-ink/5 border border-ink/10 p-4 rounded-xl focus:border-terra h-24 resize-none text-ink" />
+                                    <button type="submit" className="w-full py-5 bg-terra text-paper rounded-full font-mono font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-terra/20 hover:bg-terra-deep transition-all">Request Fit Call →</button>
+                                </form>
+                            </Fragment>
+                        ) : (<div className="text-center py-10"><div className="w-20 h-20 rounded-full bg-terra/10 border-2 border-terra flex items-center justify-center mx-auto mb-8 text-terra text-3xl">✓</div><h3 className="text-3xl font-black mb-4 text-ink">Request Sent</h3><p className="text-gray-500 text-lg">We'll reach out within 24 hours.</p></div>)}
+                    </motion.div>
+                </div>
+            );
+        }
+
+        function App() {
+            const [page, setPage] = useState('home');
+            const [isOpen, setIsOpen] = useState(false);
+            useEffect(() => { window.__openFitCall = () => setIsOpen(true); return () => delete window.__openFitCall; }, []);
+
+            const renderContent = () => {
+                switch (page) {
+                    case 'insights': return <InsightsPage />;
+                    case 'article': return <InsightDetailPage />;
+                    case 'about': return <AboutPage />;
+                    default: return <Homepage />;
+                }
+            };
+
+            return (
+                <NavigationCtx.Provider value={{ page, setPage }}>
+                    <ModalCtx.Provider value={{ isOpen, open: () => setIsOpen(true), close: () => setIsOpen(false) }}>
+                        <div className="relative">
+                            <Navbar />
+                            <AnimatePresence mode="wait">
+                                <motion.div key={page} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+                                    {renderContent()}
+                                </motion.div>
+                            </AnimatePresence>
+                            <Footer />
+                            <AnimatePresence>{isOpen && <FitCallModal />}</AnimatePresence>
+                        </div>
+                    </ModalCtx.Provider>
+                </NavigationCtx.Provider>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
