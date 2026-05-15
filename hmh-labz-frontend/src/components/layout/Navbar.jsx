@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useModal } from '../../App';
 
 const Navbar = () => {
+  const { openFitCall } = useModal();
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
@@ -42,7 +44,10 @@ const Navbar = () => {
                 <span className={`absolute left-0 bottom-1 h-px bg-terra transition-all duration-300 ${isActive(it.path) ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
               </Link>
             ))}
-            <button className="ml-4 px-6 py-3 bg-ink text-paper rounded-full hover:bg-terra transition-all hover:scale-105 active:scale-95">
+            <button 
+              onClick={openFitCall}
+              className="ml-4 px-6 py-3 bg-ink text-paper rounded-full hover:bg-terra transition-all hover:scale-105 active:scale-95"
+            >
               Book Fit Call
             </button>
           </div>
@@ -79,7 +84,10 @@ const Navbar = () => {
                 </Link>
               ))}
             </div>
-            <button className="mt-auto w-full py-5 bg-terra text-paper rounded-full font-mono font-bold text-xs uppercase tracking-widest shadow-xl shadow-terra/20">
+            <button 
+              onClick={() => { setIsMobileMenuOpen(false); openFitCall(); }}
+              className="mt-auto w-full py-5 bg-terra text-paper rounded-full font-mono font-bold text-xs uppercase tracking-widest shadow-xl shadow-terra/20"
+            >
               Book a Fit Call →
             </button>
           </motion.div>

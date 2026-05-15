@@ -1,7 +1,9 @@
 import React from 'react';
 import Reveal from '../ui/Reveal';
+import { useModal } from '../../App';
 
 const Hero = () => {
+  const { openFitCall } = useModal();
   return (
     <section id="top" className="relative px-6 md:px-10 lg:px-14 pt-[108px] sm:pt-[124px] pb-10 sm:pb-14">
       <Reveal className="mt-4 sm:mt-8 relative">
@@ -24,7 +26,11 @@ const Hero = () => {
           We tell you what to do, then we ship it. For service businesses where operations have broken under growth — too much manual work, too many duct-taped tools, too much depending on people remembering things.
         </p>
         <div className="mt-10 sm:mt-12 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
-          <button type="button" className="bg-terra hover:bg-terra-deep text-paper px-10 sm:px-12 py-5 rounded-full font-mono font-bold text-[11px] uppercase tracking-[0.28em] transition-colors shadow-lg shadow-terra/20">
+          <button 
+            type="button" 
+            onClick={openFitCall}
+            className="bg-terra hover:bg-terra-deep text-paper px-10 sm:px-12 py-5 rounded-full font-mono font-bold text-[11px] uppercase tracking-[0.28em] transition-colors shadow-lg shadow-terra/20"
+          >
             Book a 20-min Fit Call →
           </button>
           <div className="flex items-center gap-3 font-mono uppercase tracking-[0.22em] text-[10px] font-bold text-ink/40 whitespace-nowrap">

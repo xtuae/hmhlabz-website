@@ -2,25 +2,36 @@ import { Client } from '@hubspot/api-client';
 
 const hubspotClient = new Client({ accessToken: process.env.HUBSPOT_ACCESS_TOKEN });
 
-export const syncUserToHubSpot = async (email, name) => {
-  const [firstName, ...lastNameParts] = (name || "").split(" ");
+export const createLead = async (data) => {
+  const [firstName, ...lastNameParts] = (data.name || "").split(" ");
   const lastName = lastNameParts.join(" ");
 
   const properties = {
-    email,
-    firstname: firstName || "User",
+    email: data.email,
+    firstname: firstName || "Lead",
     lastname: lastName || "",
-    company: "HMH Labz Lead",
+    phone: data.phone || "",
+    company: data.company || "Not Provided",
+    message: data.message || "",
+    lifecyclestage: "opportunity"
   };
 
   try {
-    await hubspotClient.crm.contacts.basicApi.create({ properties });
-    console.log(`User ${email} synced to HubSpot`);
+    const response = await hubspotClient.crm.contacts.basicApi.create({ properties });
+    console.log(`Lead ${data.email} created in HubSpot`);
+    return response;
   } catch (error) {
     if (error.body?.category === "CONFLICT") {
-      console.log(`User ${email} already exists in HubSpot`);
-    } else {
-      console.error("HubSpot Error:", error);
+      console.log(`Lead ${data.email} already exists in HubSpot, updating...`);
+      // Optional: Update contact if needed
+      return { status: 'already_exists' };
     }
+    console.error("HubSpot Error:", error);
+    throw error;
   }
+};
+
+export const syncUserToHubSpot = async (email, name) => {
+  // Keeping legacy function for compatibility
+  return createLead({ email, name });
 };

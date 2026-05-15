@@ -5,8 +5,10 @@ import Footer from '../components/layout/Footer';
 import Reveal from '../components/ui/Reveal';
 import MonoLabel from '../components/ui/MonoLabel';
 import api from '../api/client';
+import { useModal } from '../App';
 
 const InsightDetail = () => {
+  const { openFitCall } = useModal();
   const { slug } = useParams();
   const [insight, setInsight] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -77,7 +79,10 @@ const InsightDetail = () => {
                 <div className="p-8 rounded-[2.5rem] bg-ink text-paper text-left">
                   <MonoLabel color="terra">Next engagement</MonoLabel>
                   <h4 className="text-xl font-bold mt-4 mb-6 leading-tight">Ready to ship your own AI system?</h4>
-                  <button className="w-full py-4 bg-terra text-paper rounded-full font-mono text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-terra/20">
+                  <button 
+                    onClick={openFitCall}
+                    className="w-full py-4 bg-terra text-paper rounded-full font-mono text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-terra/20"
+                  >
                     Book a fit call →
                   </button>
                 </div>

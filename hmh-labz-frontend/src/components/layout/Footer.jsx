@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useModal } from '../../App';
 
 const Footer = () => {
+  const { openFitCall } = useModal();
   return (
     <footer className="bg-ink text-paper/65 px-6 py-28 relative z-10 text-left">
       <div className="max-w-7xl mx-auto">
@@ -26,7 +28,7 @@ const Footer = () => {
             <h5 className="font-mono uppercase text-xs font-bold text-terra mb-8">Contact</h5>
             <ul className="space-y-4 text-sm text-paper/85">
               <li><a href="mailto:hello@hmhlabz.com" className="hover:text-terra transition-colors">hello@hmhlabz.com</a></li>
-              <li><button className="hover:text-terra transition-colors text-left">Book Fit Call</button></li>
+              <li><button onClick={openFitCall} className="hover:text-terra transition-colors text-left">Book Fit Call</button></li>
             </ul>
           </div>
         </div>
