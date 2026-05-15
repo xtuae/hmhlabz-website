@@ -30,28 +30,28 @@ app.use(express.json());
 // --- Root Route (Terminal UI) ---
 app.get('/', (req, res) => {
   res.send(`
+    <!DOCTYPE html>
     <html>
-      <head>
-        <title>HMH LABZ API SYSTEM</title>
-        <style>
-          body { background: #000; color: #00ff00; font-family: 'Courier New', monospace; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-          .terminal { border: 1px solid #00ff00; padding: 3rem; box-shadow: 0 0 20px rgba(0, 255, 0, 0.2); max-width: 90%; }
-          .cursor { display: inline-block; width: 12px; height: 1.2em; background: #00ff00; margin-left: 5px; animation: blink 1s infinite; vertical-align: middle; }
-          .line { margin-bottom: 0.5rem; }
-          .highlight { color: #fff; font-weight: bold; }
-          @keyframes blink { 50% { opacity: 0; } }
-        </style>
-      </head>
-      <body>
-        <div class="terminal">
-          <div class="line">HMH LABZ API SYSTEM <span class="highlight">v2.0.0</span></div>
-          <div class="line">STATUS: <span class="highlight">ONLINE</span></div>
-          <div class="line">MODE: <span class="highlight text-blue-400">DECOUPLED HEADLESS</span></div>
-          <div class="line">&nbsp;</div>
-          <div class="line">ACCESS: <span style="color: #ff3333">RESTRICTED - DIRECT ACCESS DENIED</span></div>
-          <div class="line">ROUTING ENABLED...<span class="cursor"></span></div>
-        </div>
-      </body>
+    <head>
+      <title>HMH Labz API | Status</title>
+      <style>
+        body { background: #0a0a0a; color: #00ff00; font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .terminal { border: 1px solid #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.2); padding: 2rem; border-radius: 8px; width: 100%; max-width: 600px; line-height: 1.6; }
+        .blink { animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+        .line { overflow: hidden; white-space: nowrap; border-right: 2px solid transparent; }
+      </style>
+    </head>
+    <body>
+      <div class="terminal">
+        <div class="line">> SYSTEM: HMH Labz Core API</div>
+        <div class="line">> STATUS: ONLINE & SECURE</div>
+        <div class="line">> DATABASE: CONNECTED (PostgreSQL)</div>
+        <div class="line">> ENVIRONMENT: PRODUCTION</div>
+        <br/>
+        <div class="line">> Awaiting commands... <span class="blink">_</span></div>
+      </div>
+    </body>
     </html>
   `);
 });
