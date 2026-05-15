@@ -4,7 +4,7 @@ import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Reveal from '../components/ui/Reveal';
 import MonoLabel from '../components/ui/MonoLabel';
-import api from '../api';
+import api from '../api/client';
 
 const InsightDetail = () => {
   const { slug } = useParams();

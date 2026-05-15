@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
-import { ShieldCheck, Loader2 } from 'lucide-react';
+import { ShieldCheck, Loader2, ArrowRight } from 'lucide-react';
+import logo from '../assets/logo.png';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -18,59 +19,109 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-brand-cream p-6">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-black tracking-tighter uppercase mb-2">
-            S <span className="text-brand-orange">+</span> B
-          </h1>
-          <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-400">Admin Authentication</p>
+    <div className="min-h-screen flex items-center justify-center bg-[#f5f1e8] p-4 font-sans text-[#1a1a1a]">
+      <div className="max-w-4xl w-full flex flex-col md:flex-row bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-black/5">
+        {/* Left Side: Visual/Branding */}
+        <div className="w-full md:w-1/2 bg-[#1a1a1a] p-12 text-white flex flex-col justify-between relative overflow-hidden">
+          <div className="relative z-10">
+            <div className="mb-12">
+              <img src={logo} alt="HMH Labz" className="h-10 w-auto" />
+            </div>
+            <h1 className="text-4xl font-bold tracking-tight mb-6 leading-tight">
+              Strategy + build, <br />
+              <span className="text-[#c84b21] font-serif italic">one portal.</span>
+            </h1>
+            <p className="text-gray-400 text-sm max-w-xs leading-relaxed font-medium">
+              Access your project metrics, implementation sprints, and team performance in one unified view.
+            </p>
+          </div>
+
+          <div className="relative z-10 mt-12">
+            <div className="flex -space-x-3 mb-6">
+              {[1, 2, 3].map((i) => (
+                <img 
+                  key={i}
+                  className="w-10 h-10 rounded-full border-2 border-[#1a1a1a] grayscale hover:grayscale-0 transition-all duration-500" 
+                  src={`https://i.pravatar.cc/100?u=${i + 10}`} 
+                  alt="Team" 
+                />
+              ))}
+            </div>
+            <p className="text-[10px] text-gray-500 uppercase tracking-[0.25em] font-black">Trusted by Global Operations</p>
+          </div>
+
+          {/* Abstract shape background element */}
+          <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-[#c84b21] rounded-full opacity-20 blur-3xl animate-pulse"></div>
         </div>
 
-        <div className="bg-white p-10 rounded-[40px] shadow-2xl shadow-brand-charcoal/5 border border-black/5">
-          <h2 className="text-3xl font-bold mb-8 italic font-serif leading-tight">
-            Welcome <span className="text-brand-orange">back.</span>
-          </h2>
-          
+        {/* Right Side: Form */}
+        <div className="w-full md:w-1/2 p-8 md:p-14 bg-[#f5f1e8]/50">
+          <div className="mb-10">
+            <h2 className="text-3xl font-bold mb-3 tracking-tighter">
+              Welcome <span className="font-serif italic text-[#c84b21]">back.</span>
+            </h2>
+            <p className="text-gray-500 text-sm font-medium">Please enter your credentials to access the dashboard.</p>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-2">Secure Identifier</label>
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Secure Identifier</label>
               <input 
                 type="email" 
+                required 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@hmhlabz.com"
-                required
-                className="w-full p-5 bg-gray-50 rounded-2xl border border-transparent focus:bg-white focus:border-brand-orange outline-none transition-all font-bold text-sm"
+                className="w-full px-5 py-4 rounded-2xl border border-black/5 bg-white focus:ring-2 focus:ring-[#c84b21]/20 focus:border-[#c84b21] outline-none transition-all font-bold text-sm shadow-sm"
               />
             </div>
-            <div>
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-2">Access Token</label>
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Access Token</label>
               <input 
                 type="password" 
+                required 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                required
-                className="w-full p-5 bg-gray-50 rounded-2xl border border-transparent focus:bg-white focus:border-brand-orange outline-none transition-all font-bold text-sm"
+                className="w-full px-5 py-4 rounded-2xl border border-black/5 bg-white focus:ring-2 focus:ring-[#c84b21]/20 focus:border-[#c84b21] outline-none transition-all font-bold text-sm shadow-sm"
               />
             </div>
 
+            <div className="flex items-center justify-between text-[10px] uppercase font-black tracking-widest px-1">
+              <label className="flex items-center space-x-2 cursor-pointer text-gray-400 hover:text-[#1a1a1a] transition-colors">
+                <input type="checkbox" className="rounded border-gray-300 text-[#c84b21] focus:ring-[#c84b21]" />
+                <span>Stay Authenticated</span>
+              </label>
+              <a href="#" className="text-[#c84b21] hover:underline">Lost Token?</a>
+            </div>
+
             {error && (
-              <div className="p-4 bg-red-50 border border-red-100 rounded-xl text-red-600 text-xs font-bold uppercase tracking-tight text-center">
+              <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-[10px] font-black uppercase tracking-widest text-center animate-in fade-in slide-in-from-top-1">
                 {error}
               </div>
             )}
 
             <button 
-              type="submit" 
+              type="submit"
               disabled={isLoading}
-              className="w-full py-5 bg-brand-charcoal text-white rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-brand-orange transition-all duration-300 shadow-xl shadow-brand-charcoal/10 flex items-center justify-center gap-3 disabled:opacity-50"
+              className="w-full bg-[#1a1a1a] text-white font-black py-5 rounded-2xl shadow-xl shadow-black/10 hover:bg-[#c84b21] transition-all duration-500 transform hover:-translate-y-1 flex items-center justify-center gap-3 uppercase text-[10px] tracking-[0.2em] disabled:opacity-50"
             >
-              {isLoading ? <Loader2 className="animate-spin" size={18} /> : <ShieldCheck size={18} />}
-              Initialize Dashboard
+              {isLoading ? (
+                <Loader2 className="animate-spin" size={16} />
+              ) : (
+                <>
+                  <ShieldCheck size={16} />
+                  Initialize Portal
+                </>
+              )}
             </button>
           </form>
+
+          <div className="mt-12 text-center">
+            <p className="text-gray-400 text-[10px] font-black uppercase tracking-widest">
+              Restricted Access — HMH Labz Operational Hub
+            </p>
+          </div>
         </div>
       </div>
     </div>

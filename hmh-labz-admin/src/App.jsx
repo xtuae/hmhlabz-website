@@ -5,7 +5,8 @@ import Login from './pages/Login';
 import DashboardOverview from './pages/DashboardOverview';
 import ManageInsights from './pages/ManageInsights';
 import ManageUsers from './pages/ManageUsers';
-import InsightForm from './pages/InsightForm';
+import ManageContent from './pages/ManageContent';
+import { Pages, Sync, Legal, Settings } from './pages/Modules';
 
 function App() {
   return (
@@ -22,8 +23,12 @@ function App() {
         }>
           <Route path="/" element={<DashboardOverview />} />
           <Route path="/insights" element={<ManageInsights />} />
-          <Route path="/insights/new" element={<InsightForm />} />
-          <Route path="/insights/edit/:id" element={<InsightForm />} />
+          <Route path="/insights/new" element={<ManageContent />} />
+          <Route path="/insights/edit/:id" element={<ManageContent />} />
+          <Route path="/pages" element={<Pages />} />
+          <Route path="/sync" element={<Sync />} />
+          <Route path="/legal" element={<Legal />} />
+          <Route path="/settings" element={<Settings />} />
           
           {/* Superadmin Only Routes */}
           <Route path="/users" element={

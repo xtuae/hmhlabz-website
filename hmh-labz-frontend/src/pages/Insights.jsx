@@ -4,7 +4,8 @@ import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Reveal from '../components/ui/Reveal';
 import MonoLabel from '../components/ui/MonoLabel';
-import api from '../api';
+import InsightSkeleton from '../components/ui/InsightSkeleton';
+import api from '../api/client';
 
 const Insights = () => {
   const [filter, setFilter] = useState('all');
@@ -63,8 +64,8 @@ const Insights = () => {
 
         <section className="px-6 md:px-10 lg:px-14 pb-20 sm:pb-28 max-w-7xl mx-auto">
           {loading ? (
-            <div className="flex justify-center py-20">
-              <span className="font-mono text-ink/40 animate-pulse uppercase tracking-[0.3em]">Loading Insights...</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+              {[1, 2, 3].map(i => <InsightSkeleton key={i} />)}
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
