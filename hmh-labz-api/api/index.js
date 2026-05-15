@@ -7,19 +7,16 @@ import leadsRoutes from './routes/leads.js';
 const app = express();
 
 // --- Middleware ---
-const allowedOrigins = [
-  'https://hmhlabz.com',
-  'https://demo.hmhlabz.com',
-  'http://localhost:3000',
-  'http://localhost:5173',
-  'http://localhost:5174',
-  'http://localhost:5175',
-  'http://localhost:5176'
-];
-
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+    // Allow requests with no origin (like mobile apps, curl, or server-to-server)
+    if (!origin) return callback(null, true);
+
+    // Allow production domains and ANY localhost/127.0.0.1 port
+    const isLocalhost = origin.match(/^https?:\/\/(localhost|127\.0\.0\.1)(:[0-9]+)?$/);
+    const isProduction = ['https://hmhlabz.com', 'https://demo.hmhlabz.com'].includes(origin);
+
+    if (isLocalhost || isProduction) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
