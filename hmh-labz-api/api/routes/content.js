@@ -6,7 +6,7 @@ const router = express.Router();
 // --- Upload ---
 router.post('/upload', async (req, res) => {
   try {
-    const { requireRole } = await import('../../lib/auth.js');
+    const { requireRole } = await import('../lib/auth.js');
     const { put } = await import('@vercel/blob');
     
     return requireRole(['SUPERADMIN', 'ADMIN', 'MODERATOR'])(req, res, async () => {
@@ -58,7 +58,7 @@ router.get('/insights/:slugOrId', async (req, res) => {
 
 router.post('/insights', async (req, res) => {
   try {
-    const { requireRole } = await import('../../lib/auth.js');
+    const { requireRole } = await import('../lib/auth.js');
 
     return requireRole(['SUPERADMIN', 'ADMIN'])(req, res, async () => {
       const { title, slug, excerpt, content, coverImage, published } = req.body;
@@ -81,7 +81,7 @@ router.post('/insights', async (req, res) => {
 
 router.put('/insights/:id', async (req, res) => {
   try {
-    const { requireRole } = await import('../../lib/auth.js');
+    const { requireRole } = await import('../lib/auth.js');
 
     return requireRole(['SUPERADMIN', 'ADMIN'])(req, res, async () => {
       const data = req.body;
@@ -98,7 +98,7 @@ router.put('/insights/:id', async (req, res) => {
 
 router.delete('/insights/:id', async (req, res) => {
   try {
-    const { requireRole } = await import('../../lib/auth.js');
+    const { requireRole } = await import('../lib/auth.js');
 
     return requireRole(['SUPERADMIN', 'ADMIN'])(req, res, async () => {
       await prisma.insight.delete({ where: { id: req.params.id } });

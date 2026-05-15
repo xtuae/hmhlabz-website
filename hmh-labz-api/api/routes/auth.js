@@ -5,9 +5,9 @@ const router = express.Router();
 
 router.post('/register', async (req, res) => {
   try {
-    const { hashPassword, generateToken } = await import('../../lib/auth.js');
-    const { sendWelcomeEmail } = await import('../../lib/brevo.js');
-    const { syncUserToHubSpot } = await import('../../lib/hubspot.js');
+    const { hashPassword, generateToken } = await import('../lib/auth.js');
+    const { sendWelcomeEmail } = await import('../lib/brevo.js');
+    const { syncUserToHubSpot } = await import('../lib/hubspot.js');
 
     const { email, password, name } = req.body;
     if (!email || !password) return res.status(400).json({ message: 'Email and password required' });
@@ -37,7 +37,7 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   try {
-    const { comparePassword, generateToken } = await import('../../lib/auth.js');
+    const { comparePassword, generateToken } = await import('../lib/auth.js');
 
     const { email, password } = req.body;
     const user = await prisma.user.findUnique({ where: { email } });
