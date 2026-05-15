@@ -19,39 +19,81 @@ export const sendLeadNotification = async (data) => {
   const apiInstance = getBrevoApi();
   if (!apiInstance) return;
 
+  const recipients = [
+    { email: 'hello@hmhlabz.com', name: 'Haj Akif' },
+    { email: 'steve@hmhlabz.com', name: 'Steve' }
+  ];
+
   const sendSmtpEmail = new Brevo.SendSmtpEmail();
-  sendSmtpEmail.subject = `NEW LEAD: ${data.name} from ${data.company || 'Unknown'}`;
-  sendSmtpEmail.to = [{ email: 'hello@hmhlabz.com', name: 'HMH Labz Leads' }];
+  sendSmtpEmail.subject = `Internal Report — Lead Captured: ${data.name}`;
+  sendSmtpEmail.to = recipients;
   sendSmtpEmail.sender = { 
-    name: "HMH Labz System", 
-    email: process.env.BREVO_SENDER_EMAIL || "hello@hmhlabz.com" 
+    name: "HMH Labz Core", 
+    email: process.env.BREVO_SENDER_EMAIL || "reach@hmhlabz.com" 
   };
   
   sendSmtpEmail.htmlContent = `
-    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 40px; border-radius: 10px;">
-      <h2 style="color: #c84b21; border-bottom: 2px solid #c84b21; padding-bottom: 10px;">New Fit-Call Request</h2>
-      <p style="font-size: 16px; color: #333;">A new lead has submitted the Fit-Call form:</p>
-      
-      <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-        <tr><td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Name:</td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.name}</td></tr>
-        <tr><td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Email:</td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.email}</td></tr>
-        <tr><td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Phone:</td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.phone || 'N/A'}</td></tr>
-        <tr><td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Company:</td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.company || 'N/A'}</td></tr>
-        <tr><td style="padding: 10px; border-bottom: 1px solid #eee; font-weight: bold;">Message:</td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.message || 'N/A'}</td></tr>
-      </table>
-      
-      <p style="margin-top: 30px; font-size: 12px; color: #999;">This is an automated notification from hmhlabz.com</p>
-    </div>
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <style>
+        body { font-family: 'Helvetica', Arial, sans-serif; background-color: #f5f2e8; color: #1a1a1a; margin: 0; padding: 40px; }
+        .container { max-width: 600px; background: #ffffff; border: 1px solid #1a1a1a; padding: 40px; margin: 0 auto; }
+        .header { border-bottom: 2px solid #c84b21; padding-bottom: 20px; margin-bottom: 30px; }
+        .mono { font-family: 'Courier New', Courier, monospace; text-transform: uppercase; font-size: 11px; letter-spacing: 0.15em; color: #c84b21; font-weight: bold; }
+        .title { font-size: 28px; font-weight: bold; margin-top: 10px; letter-spacing: -0.02em; line-height: 1.1; }
+        .grid { margin: 30px 0; border-top: 1px solid #eeeeee; }
+        .field { padding: 15px 0; border-bottom: 1px solid #eeeeee; }
+        .label { font-size: 10px; font-weight: bold; text-transform: uppercase; color: #999; margin-bottom: 4px; }
+        .value { font-size: 16px; color: #1a1a1a; }
+        .message-box { background: #f9f9f9; padding: 20px; border-left: 3px solid #c84b21; font-style: italic; margin-top: 20px; color: #444; }
+        .footer { font-family: 'Courier New', monospace; font-size: 10px; color: #999; margin-top: 40px; text-align: center; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <div class="mono">Internal Report — 02 // Lead Captured</div>
+          <div class="title">New Fit Call Request</div>
+        </div>
+        
+        <div class="grid">
+          <div class="field">
+            <div class="label">Name / Representative</div>
+            <div class="value">${data.name}</div>
+          </div>
+          <div class="field">
+            <div class="label">Email Address</div>
+            <div class="value"><strong>${data.email}</strong></div>
+          </div>
+          <div class="field">
+            <div class="label">Business / Entity</div>
+            <div class="value">${data.company || 'Not Provided'} (${data.employees || 'N/A'} employees)</div>
+          </div>
+          <div class="field">
+            <div class="label">Service Interest</div>
+            <div class="value" style="color: #c84b21;">${data.tier || 'Unspecified'}</div>
+          </div>
+        </div>
+
+        <div class="label">Project Context / Message</div>
+        <div class="message-box">
+          "${data.message || 'No message provided.'}"
+        </div>
+
+        <div class="footer">
+          HMH LABZ CORE // AUTO-GENERATED NOTIFICATION<br>
+          SYSTEM STATUS: SECURE // LOCATION: ${data.timestamp || new Date().toISOString()}
+        </div>
+      </div>
+    </body>
+    </html>
   `;
 
   try {
     await apiInstance.sendTransacEmail(sendSmtpEmail);
-    console.log(`Lead notification sent to hello@hmhlabz.com`);
+    console.log(`Lead notification sent to ${recipients.length} recipients`);
   } catch (error) {
     console.error("Brevo Notification Error:", error);
   }
-};
-
-export const sendWelcomeEmail = async (email, name) => {
-  // Existing welcome email logic...
 };

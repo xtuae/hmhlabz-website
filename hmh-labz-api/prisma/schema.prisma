@@ -21,9 +21,11 @@ model User {
   email     String    @unique
   password  String    // Hashed using bcrypt
   name      String?
-  role      Role      @default(USER)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  role          Role      @default(USER)
+  resetToken    String?
+  resetExpires  DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   // Relations
   insights  Insight[]

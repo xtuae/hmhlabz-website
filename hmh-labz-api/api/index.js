@@ -15,7 +15,11 @@ app.use(cors({
 
     // Allow production domains and ANY localhost/127.0.0.1 port
     const isLocalhost = origin.match(/^https?:\/\/(localhost|127\.0\.0\.1)(:[0-9]+)?$/);
-    const isProduction = ['https://hmhlabz.com', 'https://demo.hmhlabz.com'].includes(origin);
+    const isProduction = [
+      'https://hmhlabz.com', 
+      'https://demo.hmhlabz.com',
+      'https://hmhlabz-website.vercel.app'
+    ].includes(origin);
 
     if (isLocalhost || isProduction) {
       callback(null, true);
