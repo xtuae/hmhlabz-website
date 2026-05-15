@@ -19,11 +19,11 @@ const Home = () => {
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const response = await api.get('/pages/home');
-        console.log('API Response [pageData]:', response.data);
+        const response = await api.get(`/pages/home?t=${Date.now()}`);
+        console.log("FULL API RESPONSE:", response.data);
         setPageData(response.data);
-      } catch (error) {
-        console.error('Failed to fetch home page data:', error);
+      } catch (err) {
+        console.error("FETCH ERROR:", err);
       } finally {
         setIsLoading(false);
       }
@@ -47,9 +47,17 @@ const Home = () => {
         <Hero key={pageData?.updatedAt} content={pageData?.content?.hero} />
         <StatsGrid stats={pageData?.content?.hero?.stats} />
         <TechStack />
-        <Approach content={pageData?.content?.approach} />
+        
+        <section id="approach">
+          <Approach content={pageData?.content?.approach} />
+        </section>
+
         <CostOfWaiting content={pageData?.content?.costOfWaiting} />
-        <Services content={pageData?.content?.howWeWork} />
+
+        <section id="how-we-work">
+          <Services content={pageData?.content?.howWeWork} />
+        </section>
+
         <WhyHMHLabz content={pageData?.content?.whyHmhLabz} />
         <Contact content={pageData?.content?.cta} />
       </main>

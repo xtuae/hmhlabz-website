@@ -7,17 +7,11 @@ const Hero = ({ content }) => {
   return (
     <section id="top" className="relative px-6 md:px-10 lg:px-14 pt-[108px] sm:pt-[124px] pb-10 sm:pb-14">
       <Reveal className="mt-4 sm:mt-8 relative">
-        <h1 className="font-sans font-bold text-ink tracking-[-0.04em] leading-[0.88] text-center break-words" style={{ fontSize: "clamp(60px, 10.5vw, 180px)" }}>
-          {content?.title || "Strategy + build,"}<br />
-          <span className="whitespace-nowrap">
-            in <span className="relative inline-block">
-              <em className="font-serif italic font-normal not-italic text-terra">{content?.highlight || "one team."}</em>
-              <svg aria-hidden="true" viewBox="0 0 360 22" preserveAspectRatio="none" className="absolute left-[2%] right-0 -bottom-[0.05em] w-[96%] h-[0.2em] pointer-events-none">
-                <path d="M 4 14 Q 60 4, 120 11 T 240 10 T 356 8" fill="none" stroke="#C2410C" strokeWidth="3" strokeLinecap="round" opacity="0.85"></path>
-              </svg>
-            </span>
-          </span>
-        </h1>
+        <h1 
+          className="font-sans font-bold text-ink tracking-[-0.04em] leading-[0.88] text-center break-words" 
+          style={{ fontSize: "clamp(60px, 10.5vw, 180px)" }}
+          dangerouslySetInnerHTML={{ __html: `${content?.title || "Strategy + build,"}<br /><span class="whitespace-nowrap">in <span class="relative inline-block"><em class="font-serif italic font-normal not-italic text-terra">${content?.highlight || "one team."}</em><svg aria-hidden="true" viewBox="0 0 360 22" preserveAspectRatio="none" class="absolute left-[2%] right-0 -bottom-[0.05em] w-[96%] h-[0.2em] pointer-events-none"><path d="M 4 14 Q 60 4, 120 11 T 240 10 T 356 8" fill="none" stroke="#C2410C" stroke-width="3" stroke-linecap="round" opacity="0.85"></path></svg></span></span>` }}
+        />
       </Reveal>
       
       <Reveal delay={0.2} className="mt-12 sm:mt-16 max-w-3xl mx-auto text-center">
