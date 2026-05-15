@@ -16,15 +16,15 @@ const Navbar = () => {
   }, []);
 
   const items = [
-    { label: 'Approach', path: '/#approach' },
-    { label: 'Services', path: '/#services' },
+    { label: 'Approach', path: '#approach' },
+    { label: 'Services', path: '#services' },
     { label: 'Insights', path: '/insights' },
     { label: 'About', path: '/about' }
   ];
 
   const isActive = (path) => {
-    if (path.startsWith('/#')) {
-      return location.pathname === '/' && location.hash === path.substring(1);
+    if (path.startsWith('#')) {
+      return location.pathname === '/' && location.hash === path;
     }
     return location.pathname === path;
   };
@@ -32,9 +32,9 @@ const Navbar = () => {
   return (
     <>
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-paper/85 backdrop-blur-md border-b border-ink/10" : ""}`}>
-        <div className="px-6 md:px-10 lg:px-14 h-[68px] sm:h-[76px] flex items-center justify-between max-w-7xl mx-auto">
+        <div className="px-6 md:px-10 lg:px-14 h-[84px] sm:h-[92px] flex items-center justify-between max-w-7xl mx-auto">
           <Link to="/" className="flex-shrink-0">
-            <img src="https://www.hmhlabz.com/wp-content/uploads/hmh-labz-black.png" alt="HMH Labz" className="h-5 sm:h-6 w-auto object-contain" />
+            <img src="https://www.hmhlabz.com/wp-content/uploads/hmh-labz-black.png" alt="HMH Labz" className="h-10 sm:h-12 w-auto object-contain" />
           </Link>
 
           <div className="hidden md:flex items-center gap-8 text-[13px] text-ink font-bold uppercase tracking-widest">

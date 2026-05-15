@@ -48,9 +48,10 @@ model Insight {
 
 // Optional: If you want legal pages to be editable via Admin rather than hardcoded
 model Page {
-  id          String   @id @default(uuid())
-  title       String
-  slug        String   @unique // e.g., 'privacy-policy', 'terms-of-service'
-  content     String
-  updatedAt   DateTime @updatedAt
+  id              String   @id @default(uuid())
+  slug            String   @unique
+  title           String
+  metaDescription String?
+  content         Json     // Stores structured section data
+  updatedAt       DateTime @updatedAt
 }

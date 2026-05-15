@@ -3,6 +3,7 @@ import cors from 'cors';
 import authRoutes from './routes/auth.js';
 import contentRoutes from './routes/content.js';
 import leadsRoutes from './routes/leads.js';
+import pagesRoutes from './routes/pages.js';
 
 const app = express();
 
@@ -59,6 +60,7 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api', contentRoutes);
 app.use('/api/leads', leadsRoutes);
+app.use('/api/pages', pagesRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

@@ -6,11 +6,12 @@ import DashboardOverview from './pages/DashboardOverview';
 import ManageInsights from './pages/ManageInsights';
 import ManageUsers from './pages/ManageUsers';
 import ManageContent from './pages/ManageContent';
-import { Pages, Sync, Legal, Settings } from './pages/Modules';
+import Pages from './pages/Pages';
+import { Sync, Legal, Settings } from './pages/Modules';
 
 function App() {
   return (
-    <Router basename="/labz-admin">
+    <Router basename={import.meta.env.BASE_URL}>
       <Routes>
         {/* Public Auth Routes */}
         <Route path="/login" element={<Login />} />

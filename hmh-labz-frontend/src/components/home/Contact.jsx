@@ -2,7 +2,7 @@ import React from 'react';
 import Reveal from '../ui/Reveal';
 import { useModal } from '../../App';
 
-const Contact = () => {
+const Contact = ({ cta }) => {
   const { openFitCall } = useModal();
 
   return (
@@ -22,7 +22,7 @@ const Contact = () => {
             onClick={openFitCall}
             className="bg-terra hover:bg-terra-deep text-paper px-12 py-5 rounded-full font-mono font-bold text-[11px] uppercase tracking-[0.3em] transition-colors shadow-lg shadow-terra/20 active:scale-95"
           >
-            Book a 20-min Fit Call →
+            {cta?.buttonText || "Book a 20-min Fit Call →"}
           </button>
           <div className="flex flex-col items-center sm:items-start gap-1">
             <span className="font-mono text-[11px] uppercase tracking-[0.22em] font-semibold text-ink/45">No sales pitch.</span>

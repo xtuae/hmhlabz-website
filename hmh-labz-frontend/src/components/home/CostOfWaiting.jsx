@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import Reveal from '../ui/Reveal';
 
-const CostOfWaiting = () => {
-  const [count, setCount] = useState(2848673);
+const CostOfWaiting = ({ content }) => {
+  const anchorDate = new Date('2024-01-01').getTime();
+  const [count, setCount] = useState(Math.floor((Date.now() - anchorDate) / 1000));
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCount(prev => prev + Math.floor(Math.random() * 5));
-    }, 100);
+      setCount(Math.floor((Date.now() - anchorDate) / 1000));
+    }, 1000);
     return () => clearInterval(timer);
   }, []);
 
   return (
     <section className="bg-paper px-6 md:px-10 lg:px-14 py-28 sm:py-40 text-center">
-      <Reveal className="max-w-5xl mx-auto text-center">
+      <Reveal className="max-w-5xl mx-auto text-center flex flex-col items-center">
         <div className="flex justify-center">
           <span className="font-mono uppercase tracking-[0.22em] text-[11px] font-semibold text-ink/55">02 — The cost of waiting</span>
         </div>
         <h2 className="mt-10 font-sans font-bold text-ink leading-[1.06] tracking-[-0.028em] max-w-4xl mx-auto" style={{ fontSize: 'clamp(34px, 5vw, 60px)' }}>
-          Every hour you spend doing it <em className="font-serif italic font-normal not-italic ">manually</em> is an hour your business <em className="font-serif italic font-normal not-italic text-terra">doesn't grow.</em>
+          {content?.title || "Every hour you spend doing it"} <em className="font-serif italic font-normal not-italic ">{content?.manualLabel || "manually"}</em> {content?.middleText || "is an hour your business"} <em className="font-serif italic font-normal not-italic text-terra">{content?.highlight || "doesn't grow."}</em>
         </h2>
         
         <div className="mt-16 flex items-center justify-center gap-3">
@@ -35,7 +36,7 @@ const CostOfWaiting = () => {
           {count.toLocaleString()}
         </div>
         <p className="mt-5 font-serif italic text-ink/45" style={{ fontSize: 'clamp(18px, 1.8vw, 24px)' }}>
-          and counting, since you opened this page.
+          and counting, since 2024 began.
         </p>
       </Reveal>
 
@@ -45,7 +46,7 @@ const CostOfWaiting = () => {
           <div className="px-10 sm:px-16 py-14 sm:py-20 text-left">
             <span className="block font-serif italic text-terra mb-6" style={{ fontSize: 'clamp(48px, 5vw, 80px)', lineHeight: 0.6 }}>“</span>
             <p className="font-serif italic text-ink leading-[1.18] tracking-[-0.01em]" style={{ fontSize: 'clamp(26px, 3.2vw, 40px)' }}>
-              It's all in someone's head is the most expensive sentence in your business.
+              {content?.quote || "It's all in someone's head is the most expensive sentence in your business."}
             </p>
           </div>
         </div>

@@ -23,7 +23,7 @@ const Sidebar = () => {
 
   const navItems = [
     { name: 'Overview', icon: LayoutDashboard, path: '/' },
-    { name: 'Site Pages', icon: zap, path: '/pages', icon: Zap },
+    { name: 'Site Pages', icon: Zap, path: '/pages' },
     { name: 'HubSpot Sync', icon: RefreshCw, path: '/sync' },
     { name: 'Insights', icon: FileText, path: '/insights' },
     { name: 'Compliance', icon: ShieldAlert, path: '/legal' },

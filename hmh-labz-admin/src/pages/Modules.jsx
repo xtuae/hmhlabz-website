@@ -10,7 +10,7 @@ const Placeholder = ({ name }) => (
   </div>
 );
 
-export const Pages = () => <Placeholder name='Site Pages' />;
+// export const Pages = () => <Placeholder name='Site Pages' />; // Moved to Pages.jsx
 export const Sync = () => <Placeholder name='HubSpot Sync' />;
 export const Legal = () => <Placeholder name='Legal Compliance' />;
 export const Settings = () => <Placeholder name='Settings' />;
