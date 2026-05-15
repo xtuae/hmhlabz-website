@@ -9,24 +9,13 @@ const app = express();
 
 // --- Middleware ---
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl, or server-to-server)
-    if (!origin) return callback(null, true);
-
-    // Allow production domains and ANY localhost/127.0.0.1 port
-    const isLocalhost = origin.match(/^https?:\/\/(localhost|127\.0\.0\.1)(:[0-9]+)?$/);
-    const isProduction = [
-      'https://hmhlabz.com', 
-      'https://demo.hmhlabz.com',
-      'https://hmhlabz-website.vercel.app'
-    ].includes(origin);
-
-    if (isLocalhost || isProduction) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: [
+    'https://demo.hmhlabz.com', 
+    'https://hmhlabz.com', 
+    'http://localhost:5178', 
+    'http://localhost:5177',
+    'https://hmhlabz-website.vercel.app'
+  ],
   credentials: true
 }));
 app.use(express.json());

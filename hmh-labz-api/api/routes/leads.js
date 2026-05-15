@@ -30,7 +30,6 @@ router.post('/fit-call', async (req, res) => {
     }
 
     // 3. Send Cyber-Lab Email Notification
-    // Recipients: hello@hmhlabz.com, steve@hmhlabz.com (handled in brevo.js or here)
     try {
       await sendLeadNotification({
         name,
