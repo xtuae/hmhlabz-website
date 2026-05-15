@@ -39,8 +39,8 @@ const Insights = () => {
       <Navbar />
       
       <main className="pt-20 text-left">
-        <header className="px-6 md:px-10 lg:px-14 pt-[120px] sm:pt-[140px] pb-16 sm:pb-24 max-w-7xl mx-auto">
-          <Reveal>
+        <header className="px-6 md:px-10 lg:px-14 pt-[120px] sm:pt-[140px] pb-16 sm:pb-24 max-w-7xl">
+          <Reveal className="flex flex-col items-start">
             <div className="flex items-center justify-between flex-wrap gap-4">
               <MonoLabel>N° 05 — Insight</MonoLabel>
               <span className="font-mono text-ink/40 uppercase text-xs tracking-widest">
@@ -69,7 +69,7 @@ const Insights = () => {
           </Reveal>
         </header>
 
-        <section className="px-6 md:px-10 lg:px-14 pb-20 sm:pb-28 max-w-7xl mx-auto">
+        <section className="px-6 md:px-10 lg:px-14 pb-20 sm:pb-28 max-w-7xl">
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
               {[1, 2, 3, 4, 5, 6].map(i => <InsightSkeleton key={i} />)}

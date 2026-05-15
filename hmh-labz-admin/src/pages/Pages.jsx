@@ -236,8 +236,8 @@ const Pages = () => {
 
             {activePage === 'homepage' && (
               <>
-                <SectionWrapper title="Hero Section" icon={Sparkles}>
-                  <div className="space-y-6">
+                <SectionWrapper title="Hero & Metrics" icon={Sparkles}>
+                  <div className="space-y-10">
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Main Title</label>
@@ -251,6 +251,22 @@ const Pages = () => {
                     <div className="space-y-2">
                       <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Description</label>
                       <textarea value={formData.content.hero.description} onChange={(e) => updateSection('hero', { description: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm h-24 resize-none" />
+                    </div>
+
+                    <div className="pt-6 border-t border-black/5">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1 block mb-6">Metrics Cards (3)</label>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {formData.content.hero.stats.map((stat, i) => (
+                          <div key={i} className="p-5 bg-gray-50 rounded-2xl border border-black/5 space-y-3">
+                            <div className="grid grid-cols-3 gap-2">
+                              <input type="text" placeholder="Prefix" value={stat.prefix} onChange={(e) => updateNestedList('hero', 'stats', i, { prefix: e.target.value })} className="w-full px-3 py-2 bg-white rounded-lg border border-black/5 text-xs font-bold" />
+                              <input type="text" placeholder="2.4" value={stat.number} onChange={(e) => updateNestedList('hero', 'stats', i, { number: e.target.value })} className="w-full px-3 py-2 bg-white rounded-lg border border-black/5 text-xs font-bold text-center" />
+                              <input type="text" placeholder="Suffix" value={stat.suffix} onChange={(e) => updateNestedList('hero', 'stats', i, { suffix: e.target.value })} className="w-full px-3 py-2 bg-white rounded-lg border border-black/5 text-xs font-bold" />
+                            </div>
+                            <textarea placeholder="Description" value={stat.desc} onChange={(e) => updateNestedList('hero', 'stats', i, { desc: e.target.value })} className="w-full px-3 py-2 bg-white rounded-lg border border-black/5 text-[11px] h-16 resize-none" />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </SectionWrapper>
@@ -266,21 +282,6 @@ const Pages = () => {
                         <p className="text-[10px] font-black uppercase text-[#c84b21]">Step 0{i+1}</p>
                         <input type="text" value={step.title} onChange={(e) => updateNestedList('approach', 'steps', i, { title: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" placeholder="Step Title" />
                         <textarea value={step.desc} onChange={(e) => updateNestedList('approach', 'steps', i, { desc: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm h-20 resize-none" placeholder="Step Description" />
-                      </div>
-                    ))}
-                  </div>
-                </SectionWrapper>
-
-                <SectionWrapper title="Engagement Models" icon={Type}>
-                  <div className="space-y-8">
-                    {formData.content.howWeWork.tiers.map((tier, i) => (
-                      <div key={i} className="p-6 bg-[#f5f1e8]/30 rounded-2xl border border-black/5 space-y-4">
-                        <input type="text" value={tier.title} onChange={(e) => updateNestedList('howWeWork', 'tiers', i, { title: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" />
-                        <div className="grid md:grid-cols-2 gap-4">
-                          <input type="text" value={tier.timeline} onChange={(e) => updateNestedList('howWeWork', 'tiers', i, { timeline: e.target.value })} className="px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Timeline" />
-                          <input type="text" value={tier.shape} onChange={(e) => updateNestedList('howWeWork', 'tiers', i, { shape: e.target.value })} className="px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Shape" />
-                        </div>
-                        <textarea value={tier.desc} onChange={(e) => updateNestedList('howWeWork', 'tiers', i, { desc: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm h-20 resize-none" placeholder="Description" />
                       </div>
                     ))}
                   </div>

@@ -5,7 +5,6 @@ import Hero from '../components/home/Hero';
 import StatsGrid from '../components/home/StatsGrid';
 import TechStack from '../components/home/TechStack';
 import Approach from '../components/home/Approach';
-import HowWeWork from '../components/home/HowWeWork';
 import CostOfWaiting from '../components/home/CostOfWaiting';
 import Services from '../components/home/Services';
 import WhyHMHLabz from '../components/home/WhyHMHLabz';
@@ -48,9 +47,8 @@ const Home = () => {
         <StatsGrid stats={pageData?.content?.hero?.stats} />
         <TechStack />
         <Approach content={pageData?.content?.approach} />
-        <HowWeWork content={pageData?.content?.howWeWork} />
         <CostOfWaiting content={pageData?.content?.costOfWaiting} />
-        <Services />
+        <Services content={pageData?.content?.howWeWork} />
         <WhyHMHLabz content={pageData?.content?.whyHmhLabz} />
         <Contact content={pageData?.content?.cta} />
       </main>
