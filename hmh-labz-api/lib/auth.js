@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { getPrisma } from './db.js';
+import prisma from '../api/lib/prisma.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-for-dev-only';
 
@@ -43,8 +43,7 @@ export const requireRole = (roles = []) => async (req, res, next) => {
     return res.status(401).json({ message: 'Invalid or expired token' });
   }
 
-  // Use lazy-loaded prisma instance
-  const prisma = getPrisma();
+  // Use the centralized prisma instance
   const user = await prisma.user.findUnique({
     where: { id: decoded.userId },
   });

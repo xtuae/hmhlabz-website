@@ -1,5 +1,5 @@
 import express from 'express';
-import { getPrisma } from '../lib/db.js';
+import prisma from '../lib/prisma.js';
 import { syncUserToHubSpot } from '../lib/hubspot.js';
 import { sendLeadNotification } from '../lib/brevo.js';
 
@@ -8,8 +8,6 @@ const router = express.Router();
 router.post('/fit-call', async (req, res) => {
   try {
     const { name, email, businessName, phone, employees, tier, message } = req.body;
-    
-    const prisma = getPrisma();
     
     // 1. Save Lead to Database
     const lead = await prisma.lead.create({
