@@ -4,6 +4,7 @@ import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Reveal from '../components/ui/Reveal';
 import MonoLabel from '../components/ui/MonoLabel';
+import SEO from '../components/seo/SEO';
 import api from '../api/client';
 import { useModal } from '../App';
 
@@ -46,7 +47,14 @@ const InsightDetail = () => {
 
   return (
     <div className="bg-paper selection:bg-terra selection:text-paper min-h-screen relative">
+      <SEO 
+        title={`${insight.title} | HMH Labz Insights`}
+        description={insight.excerpt || 'Deep dives into operations, AI, and workflow automation.'}
+        image={insight.coverImage}
+      />
+      
       <Navbar />
+      
       <main className="pt-20 text-left">
         <header className="px-6 md:px-10 lg:px-14 pt-16 sm:pt-24 pb-20 sm:pb-32 max-w-7xl mx-auto">
           <Reveal>
@@ -68,7 +76,11 @@ const InsightDetail = () => {
             <div className="lg:col-span-8">
               <Reveal>
                 <div 
-                  className="prose prose-lg prose-ink max-w-none prose-headings:font-sans prose-headings:font-bold prose-p:text-ink/80 prose-p:leading-relaxed prose-p:font-light"
+                  className="prose prose-lg prose-invert max-w-none 
+                    prose-headings:font-sans prose-headings:font-bold prose-headings:text-ink
+                    prose-p:text-ink/80 prose-p:leading-relaxed prose-p:font-light
+                    prose-strong:text-ink prose-a:text-terra prose-a:no-underline hover:prose-a:underline
+                    prose-img:rounded-3xl prose-img:border prose-img:border-ink/10"
                   dangerouslySetInnerHTML={{ __html: insight.content }}
                 />
               </Reveal>

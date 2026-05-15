@@ -83,7 +83,14 @@ const Pages = () => {
       { title: "Built for the long term.", desc: "We document, we hand over." }
     ]},
     costOfWaiting: { title: "Every hour you spend doing it", highlight: "doesn't grow.", manualLabel: "manually", middleText: "is an hour your business", quote: "It's all in someone's head is the most expensive sentence in your business." },
-    cta: { title: "Ready to", highlight: "stop waiting?", description: "Let's build the system your team actually needs.", buttonText: "Book a 20-min Fit Call →" }
+    cta: { title: "Ready to", highlight: "stop waiting?", description: "Let's build the system your team actually needs.", buttonText: "Book a 20-min Fit Call →" },
+    about: {
+      hero: { title: "About", highlight: "HMH Labz", description: "Strategy + build, in one team." },
+      story: { heading: "Our Origins", text: "We started with a simple observation: most service businesses are drowning in manual work." },
+      team: { heading: "The Operators", members: [
+        { name: "Haj Akif", role: "Strategy", bio: "Ex-consultant turned builder." }
+      ]}
+    }
   };
 
   const [formData, setFormData] = useState({
@@ -227,70 +234,109 @@ const Pages = () => {
               </div>
             </SectionWrapper>
 
-            <SectionWrapper title="Hero Section" icon={Sparkles}>
-              <div className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Main Title</label>
-                    <input type="text" value={formData.content.hero.title} onChange={(e) => updateSection('hero', { title: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Highlight (Orange)</label>
-                    <input type="text" value={formData.content.hero.highlight} onChange={(e) => updateSection('hero', { highlight: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Description</label>
-                  <textarea value={formData.content.hero.description} onChange={(e) => updateSection('hero', { description: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm h-24 resize-none" />
-                </div>
-              </div>
-            </SectionWrapper>
-
-            <SectionWrapper title="Approach" icon={Layers}>
-              <div className="space-y-8">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <input type="text" value={formData.content.approach.title} onChange={(e) => updateSection('approach', { title: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Title" />
-                  <input type="text" value={formData.content.approach.highlight} onChange={(e) => updateSection('approach', { highlight: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Highlight" />
-                </div>
-                {formData.content.approach.steps.map((step, i) => (
-                  <div key={i} className="p-6 bg-[#f5f1e8]/30 rounded-2xl border border-black/5 space-y-4">
-                    <p className="text-[10px] font-black uppercase text-[#c84b21]">Step 0{i+1}</p>
-                    <input type="text" value={step.title} onChange={(e) => updateNestedList('approach', 'steps', i, { title: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" placeholder="Step Title" />
-                    <textarea value={step.desc} onChange={(e) => updateNestedList('approach', 'steps', i, { desc: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm h-20 resize-none" placeholder="Step Description" />
-                  </div>
-                ))}
-              </div>
-            </SectionWrapper>
-
-            <SectionWrapper title="Engagement Models" icon={Type}>
-              <div className="space-y-8">
-                {formData.content.howWeWork.tiers.map((tier, i) => (
-                  <div key={i} className="p-6 bg-[#f5f1e8]/30 rounded-2xl border border-black/5 space-y-4">
-                    <input type="text" value={tier.title} onChange={(e) => updateNestedList('howWeWork', 'tiers', i, { title: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" />
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <input type="text" value={tier.timeline} onChange={(e) => updateNestedList('howWeWork', 'tiers', i, { timeline: e.target.value })} className="px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Timeline" />
-                      <input type="text" value={tier.shape} onChange={(e) => updateNestedList('howWeWork', 'tiers', i, { shape: e.target.value })} className="px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Shape" />
+            {activePage === 'homepage' && (
+              <>
+                <SectionWrapper title="Hero Section" icon={Sparkles}>
+                  <div className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Main Title</label>
+                        <input type="text" value={formData.content.hero.title} onChange={(e) => updateSection('hero', { title: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Highlight (Orange)</label>
+                        <input type="text" value={formData.content.hero.highlight} onChange={(e) => updateSection('hero', { highlight: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" />
+                      </div>
                     </div>
-                    <textarea value={tier.desc} onChange={(e) => updateNestedList('howWeWork', 'tiers', i, { desc: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm h-20 resize-none" placeholder="Description" />
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Description</label>
+                      <textarea value={formData.content.hero.description} onChange={(e) => updateSection('hero', { description: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm h-24 resize-none" />
+                    </div>
                   </div>
-                ))}
-              </div>
-            </SectionWrapper>
+                </SectionWrapper>
 
-            <SectionWrapper title="Cost of Waiting" icon={Timer}>
-              <div className="space-y-6">
-                <input type="text" value={formData.content.costOfWaiting.title} onChange={(e) => updateSection('costOfWaiting', { title: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Headline Part 1" />
-                <input type="text" value={formData.content.costOfWaiting.highlight} onChange={(e) => updateSection('costOfWaiting', { highlight: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Highlight" />
-                <textarea value={formData.content.costOfWaiting.quote} onChange={(e) => updateSection('costOfWaiting', { quote: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm h-24 resize-none" placeholder="Quote" />
-              </div>
-            </SectionWrapper>
+                <SectionWrapper title="Approach" icon={Layers}>
+                  <div className="space-y-8">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <input type="text" value={formData.content.approach.title} onChange={(e) => updateSection('approach', { title: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Title" />
+                      <input type="text" value={formData.content.approach.highlight} onChange={(e) => updateSection('approach', { highlight: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Highlight" />
+                    </div>
+                    {formData.content.approach.steps.map((step, i) => (
+                      <div key={i} className="p-6 bg-[#f5f1e8]/30 rounded-2xl border border-black/5 space-y-4">
+                        <p className="text-[10px] font-black uppercase text-[#c84b21]">Step 0{i+1}</p>
+                        <input type="text" value={step.title} onChange={(e) => updateNestedList('approach', 'steps', i, { title: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" placeholder="Step Title" />
+                        <textarea value={step.desc} onChange={(e) => updateNestedList('approach', 'steps', i, { desc: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm h-20 resize-none" placeholder="Step Description" />
+                      </div>
+                    ))}
+                  </div>
+                </SectionWrapper>
 
-            <SectionWrapper title="Final CTA" icon={MousePointer2}>
-              <div className="space-y-6">
-                <input type="text" value={formData.content.cta.title} onChange={(e) => updateSection('cta', { title: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="CTA Title" />
-                <input type="text" value={formData.content.cta.buttonText} onChange={(e) => updateSection('cta', { buttonText: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Button Text" />
-              </div>
-            </SectionWrapper>
+                <SectionWrapper title="Engagement Models" icon={Type}>
+                  <div className="space-y-8">
+                    {formData.content.howWeWork.tiers.map((tier, i) => (
+                      <div key={i} className="p-6 bg-[#f5f1e8]/30 rounded-2xl border border-black/5 space-y-4">
+                        <input type="text" value={tier.title} onChange={(e) => updateNestedList('howWeWork', 'tiers', i, { title: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" />
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <input type="text" value={tier.timeline} onChange={(e) => updateNestedList('howWeWork', 'tiers', i, { timeline: e.target.value })} className="px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Timeline" />
+                          <input type="text" value={tier.shape} onChange={(e) => updateNestedList('howWeWork', 'tiers', i, { shape: e.target.value })} className="px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Shape" />
+                        </div>
+                        <textarea value={tier.desc} onChange={(e) => updateNestedList('howWeWork', 'tiers', i, { desc: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm h-20 resize-none" placeholder="Description" />
+                      </div>
+                    ))}
+                  </div>
+                </SectionWrapper>
+
+                <SectionWrapper title="Cost of Waiting" icon={Timer}>
+                  <div className="space-y-6">
+                    <input type="text" value={formData.content.costOfWaiting.title} onChange={(e) => updateSection('costOfWaiting', { title: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Headline Part 1" />
+                    <input type="text" value={formData.content.costOfWaiting.highlight} onChange={(e) => updateSection('costOfWaiting', { highlight: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Highlight" />
+                    <textarea value={formData.content.costOfWaiting.quote} onChange={(e) => updateSection('costOfWaiting', { quote: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm h-24 resize-none" placeholder="Quote" />
+                  </div>
+                </SectionWrapper>
+
+                <SectionWrapper title="Final CTA" icon={MousePointer2}>
+                  <div className="space-y-6">
+                    <input type="text" value={formData.content.cta.title} onChange={(e) => updateSection('cta', { title: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="CTA Title" />
+                    <input type="text" value={formData.content.cta.buttonText} onChange={(e) => updateSection('cta', { buttonText: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Button Text" />
+                  </div>
+                </SectionWrapper>
+              </>
+            )}
+
+            {activePage === 'about' && (
+              <>
+                <SectionWrapper title="About Hero" icon={Sparkles} defaultOpen>
+                  <div className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <input type="text" value={formData.content.about.hero.title} onChange={(e) => updateSection('about', { hero: { ...formData.content.about.hero, title: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Title" />
+                      <input type="text" value={formData.content.about.hero.highlight} onChange={(e) => updateSection('about', { hero: { ...formData.content.about.hero, highlight: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Highlight" />
+                    </div>
+                    <textarea value={formData.content.about.hero.description} onChange={(e) => updateSection('about', { hero: { ...formData.content.about.hero, description: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm h-24 resize-none" placeholder="Description" />
+                  </div>
+                </SectionWrapper>
+
+                <SectionWrapper title="Our Story" icon={Layers}>
+                  <div className="space-y-6">
+                    <input type="text" value={formData.content.about.story.heading} onChange={(e) => updateSection('about', { story: { ...formData.content.about.story, heading: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Heading" />
+                    <textarea value={formData.content.about.story.text} onChange={(e) => updateSection('about', { story: { ...formData.content.about.story, text: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm h-48 resize-none" placeholder="Story text" />
+                  </div>
+                </SectionWrapper>
+
+                <SectionWrapper title="Team Members" icon={Type}>
+                  <div className="space-y-8">
+                    {formData.content.about.team.members.map((member, i) => (
+                      <div key={i} className="p-6 bg-[#f5f1e8]/30 rounded-2xl border border-black/5 space-y-4">
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <input type="text" value={member.name} onChange={(e) => updateNestedList('about', 'team', i, { name: e.target.value })} className="px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" placeholder="Name" />
+                          <input type="text" value={member.role} onChange={(e) => updateNestedList('about', 'team', i, { role: e.target.value })} className="px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Role" />
+                        </div>
+                        <textarea value={member.bio} onChange={(e) => updateNestedList('about', 'team', i, { bio: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm h-20 resize-none" placeholder="Bio" />
+                      </div>
+                    ))}
+                  </div>
+                </SectionWrapper>
+              </>
+            )}
           </div>
         )}
       </main>

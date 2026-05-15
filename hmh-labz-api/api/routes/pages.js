@@ -1,7 +1,6 @@
 import express from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma.js';
 
-const prisma = new PrismaClient();
 const router = express.Router();
 
 // GET /api/pages/:slug - Fetch page data

@@ -5,6 +5,7 @@ import Footer from '../components/layout/Footer';
 import Reveal from '../components/ui/Reveal';
 import MonoLabel from '../components/ui/MonoLabel';
 import InsightSkeleton from '../components/ui/InsightSkeleton';
+import SEO from '../components/seo/SEO';
 import api from '../api/client';
 
 const Insights = () => {
@@ -30,7 +31,13 @@ const Insights = () => {
 
   return (
     <div className="bg-paper selection:bg-terra selection:text-paper min-h-screen relative">
+      <SEO 
+        title="Insights & Field Notes | HMH Labz"
+        description="Deep dives into AI strategy, workflow automation, and the systems driving modern service businesses."
+      />
+      
       <Navbar />
+      
       <main className="pt-20 text-left">
         <header className="px-6 md:px-10 lg:px-14 pt-[120px] sm:pt-[140px] pb-16 sm:pb-24 max-w-7xl mx-auto">
           <Reveal>
@@ -65,7 +72,7 @@ const Insights = () => {
         <section className="px-6 md:px-10 lg:px-14 pb-20 sm:pb-28 max-w-7xl mx-auto">
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-              {[1, 2, 3].map(i => <InsightSkeleton key={i} />)}
+              {[1, 2, 3, 4, 5, 6].map(i => <InsightSkeleton key={i} />)}
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -92,7 +99,7 @@ const Insights = () => {
                     </p>
                     <div className="flex items-center justify-between pt-6 border-t border-ink/12 mt-8">
                       <div className="flex items-center gap-3">
-                        <span className="w-8 h-8 rounded-full bg-ink text-paper flex items-center justify-center font-serif italic text-sm">
+                        <span className="w-8 h-8 rounded-full bg-ink text-paper flex items-center justify-center font-serif italic text-sm uppercase">
                           {insight.author?.name?.charAt(0) || 'H'}
                         </span>
                         <div>

@@ -1,4 +1,6 @@
 import express from 'express';
+import prisma from '../lib/prisma.js';
+
 const router = express.Router();
 
 // --- Upload ---
@@ -24,8 +26,6 @@ router.post('/upload', async (req, res) => {
 // --- Insights ---
 router.get('/insights', async (req, res) => {
   try {
-    const { getPrisma } = await import('../../lib/db.js');
-    const prisma = getPrisma();
     const insights = await prisma.insight.findMany({
       where: { published: true },
       include: { author: { select: { name: true } } },
@@ -39,8 +39,6 @@ router.get('/insights', async (req, res) => {
 
 router.get('/insights/:slugOrId', async (req, res) => {
   try {
-    const { getPrisma } = await import('../../lib/db.js');
-    const prisma = getPrisma();
     const insight = await prisma.insight.findFirst({
       where: {
         OR: [
@@ -60,11 +58,9 @@ router.get('/insights/:slugOrId', async (req, res) => {
 
 router.post('/insights', async (req, res) => {
   try {
-    const { getPrisma } = await import('../../lib/db.js');
     const { requireRole } = await import('../../lib/auth.js');
 
     return requireRole(['SUPERADMIN', 'ADMIN'])(req, res, async () => {
-      const prisma = getPrisma();
       const { title, slug, excerpt, content, coverImage, published } = req.body;
 
       if (!title || !slug) return res.status(400).json({ message: 'Title and slug are required.' });
@@ -85,11 +81,9 @@ router.post('/insights', async (req, res) => {
 
 router.put('/insights/:id', async (req, res) => {
   try {
-    const { getPrisma } = await import('../../lib/db.js');
     const { requireRole } = await import('../../lib/auth.js');
 
     return requireRole(['SUPERADMIN', 'ADMIN'])(req, res, async () => {
-      const prisma = getPrisma();
       const data = req.body;
       const insight = await prisma.insight.update({
         where: { id: req.params.id },
@@ -104,11 +98,9 @@ router.put('/insights/:id', async (req, res) => {
 
 router.delete('/insights/:id', async (req, res) => {
   try {
-    const { getPrisma } = await import('../../lib/db.js');
     const { requireRole } = await import('../../lib/auth.js');
 
     return requireRole(['SUPERADMIN', 'ADMIN'])(req, res, async () => {
-      const prisma = getPrisma();
       await prisma.insight.delete({ where: { id: req.params.id } });
       res.status(200).json({ message: 'Insight deleted.' });
     });
