@@ -15,6 +15,7 @@ router.get('/:slug', async (req, res) => {
       return res.status(404).json({ error: 'Page configuration not found' });
     }
     
+    res.setHeader('Cache-Control', 'no-store');
     res.json(page);
   } catch (error) {
     console.error('Error fetching page:', error);

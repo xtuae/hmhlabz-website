@@ -20,6 +20,7 @@ const Home = () => {
     const fetchHomeData = async () => {
       try {
         const response = await api.get('/pages/home');
+        console.log('API Response [pageData]:', response.data);
         setPageData(response.data);
       } catch (error) {
         console.error('Failed to fetch home page data:', error);
@@ -43,7 +44,7 @@ const Home = () => {
       <Navbar />
       
       <main>
-        <Hero content={pageData?.content?.hero} />
+        <Hero key={pageData?.updatedAt} content={pageData?.content?.hero} />
         <StatsGrid stats={pageData?.content?.hero?.stats} />
         <TechStack />
         <Approach content={pageData?.content?.approach} />
