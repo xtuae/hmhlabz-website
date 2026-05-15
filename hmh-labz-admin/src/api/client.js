@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 
+const baseURL = import.meta.env.VITE_API_BASE_URL || 'https://api.hmhlabz.com/api';
+
 const client = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -29,7 +31,7 @@ client.interceptors.response.use(
     if (error.response?.status === 401) {
       const { logout } = useAuthStore.getState();
       logout();
-      window.location.href = '/labz-admin/login';
+      window.location.href = '/hmhlabz/admin/login';
     }
     return Promise.reject(error);
   }
