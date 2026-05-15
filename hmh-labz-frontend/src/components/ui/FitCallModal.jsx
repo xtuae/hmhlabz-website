@@ -29,7 +29,7 @@ const FitCallModal = ({ isOpen, onClose }) => {
     setError(null);
 
     try {
-      await api.post('/leads', {
+      await api.post('/leads/fit-call', {
         ...formData,
         company: formData.businessName // Map to HubSpot expectation if needed
       });
