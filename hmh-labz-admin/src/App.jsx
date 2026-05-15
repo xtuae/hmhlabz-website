@@ -21,24 +21,30 @@ function App() {
             <AdminLayout />
           </ProtectedRoute>
         }>
-          <Route path="/" element={<DashboardOverview />} />
-          <Route path="/insights" element={<ManageInsights />} />
-          <Route path="/insights/new" element={<ManageContent />} />
-          <Route path="/insights/edit/:id" element={<ManageContent />} />
-          <Route path="/pages" element={<Pages />} />
-          <Route path="/sync" element={<Sync />} />
-          <Route path="/legal" element={<Legal />} />
-          <Route path="/settings" element={<Settings />} />
+          {/* Default and Dashboard fallbacks */}
+          <Route index element={<DashboardOverview />} />
+          <Route path="dashboard" element={<DashboardOverview />} />
+          
+          {/* Module Routes */}
+          <Route path="insights" element={<ManageInsights />} />
+          <Route path="insights/new" element={<ManageContent />} />
+          <Route path="insights/edit/:id" element={<ManageContent />} />
+          <Route path="content" element={<ManageContent />} />
+          <Route path="pages" element={<Pages />} />
+          <Route path="sync" element={<Sync />} />
+          <Route path="legal" element={<Legal />} />
+          <Route path="settings" element={<Settings />} />
           
           {/* Superadmin Only Routes */}
-          <Route path="/users" element={
+          <Route path="users" element={
             <ProtectedRoute roles={['SUPERADMIN']}>
               <ManageUsers />
             </ProtectedRoute>
           } />
-          
-          <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
+
+        {/* Global Fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );

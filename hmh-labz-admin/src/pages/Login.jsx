@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
-import { ShieldCheck, Loader2, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Loader2, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import logo from '../assets/logo.png';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const { login, isLoading, error } = useAuthStore();
   const navigate = useNavigate();
 
@@ -77,14 +78,23 @@ const Login = () => {
             </div>
             <div className="space-y-2">
               <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Access Token</label>
-              <input 
-                type="password" 
-                required 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full px-5 py-4 rounded-2xl border border-black/5 bg-white focus:ring-2 focus:ring-[#c84b21]/20 focus:border-[#c84b21] outline-none transition-all font-bold text-sm shadow-sm"
-              />
+              <div className="relative">
+                <input 
+                  type={showPassword ? "text" : "password"} 
+                  required 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full px-5 py-4 rounded-2xl border border-black/5 bg-white focus:ring-2 focus:ring-[#c84b21]/20 focus:border-[#c84b21] outline-none transition-all font-bold text-sm shadow-sm"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
 
             <div className="flex items-center justify-between text-[10px] uppercase font-black tracking-widest px-1">
