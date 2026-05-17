@@ -14,7 +14,8 @@ import {
   ChevronDown,
   Layers,
   Sparkles,
-  Timer
+  Timer,
+  MapPin
 } from 'lucide-react';
 import client from '../api/client';
 
@@ -90,6 +91,13 @@ const Pages = () => {
       team: { heading: "The Operators", members: [
         { name: "Haj Akif", role: "Strategy", bio: "Ex-consultant turned builder." }
       ]}
+    },
+    contact: {
+      header: { title: "Initiate", highlight: "contact.", description: "Reach out to discuss how we can transform your operations." },
+      locations: [
+        { city: "Chennai", address: "Tech Park, Taramani", phone: "+91 98765 43210", email: "chennai@hmhlabz.com" },
+        { city: "Dubai", address: "Dubai Internet City", phone: "+971 50 123 4567", email: "dubai@hmhlabz.com" }
+      ]
     }
   };
 
@@ -102,6 +110,7 @@ const Pages = () => {
   const pages = [
     { id: 'homepage', name: 'Homepage', slug: 'home', icon: Layout },
     { id: 'about', name: 'About Page', slug: 'about', icon: Info },
+    { id: 'contact', name: 'Contact Page', slug: 'contact', icon: MapPin },
   ];
 
   useEffect(() => {
@@ -332,6 +341,38 @@ const Pages = () => {
                           <input type="text" value={member.role} onChange={(e) => updateNestedList('about', 'team', i, { role: e.target.value })} className="px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Role" />
                         </div>
                         <textarea value={member.bio} onChange={(e) => updateNestedList('about', 'team', i, { bio: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm h-20 resize-none" placeholder="Bio" />
+                      </div>
+                    ))}
+                  </div>
+                </SectionWrapper>
+              </>
+            )}
+
+            {activePage === 'contact' && (
+              <>
+                <SectionWrapper title="Contact Header" icon={Sparkles} defaultOpen>
+                  <div className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <input type="text" value={formData.content.contact?.header?.title || ''} onChange={(e) => updateSection('contact', { header: { ...formData.content.contact.header, title: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Title" />
+                      <input type="text" value={formData.content.contact?.header?.highlight || ''} onChange={(e) => updateSection('contact', { header: { ...formData.content.contact.header, highlight: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Highlight" />
+                    </div>
+                    <textarea value={formData.content.contact?.header?.description || ''} onChange={(e) => updateSection('contact', { header: { ...formData.content.contact.header, description: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm h-24 resize-none" placeholder="Description" />
+                  </div>
+                </SectionWrapper>
+
+                <SectionWrapper title="Office Locations" icon={MapPin}>
+                  <div className="space-y-8">
+                    {formData.content.contact?.locations?.map((loc, i) => (
+                      <div key={i} className="p-6 bg-[#f5f1e8]/30 rounded-2xl border border-black/5 space-y-4">
+                        <p className="text-[10px] font-black uppercase text-[#c84b21]">Location 0{i+1}</p>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <input type="text" value={loc.city} onChange={(e) => updateNestedList('contact', 'locations', i, { city: e.target.value })} className="px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" placeholder="City Name" />
+                          <input type="text" value={loc.phone} onChange={(e) => updateNestedList('contact', 'locations', i, { phone: e.target.value })} className="px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Phone Number" />
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <input type="text" value={loc.address} onChange={(e) => updateNestedList('contact', 'locations', i, { address: e.target.value })} className="px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Address" />
+                          <input type="email" value={loc.email} onChange={(e) => updateNestedList('contact', 'locations', i, { email: e.target.value })} className="px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Email" />
+                        </div>
                       </div>
                     ))}
                   </div>

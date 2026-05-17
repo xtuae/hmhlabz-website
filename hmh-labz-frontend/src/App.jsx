@@ -9,6 +9,7 @@ import Terms from './pages/Terms';
 import Login from './pages/Login';
 import UserDashboard from './pages/UserDashboard';
 import About from './pages/About';
+import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 import FitCallModal from './components/ui/FitCallModal';
 
@@ -35,6 +36,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/insights" element={<Insights />} />
             <Route path="/insights/:slug" element={<InsightDetail />} />
             <Route path="/privacy" element={<Privacy />} />

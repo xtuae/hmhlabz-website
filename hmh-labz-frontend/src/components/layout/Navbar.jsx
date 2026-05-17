@@ -19,7 +19,8 @@ const Navbar = () => {
     { label: 'Approach', path: '#approach' },
     { label: 'Services', path: '#how-we-work' },
     { label: 'Insights', path: '/insights' },
-    { label: 'About', path: '/about' }
+    { label: 'About', path: '/about' },
+    { label: 'Contact', path: '/contact' }
   ];
 
   const handleNavClick = (e, path) => {
