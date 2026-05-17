@@ -57,3 +57,15 @@ model Page {
   content         Json     // Stores structured section data
   updatedAt       DateTime @updatedAt
 }
+
+model Lead {
+  id           String   @id @default(uuid())
+  name         String
+  email        String
+  businessName String?
+  phone        String?
+  employees    String?
+  tier         String?
+  message      String?
+  createdAt    DateTime @default(now())
+}
