@@ -45,7 +45,7 @@ router.post('/fit-call', async (req, res) => {
       console.error('Email Notification Error:', mailError);
     }
 
-    res.status(201).json({ message: 'Lead captured successfully', id: lead.id });
+    res.status(201).json({ success: true, id: lead.id });
   } catch (error) {
     console.error('Lead Pipeline Error:', error);
     res.status(500).json({ message: 'Error capturing lead' });
