@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>404 Not Found — HMH Labz</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&display=swap"
+        rel="stylesheet">
+
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Geist', 'sans-serif'],
+                        serif: ['Fraunces', 'serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                    },
+                    colors: {
+                        paper: '#F4F1EA',
+                        cream: '#EDE6D3',
+                        ink: '#161513',
+                        terra: '#C2410C',
+                        'terra-deep': '#9A330A',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F4F1EA;
+            color: #161513;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Premium noise overlay */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMjAiIGhlaWdodD0iMjIwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC44NSIgbnVtT2N0YXZlcz0iMiIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjxmZUNvbG9yTWF0cml4IHZhbHVlcz0iMCAwIDAgMCAwLjA4ICAwIDAgMCAwIDAuMDcgIDAgMCAwIDAgMC4wNiAgMCAwIDAgMC4wNCAwIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI24pIi8+PC9zdmc+");
+            opacity: 0.04;
+        }
+
+        ::selection {
+            background: #C2410C;
+            color: #F4F1EA;
+        }
+
+        .frauncesItalic {
+            font-family: 'Fraunces', serif;
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .mono-label {
+            font-family: 'Geist Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            font-size: 11px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 bg-paper/80 backdrop-blur-xl border-b border-ink/10 py-4">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
+            <a href="index.html" class="flex items-center">
+                <img src="https://www.hmhlabz.com/wp-content/uploads/hmh-labz-black.png" alt="HMH Labz"
+                    class="h-5 sm:h-6 w-auto object-contain" />
+            </a>
+
+            <div
+                class="hidden md:flex items-center gap-10 font-sans font-bold text-xs uppercase tracking-widest text-ink">
+                <a href="index.html#approach" class="hover:text-terra transition-colors">Approach</a>
+                <a href="index.html#services" class="hover:text-terra transition-colors">Services</a>
+                <a href="index.html" class="hover:text-terra transition-colors">Insights</a>
+                <a href="index.html" class="hover:text-terra transition-colors">About</a>
+            </div>
+
+            <button class="md:hidden flex flex-col justify-center gap-1.5 w-8 h-8 group">
+                <span class="w-full h-[2px] bg-ink group-hover:bg-terra transition-colors"></span>
+                <span class="w-full h-[2px] bg-ink group-hover:bg-terra transition-colors"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center pt-32 pb-24 px-6 md:px-12 text-center">
+        <div class="max-w-3xl mx-auto">
+            <span class="mono-label text-terra mb-8 block">Error 404</span>
+
+            <h1 class="text-6xl md:text-9xl font-black tracking-tighter leading-[0.9] text-ink mb-10">
+                Page not <br class="hidden sm:block" /> <em class="frauncesItalic font-normal text-terra">found.</em>
+            </h1>
+
+            <p class="text-xl md:text-2xl text-ink/60 font-light leading-relaxed mb-14 max-w-xl mx-auto">
+                The page you are looking for has been moved, deleted, or never existed in the first place.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+                <a href="index.html"
+                    class="inline-block px-10 py-5 bg-terra text-paper rounded-full font-mono font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-terra/20 hover:bg-terra-deep hover:scale-[1.02] active:scale-[0.98] transition-all">
+                    Return to Homepage →
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-ink text-paper/40 px-6 py-24 md:py-28 text-left rounded-t-[3rem]">
+        <div
+            class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-12 pb-16 border-b border-white/10 text-white">
+            <div>
+                <img src="https://www.hmhlabz.com/wp-content/uploads/hmh-icon.webp" alt="HMH Labz"
+                    class="h-10 invert brightness-0 mb-8" />
+                <p class="frauncesItalic text-2xl text-paper/60 max-w-sm">Strategy + build, in one team. We tell you
+                    what to do, then we ship it.</p>
+            </div>
+            <div class="flex gap-20 font-bold text-xs uppercase tracking-[0.2em]">
+                <div class="flex flex-col gap-5">
+                    <a href="index.html#approach" class="hover:text-terra transition-colors">Approach</a>
+                    <a href="index.html#services" class="hover:text-terra transition-colors">Services</a>
+                </div>
+                <div class="flex flex-col gap-5">
+                    <a href="mailto:hello@hmhlabz.com" class="hover:text-terra transition-colors">Email</a>
+                    <a href="contact.html" class="hover:text-terra transition-colors">Contact</a>
+                </div>
+            </div>
+        </div>
+        <div
+            class="max-w-7xl mx-auto flex justify-between items-center mt-10 font-mono text-[10px] uppercase tracking-widest text-paper/30 font-bold">
+            <span>© 2026 HMH LABZ</span>
+            <span>Dubai · Chennai</span>
+        </div>
+    </footer>
+
+</body>
+
+</html>

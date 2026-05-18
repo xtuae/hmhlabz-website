@@ -29,6 +29,8 @@ const InsightForm = () => {
     content: '',
     coverImage: null,
     category: 'Field Notes',
+    tag: 'Field Notes',
+    readTime: '5 min read',
     seoTitle: '',
     seoDescription: '',
     status: 'DRAFT',
@@ -47,6 +49,8 @@ const InsightForm = () => {
           content: res.data.content || '',
           coverImage: res.data.coverImage || null,
           category: res.data.category || 'Field Notes',
+          tag: res.data.tag || res.data.category || 'Field Notes',
+          readTime: res.data.readTime || '5 min read',
           seoTitle: res.data.seoTitle || '',
           seoDescription: res.data.seoDescription || '',
           status: res.data.status || 'DRAFT',
@@ -170,17 +174,23 @@ const InsightForm = () => {
         <div className="grid md:grid-cols-12 gap-6">
           <div className="md:col-span-4">
             <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-1">
-              Category
+              Category / Tag
             </label>
             <div className="relative">
               <select
-                value={form.category}
-                onChange={(e) => handleChange('category', e.target.value)}
+                value={form.tag}
+                onChange={(e) => {
+                  handleChange('tag', e.target.value);
+                  handleChange('category', e.target.value); // keep both synced
+                }}
                 className="w-full p-5 bg-white rounded-2xl border border-black/5 outline-none focus:border-[#c84b21] transition-all font-bold text-sm appearance-none cursor-pointer shadow-sm"
               >
                 <option value="Field Notes">Field Notes</option>
                 <option value="Playbook">Playbook</option>
                 <option value="Case Note">Case Note</option>
+                <option value="Operations">Operations</option>
+                <option value="AI Workflows">AI Workflows</option>
+                <option value="Engineering">Engineering</option>
               </select>
               <Tag size={16} className="absolute right-5 top-5 text-gray-400 pointer-events-none" />
             </div>
@@ -217,6 +227,20 @@ const InsightForm = () => {
             placeholder="A brief summary for the blog listing page..."
             rows={3}
             className="w-full p-5 bg-white rounded-2xl border border-black/5 outline-none focus:border-[#c84b21] transition-all font-bold text-sm resize-none placeholder:text-gray-300 shadow-sm"
+          />
+        </div>
+
+        {/* Read Time */}
+        <div>
+          <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-1">
+            Read Time
+          </label>
+          <input
+            type="text"
+            value={form.readTime}
+            onChange={(e) => handleChange('readTime', e.target.value)}
+            placeholder="e.g., 5 min read"
+            className="w-full p-5 bg-white rounded-2xl border border-black/5 outline-none focus:border-[#c84b21] transition-all font-bold text-sm placeholder:text-gray-300 shadow-sm"
           />
         </div>
 

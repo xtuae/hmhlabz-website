@@ -91,18 +91,22 @@ const ManageInsights = () => {
                 }`}>
                   {insight.status === 'PUBLISHED' ? 'Published' : 'Draft'}
                 </div>
-                {insight.category && (
+                {(insight.tag || insight.category) && (
                   <div className="absolute top-4 right-4 backdrop-blur bg-black/40 text-white px-3 py-1.5 rounded-full text-[8px] font-black uppercase tracking-widest shadow-sm">
-                    {insight.category}
+                    {insight.tag || insight.category}
                   </div>
                 )}
               </div>
               <div className="p-8 flex flex-col flex-grow">
                 <h4 className="text-xl font-bold mb-2 line-clamp-2 min-h-[3.5rem]">{insight.title}</h4>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-8 flex items-center gap-2">
-                  <Circle size={8} className={`${insight.status === 'PUBLISHED' ? 'fill-green-500 text-green-500' : 'fill-yellow-500 text-yellow-500'}`} />
-                  {formatDate(insight.createdAt)}
-                </p>
+                <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-8 flex items-center gap-2 flex-wrap">
+                  <span className="flex items-center gap-1">
+                    <Circle size={8} className={`${insight.status === 'PUBLISHED' ? 'fill-green-500 text-green-500' : 'fill-yellow-500 text-yellow-500'}`} />
+                    {formatDate(insight.createdAt)}
+                  </span>
+                  <span>•</span>
+                  <span>{insight.readTime || '5 min read'}</span>
+                </div>
                 <div className="mt-auto pt-6 border-t border-gray-50 flex justify-between items-center">
                   <div className="flex items-center gap-4">
                     <button

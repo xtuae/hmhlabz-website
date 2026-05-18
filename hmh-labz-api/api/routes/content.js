@@ -73,7 +73,7 @@ router.post('/insights', async (req, res) => {
     const { requireRole } = await import('../lib/auth.js');
 
     return requireRole(['SUPERADMIN', 'ADMIN'])(req, res, async () => {
-      const { title, slug, excerpt, content, coverImage, category, seoTitle, seoDescription, status } = req.body;
+      const { title, slug, excerpt, content, coverImage, category, tag, readTime, seoTitle, seoDescription, status } = req.body;
 
       if (!title || !slug) return res.status(400).json({ message: 'Title and slug are required.' });
 
@@ -88,6 +88,8 @@ router.post('/insights', async (req, res) => {
           content: content || '',
           coverImage: coverImage || null, 
           category: category || 'Field Notes',
+          tag: tag || 'Operations',
+          readTime: readTime || '5 min read',
           seoTitle: seoTitle || null, 
           seoDescription: seoDescription || null,
           status: insightStatus, 
@@ -108,7 +110,7 @@ router.put('/insights/:id', async (req, res) => {
     const { requireRole } = await import('../lib/auth.js');
 
     return requireRole(['SUPERADMIN', 'ADMIN'])(req, res, async () => {
-      const { title, slug, excerpt, content, coverImage, category, seoTitle, seoDescription, status } = req.body;
+      const { title, slug, excerpt, content, coverImage, category, tag, readTime, seoTitle, seoDescription, status } = req.body;
       
       const existing = await prisma.insight.findUnique({ where: { id: req.params.id } });
       if (!existing) return res.status(404).json({ message: 'Not found' });
@@ -128,6 +130,8 @@ router.put('/insights/:id', async (req, res) => {
           content: content || '',
           coverImage: coverImage || null, 
           category: category || 'Field Notes',
+          tag: tag || existing.tag || 'Operations',
+          readTime: readTime || existing.readTime || '5 min read',
           seoTitle: seoTitle || null, 
           seoDescription: seoDescription || null,
           status: insightStatus, 

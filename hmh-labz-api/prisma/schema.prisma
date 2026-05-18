@@ -39,6 +39,8 @@ model Insight {
   content         String   // Rich Text / HTML
   coverImage      String?  // Vercel Blob URL
   category        String?  @default("Field Notes")
+  tag             String   @default("Operations") // e.g., Operations, AI Workflows, Engineering, Field Notes, Playbook, Case Note
+  readTime        String   @default("5 min read")
   seoTitle        String?
   seoDescription  String?
   status          String   @default("DRAFT") // DRAFT or PUBLISHED
