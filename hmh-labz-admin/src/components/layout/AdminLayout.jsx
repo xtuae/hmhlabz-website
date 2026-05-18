@@ -50,14 +50,14 @@ const AdminLayout = () => {
             
             <div className="flex items-center space-x-4 pl-6 border-l border-black/5">
               <div className="hidden md:block text-right">
-                <p className="text-xs font-black tracking-tight">{user?.firstName} {user?.lastName}</p>
-                <p className="text-[9px] text-[#c84b21] font-black uppercase tracking-widest mt-0.5">{user?.role || 'Strategist'}</p>
+                <p className="text-xs font-black tracking-tight">{user?.name || `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || 'Admin User'}</p>
+                <p className="text-[9px] text-[#c84b21] font-black uppercase tracking-widest mt-0.5">{user?.role || 'ADMIN'}</p>
               </div>
               <div className="w-11 h-11 rounded-2xl bg-white border-2 border-black/5 shadow-sm overflow-hidden flex items-center justify-center text-[#1a1a1a] font-black hover:border-[#c84b21]/30 transition-all cursor-pointer group">
                 {user?.avatar ? (
                   <img src={user.avatar} alt="Profile" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 ) : (
-                  <span className="text-sm">{user?.firstName?.[0]}{user?.lastName?.[0]}</span>
+                  <span className="text-sm">{user?.name?.charAt(0) || user?.firstName?.[0] || 'A'}</span>
                 )}
               </div>
             </div>
