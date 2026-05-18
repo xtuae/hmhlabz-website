@@ -52,4 +52,35 @@ router.post('/fit-call', async (req, res) => {
   }
 });
 
+router.post('/contact', async (req, res) => {
+  const { name, email, subject, message } = req.body;
+
+  try {
+    // 1. Save to Database
+    const contact = await prisma.contactMessage.create({
+      data: { name, email, subject, message }
+    });
+
+    // 2. Send Email Notification via Brevo
+    try {
+      await sendLeadNotification({
+        name,
+        email,
+        businessName: 'N/A (General Contact)',
+        employees: 'N/A',
+        tier: `SUBJECT: ${subject}`,
+        message,
+        timestamp: new Date().toLocaleString('en-US', { timeZone: 'UTC' })
+      });
+    } catch (emailErr) {
+      console.error('Brevo Contact Email Failed:', emailErr);
+    }
+
+    res.status(201).json({ success: true, id: contact.id });
+  } catch (error) {
+    console.error('Contact Pipeline Error:', error);
+    res.status(500).json({ error: 'Failed to process contact message' });
+  }
+});
+
 export default router;
