@@ -1,31 +1,7 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Loader2 } from 'lucide-react';
-import client from '../api/client';
-import Navbar from '../components/layout/Navbar';
-import Footer from '../components/layout/Footer';
-
-const About = () => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchAbout = async () => {
-      try {
-        const res = await client.get('/about');
-        setData(res.data);
-      } catch (error) {
-        console.error('Failed to fetch about page:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchAbout();
-  }, []);
-
-  if (loading || !data) { return ( <div className='min-h-screen flex items-center justify-center bg-paper'><Loader2 className='w-8 h-8 animate-spin text-terra' /></div> ); } return ( <> <Navbar />
-      <main>
-    
+<main>
+    <!-- ============================================================
+         HERO — manifesto, no people
+         ============================================================ -->
     <header className="px-6 md:px-10 lg:px-14 pt-[120px] sm:pt-[140px] pb-20 sm:pb-28 border-b border-ink/12">
       <div className="flex items-center gap-3 text-[13px] mb-10 sm:mb-14">
         <span className="mono text-ink/45">File · 00</span>
@@ -34,14 +10,18 @@ const About = () => {
       </div>
 
       <div className="grid grid-cols-12 gap-6 lg:gap-8 items-end">
-        <h1 className="col-span-12 lg:col-span-9 font-sans font-bold text-ink tracking-[-0.035em] leading-[0.92]" style={{ fontSize: 'clamp(48px, 9.2vw, 148px)', textWrap: 'balance' }}>{data.heroTitle}</h1>
+        <h1 className="col-span-12 lg:col-span-9 font-sans font-bold text-ink tracking-[-0.035em] leading-[0.92]" style={{ fontSize: 'clamp(48px, 9.2vw, 148px)', textWrap: 'balance' }}>
+          A studio that <span className="frauncesItalic text-terra">tells&nbsp;you</span> what to do, and then does it.
+        </h1>
         <div className="col-span-12 lg:col-span-3 lg:pb-4">
           <div className="mono text-ink/45 mb-4">Issue №&nbsp;26.05</div>
-          <p className="text-[14px] text-ink/65 leading-[1.6]" style={{ textWrap: 'pretty' }}>{data.heroText}</p>
+          <p className="text-[14px] text-ink/65 leading-[1.6]" style={{ textWrap: 'pretty' }}>
+            HMH Labz is a small strategy &amp; build studio for legal, recruitment and professional-services firms. We diagnose, recommend, and ship — under one roof, on one contract.
+          </p>
         </div>
       </div>
 
-      
+      <!-- Vital stats row -->
       <div className="mt-20 sm:mt-24 grid grid-cols-2 md:grid-cols-4 border-t border-ink/12 divide-x divide-ink/12">
         <div className="px-0 md:px-6 py-7">
           <div className="font-serif italic text-terra leading-none" style={{ fontSize: 'clamp(40px, 4vw, 56px)' }}>2023</div>
@@ -62,7 +42,9 @@ const About = () => {
       </div>
     </header>
 
-    
+    <!-- ============================================================
+         01 — THE THESIS (manifesto block)
+         ============================================================ -->
     <section className="px-6 md:px-10 lg:px-14 py-24 sm:py-32 border-b border-ink/12">
       <div className="mono text-terra mb-10"><span className="rule"></span>01 · Thesis</div>
 
@@ -85,7 +67,9 @@ const About = () => {
       </div>
     </section>
 
-    
+    <!-- ============================================================
+         02 — WHAT WE DO (three lines of work)
+         ============================================================ -->
     <section className="px-6 md:px-10 lg:px-14 py-24 sm:py-32 border-b border-ink/12 bg-cream/45">
       <div className="grid grid-cols-12 gap-8 mb-16">
         <div className="col-span-12 lg:col-span-5">
@@ -100,30 +84,68 @@ const About = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-7">
-        {data.linesOfWork?.map((item, i) => (
-        <article key={item.id || i} className="rounded-2xl border border-ink/12 bg-paper overflow-hidden flex flex-col">
+        <article className="rounded-2xl border border-ink/12 bg-paper overflow-hidden flex flex-col">
           <div className="px-6 py-3 border-b border-ink/12 flex items-center justify-between">
-            <span className="mono text-terra">Line · 0{i + 1}</span>
-            <span className="mono text-ink/40">{item.title.split(' ')[0]}</span>
+            <span className="mono text-terra">Line · 01</span>
+            <span className="mono text-ink/40">Diagnose</span>
           </div>
           <div className="p-7 sm:p-9 flex-1 flex flex-col">
-            <div className="font-serif italic text-ink/15 leading-none" style={{ fontSize: '96px' }}>0{i + 1}</div>
-            <h3 className="mt-2 font-sans font-semibold text-[24px] tracking-[-0.015em] leading-[1.15]">{item.title}</h3>
+            <div className="font-serif italic text-ink/15 leading-none" style={{ fontSize: '96px' }}>01</div>
+            <h3 className="mt-2 font-sans font-semibold text-[24px] tracking-[-0.015em] leading-[1.15]">AI &amp; opportunity audits.</h3>
             <p className="mt-4 text-[15px] leading-[1.65] text-ink/70 flex-1" style={{ textWrap: 'pretty' }}>
-              {item.description}
+              A two-week diagnostic across one team or one workflow. The output is a scored, written roadmap — not a slide deck — that ranks every opportunity by impact, effort, and risk of stalling.
             </p>
             <div className="mt-7 pt-5 border-t border-ink/10 grid grid-cols-2 gap-y-3 text-[13px]">
-              <span className="mono text-ink/45">Duration</span><span className="text-ink/80 text-right">{item.duration}</span>
-              <span className="mono text-ink/45">Output</span><span className="text-ink/80 text-right">{item.output}</span>
-              <span className="mono text-ink/45">Tier</span><span className="text-terra text-right">{item.tier}</span>
+              <span className="mono text-ink/45">Duration</span><span className="text-ink/80 text-right">2 weeks</span>
+              <span className="mono text-ink/45">Output</span><span className="text-ink/80 text-right">Written roadmap</span>
+              <span className="mono text-ink/45">Tier</span><span className="text-terra text-right">01 · Wedge</span>
             </div>
           </div>
         </article>
-        ))}
+
+        <article className="rounded-2xl border border-ink/12 bg-paper overflow-hidden flex flex-col">
+          <div className="px-6 py-3 border-b border-ink/12 flex items-center justify-between">
+            <span className="mono text-terra">Line · 02</span>
+            <span className="mono text-ink/40">Build</span>
+          </div>
+          <div className="p-7 sm:p-9 flex-1 flex flex-col">
+            <div className="font-serif italic text-ink/15 leading-none" style={{ fontSize: '96px' }}>02</div>
+            <h3 className="mt-2 font-sans font-semibold text-[24px] tracking-[-0.015em] leading-[1.15]">Implementation sprints.</h3>
+            <p className="mt-4 text-[15px] leading-[1.65] text-ink/70 flex-1" style={{ textWrap: 'pretty' }}>
+              Eight to twelve weeks shipping one workflow into production. RAG systems, intake automation, internal tools — built on your stack, handed back on day one, with adoption baked in.
+            </p>
+            <div className="mt-7 pt-5 border-t border-ink/10 grid grid-cols-2 gap-y-3 text-[13px]">
+              <span className="mono text-ink/45">Duration</span><span className="text-ink/80 text-right">8–12 weeks</span>
+              <span className="mono text-ink/45">Output</span><span className="text-ink/80 text-right">Production system</span>
+              <span className="mono text-ink/45">Tier</span><span className="text-terra text-right">02 · Sprint</span>
+            </div>
+          </div>
+        </article>
+
+        <article className="rounded-2xl border border-ink/12 bg-paper overflow-hidden flex flex-col">
+          <div className="px-6 py-3 border-b border-ink/12 flex items-center justify-between">
+            <span className="mono text-terra">Line · 03</span>
+            <span className="mono text-ink/40">Embed</span>
+          </div>
+          <div className="p-7 sm:p-9 flex-1 flex flex-col">
+            <div className="font-serif italic text-ink/15 leading-none" style={{ fontSize: '96px' }}>03</div>
+            <h3 className="mt-2 font-sans font-semibold text-[24px] tracking-[-0.015em] leading-[1.15]">Digital transformation, long-form.</h3>
+            <p className="mt-4 text-[15px] leading-[1.65] text-ink/70 flex-1" style={{ textWrap: 'pretty' }}>
+              Twelve-month engagements for firms reshaping a practice area or a function. We sit alongside the operating team, ship in monthly cycles, and write the playbook as we go.
+            </p>
+            <div className="mt-7 pt-5 border-t border-ink/10 grid grid-cols-2 gap-y-3 text-[13px]">
+              <span className="mono text-ink/45">Duration</span><span className="text-ink/80 text-right">12 months</span>
+              <span className="mono text-ink/45">Output</span><span className="text-ink/80 text-right">Embedded team</span>
+              <span className="mono text-ink/45">Tier</span><span className="text-terra text-right">03 · Embed</span>
+            </div>
+          </div>
+        </article>
       </div>
     </section>
 
-    
+    <!-- ============================================================
+         03 — PRINCIPLES (numbered, editorial)
+         ============================================================ -->
     <section className="px-6 md:px-10 lg:px-14 py-24 sm:py-32 border-b border-ink/12">
       <div className="grid grid-cols-12 gap-8 mb-20">
         <div className="col-span-12 lg:col-span-7">
@@ -193,7 +215,9 @@ const About = () => {
       </ol>
     </section>
 
-    
+    <!-- ============================================================
+         04 — THE SHAPE OF AN ENGAGEMENT
+         ============================================================ -->
     <section className="px-6 md:px-10 lg:px-14 py-24 sm:py-32 border-b border-ink/12 bg-cream/45">
       <div className="grid grid-cols-12 gap-8 mb-16">
         <div className="col-span-12 lg:col-span-7">
@@ -207,15 +231,15 @@ const About = () => {
         </p>
       </div>
 
-      
+      <!-- Phase ruler -->
       <div className="rounded-2xl border border-ink/12 bg-paper overflow-hidden">
-        
+        <!-- Ruler / scale -->
         <div className="px-6 py-3 border-b border-ink/12 flex items-center justify-between">
           <span className="mono text-terra">Fig. 01</span>
           <span className="mono text-ink/40">Wedge engagement · weeks 01–12</span>
         </div>
         <div className="relative">
-          
+          <!-- tick row -->
           <div className="grid grid-cols-12 border-b border-ink/12 text-center">
             <div className="py-2 mono text-ink/40 border-r border-ink/10">01</div>
             <div className="py-2 mono text-ink/40 border-r border-ink/10">02</div>
@@ -230,7 +254,7 @@ const About = () => {
             <div className="py-2 mono text-ink/40 border-r border-ink/10">11</div>
             <div className="py-2 mono text-ink/40">12</div>
           </div>
-          
+          <!-- bands -->
           <div className="grid grid-cols-12 h-12 border-b border-ink/12">
             <div className="col-span-2 bg-terra/85"></div>
             <div className="col-span-3 bg-terra/55"></div>
@@ -239,22 +263,43 @@ const About = () => {
           </div>
         </div>
 
-        
+        <!-- Phase descriptions -->
         <div className="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-ink/12">
-          {data.phases?.map((phase, i) => (
-          <div key={phase.id || i} className="px-7 py-8">
-            <div className="mono text-terra mb-2">{phase.timeframe}</div>
-            <h4 className="font-sans font-semibold text-[19px] tracking-[-0.01em]">{phase.title}</h4>
+          <div className="px-7 py-8">
+            <div className="mono text-terra mb-2">Wk 01–02</div>
+            <h4 className="font-sans font-semibold text-[19px] tracking-[-0.01em]">Diagnose</h4>
             <p className="mt-3 text-[14px] leading-[1.6] text-ink/65" style={{ textWrap: 'pretty' }}>
-              {phase.description}
+              Two weeks inside the workflow. Interviews, shadowing, scoring. Output: a written roadmap and a kill memo.
             </p>
           </div>
-          ))}
+          <div className="px-7 py-8">
+            <div className="mono text-terra mb-2">Wk 03–05</div>
+            <h4 className="font-sans font-semibold text-[19px] tracking-[-0.01em]">Wedge</h4>
+            <p className="mt-3 text-[14px] leading-[1.6] text-ink/65" style={{ textWrap: 'pretty' }}>
+              The smallest version of the system that produces real numbers. Daily standups, weekly demos.
+            </p>
+          </div>
+          <div className="px-7 py-8">
+            <div className="mono text-terra mb-2">Wk 06–10</div>
+            <h4 className="font-sans font-semibold text-[19px] tracking-[-0.01em]">Ship &amp; adopt</h4>
+            <p className="mt-3 text-[14px] leading-[1.6] text-ink/65" style={{ textWrap: 'pretty' }}>
+              Production rollout to one team. Adoption sessions, change loops, edge-case triage. Friday memo every week.
+            </p>
+          </div>
+          <div className="px-7 py-8">
+            <div className="mono text-terra mb-2">Wk 11–12</div>
+            <h4 className="font-sans font-semibold text-[19px] tracking-[-0.01em]">Hand over</h4>
+            <p className="mt-3 text-[14px] leading-[1.6] text-ink/65" style={{ textWrap: 'pretty' }}>
+              Repo, accounts, runbook. A scored decision on whether to extend, expand, or kill — written, never spoken.
+            </p>
+          </div>
         </div>
       </div>
     </section>
 
-    
+    <!-- ============================================================
+         05 — CAPABILITIES (no people, just disciplines)
+         ============================================================ -->
     <section className="px-6 md:px-10 lg:px-14 py-24 sm:py-32 border-b border-ink/12">
       <div className="grid grid-cols-12 gap-8 mb-16">
         <div className="col-span-12 lg:col-span-7">
@@ -269,18 +314,44 @@ const About = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-ink/12">
-        {data.capabilities?.map((cap, i) => (
-        <div key={cap.id || i} className="border-r border-b border-ink/12 px-7 py-9">
-          <div className="mono text-terra mb-4">{cap.number}</div>
-          <h4 className="font-sans font-semibold text-[20px] tracking-[-0.01em] leading-[1.15]">{cap.title}</h4>
-          <p className="mt-3 text-[14px] leading-[1.65] text-ink/65">{cap.description}</p>
+        <div className="border-r border-b border-ink/12 px-7 py-9">
+          <div className="mono text-terra mb-4">01</div>
+          <h4 className="font-sans font-semibold text-[20px] tracking-[-0.01em] leading-[1.15]">Operational strategy</h4>
+          <p className="mt-3 text-[14px] leading-[1.65] text-ink/65">Workflow mapping, opportunity scoring, written roadmaps. The diagnostic muscle.</p>
         </div>
-        ))}
+        <div className="border-r border-b border-ink/12 px-7 py-9">
+          <div className="mono text-terra mb-4">02</div>
+          <h4 className="font-sans font-semibold text-[20px] tracking-[-0.01em] leading-[1.15]">Applied AI &amp; RAG</h4>
+          <p className="mt-3 text-[14px] leading-[1.65] text-ink/65">Retrieval systems, evaluation harnesses, model selection. Production-grade, not demoware.</p>
+        </div>
+        <div className="border-r border-b border-ink/12 px-7 py-9">
+          <div className="mono text-terra mb-4">03</div>
+          <h4 className="font-sans font-semibold text-[20px] tracking-[-0.01em] leading-[1.15]">Product engineering</h4>
+          <p className="mt-3 text-[14px] leading-[1.65] text-ink/65">Internal tools and customer-facing apps. TypeScript, Python, your existing stack where it's sane.</p>
+        </div>
+        <div className="border-r border-b border-ink/12 px-7 py-9">
+          <div className="mono text-terra mb-4">04</div>
+          <h4 className="font-sans font-semibold text-[20px] tracking-[-0.01em] leading-[1.15]">Product &amp; service design</h4>
+          <p className="mt-3 text-[14px] leading-[1.65] text-ink/65">Interface design, workflow design, the boring forms that decide whether a system gets used.</p>
+        </div>
+        <div className="border-r border-b border-ink/12 px-7 py-9">
+          <div className="mono text-terra mb-4">05</div>
+          <h4 className="font-sans font-semibold text-[20px] tracking-[-0.01em] leading-[1.15]">Change &amp; adoption</h4>
+          <p className="mt-3 text-[14px] leading-[1.65] text-ink/65">Rollout, training, the unglamorous work of getting humans to actually open the thing.</p>
+        </div>
+        <div className="border-r border-b border-ink/12 px-7 py-9">
+          <div className="mono text-terra mb-4">06</div>
+          <h4 className="font-sans font-semibold text-[20px] tracking-[-0.01em] leading-[1.15]">Data &amp; evaluation</h4>
+          <p className="mt-3 text-[14px] leading-[1.65] text-ink/65">Eval suites, dashboards, the numbers the kill memo gets measured against.</p>
+        </div>
       </div>
+
       <p className="mt-10 text-[14px] mono text-ink/45">→&nbsp;&nbsp;Things we don't do: pure brand work, pure decks, vendor reselling, anything where we can't sign for the outcome.</p>
     </section>
 
-    
+    <!-- ============================================================
+         06 — SELECTED WORK (anonymized vignettes — no people)
+         ============================================================ -->
     <section className="px-6 md:px-10 lg:px-14 py-24 sm:py-32 border-b border-ink/12 bg-cream/45">
       <div className="grid grid-cols-12 gap-8 mb-16">
         <div className="col-span-12 lg:col-span-7">
@@ -341,7 +412,7 @@ const About = () => {
             <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 w-full h-full">
               <rect width="400" height="300" fill="#EDE6D3" />
               <g transform="translate(40 60)">
-                
+                <!-- pipeline -->
                 <circle cx="30" cy="90" r="22" fill="#C2410C" />
                 <line x1="56" y1="90" x2="110" y2="90" stroke="#161513" strokeWidth="1.2" />
                 <rect x="110" y="68" width="56" height="44" fill="#F4F1EA" stroke="#161513" />
@@ -349,10 +420,10 @@ const About = () => {
                 <rect x="220" y="68" width="56" height="44" fill="#F4F1EA" stroke="#161513" />
                 <line x1="276" y1="90" x2="320" y2="90" stroke="#161513" strokeWidth="1.2" />
                 <polygon points="320,90 314,84 314,96" fill="#161513" />
-                
+                <!-- labels -->
                 <rect x="110" y="120" width="56" height="2" fill="#161513" opacity=".25" />
                 <rect x="220" y="120" width="56" height="2" fill="#161513" opacity=".25" />
-                
+                <!-- second row -->
                 <rect x="0" y="160" width="320" height="2" fill="#161513" opacity=".25" />
                 <rect x="0" y="170" width="280" height="2" fill="#161513" opacity=".15" />
               </g>
@@ -379,7 +450,7 @@ const About = () => {
           <div className="aspect-[4/3] bg-cream relative">
             <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 w-full h-full">
               <rect width="400" height="300" fill="#EDE6D3" />
-              
+              <!-- bar chart -->
               <g transform="translate(40 200)">
                 <rect x="0" y="-40" width="36" height="40" fill="#161513" opacity=".25" />
                 <rect x="50" y="-60" width="36" height="60" fill="#161513" opacity=".4" />
@@ -407,7 +478,9 @@ const About = () => {
       </div>
     </section>
 
-    
+    <!-- ============================================================
+         07 — DRIFT STRIP (mantra)
+         ============================================================ -->
     <section className="border-y border-ink/12 bg-ink text-paper py-10 overflow-hidden">
       <div className="flex whitespace-nowrap drift" style={{ width: 'max-content' }}>
         <span className="font-sans font-bold tracking-[-0.02em] pr-16" style={{ fontSize: 'clamp(40px, 6vw, 88px)' }}>
@@ -419,7 +492,9 @@ const About = () => {
       </div>
     </section>
 
-    
+    <!-- ============================================================
+         08 — WHERE WE WORK
+         ============================================================ -->
     <section className="px-6 md:px-10 lg:px-14 py-24 sm:py-32 border-b border-ink/12">
       <div className="grid grid-cols-12 gap-8 lg:gap-12">
         <div className="col-span-12 lg:col-span-5">
@@ -509,7 +584,9 @@ const About = () => {
       </div>
     </section>
 
-    
+    <!-- ============================================================
+         09 — FIT CALL
+         ============================================================ -->
     <section className="px-6 md:px-10 lg:px-14 py-24 sm:py-32 bg-cream">
       <div className="max-w-5xl mx-auto text-center">
         <span className="mono text-ink/50">If you've read this far</span>
@@ -525,9 +602,3 @@ const About = () => {
       </div>
     </section>
   </main>
-      <Footer />
-    </>
-  );
-};
-
-export default About;
