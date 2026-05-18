@@ -1,3 +1,4 @@
+// BUILD VERSION 2.0.1 - FORCED REWRITE
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import client from '../api/client';
@@ -286,4 +287,3 @@ const InsightForm = () => {
 };
 
 export default InsightForm;
-
