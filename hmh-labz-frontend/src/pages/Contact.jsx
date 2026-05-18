@@ -57,7 +57,7 @@ const Contact = () => {
             <div className="space-y-10">
               {data?.locations?.map((loc, idx) => (
                 <div key={idx} className="border-b border-ink/20 pb-8 space-y-4">
-                  <p className="font-mono text-[10px] font-black uppercase tracking-widest text-terra">OFFICE // 0{idx + 1}</p>
+                  <p className="font-mono text-[10px] font-black uppercase tracking-widest text-terra">{'//'} OFFICE : {loc.city}</p>
                   <h3 className="text-2xl font-black uppercase text-ink">{loc.city}</h3>
                   <div className="space-y-1 font-mono text-xs text-ink/60">
                     <p>{loc.address}</p>
@@ -105,7 +105,7 @@ const Contact = () => {
 
               <button 
                 type="submit" 
-                className="w-full bg-ink text-paper py-5 px-8 flex items-center justify-between font-mono font-bold text-xs uppercase tracking-widest hover:bg-terra transition-all hover:scale-[1.02] active:scale-[0.98]"
+                className="w-full bg-ink text-paper py-5 px-8 flex items-center justify-between font-mono font-bold text-xs uppercase tracking-[0.2em] hover:bg-terra transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
                 <span>{submitStatus === 'loading' ? 'Sending...' : 'Send Message'}</span>
                 <span>→</span>
