@@ -1,16 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useModal } from '../../App';
+import { useModal, useBrand } from '../../App';
 
 const Footer = () => {
   const { openFitCall } = useModal();
+  const { faviconUrl } = useBrand();
   return (
     <footer className="bg-ink text-paper/65 px-6 py-28 relative z-10 text-left">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-12 gap-12 sm:gap-16 pb-20 border-b border-paper/10">
           <div className="md:col-span-6">
             <Link to="/" className="block mb-8">
-              <img src="https://www.hmhlabz.com/wp-content/uploads/hmh-icon.webp" alt="HMH Labz" className="h-10 w-auto invert brightness-0" />
+              <img src={faviconUrl} alt="HMH Labz" className="h-10 w-auto invert brightness-0" />
             </Link>
             <p className="font-serif italic text-paper/40 leading-relaxed max-w-sm text-xl text-left">
               Strategy + build, in one team. We tell you what to do, then we ship it.

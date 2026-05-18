@@ -5,6 +5,7 @@ import contentRoutes from './routes/content.js';
 import leadsRoutes from './routes/leads.js';
 import pagesRoutes from './routes/pages.js';
 import adminRoutes from './routes/admin.js';
+import prisma from './lib/prisma.js';
 
 const app = express();
 
@@ -56,6 +57,25 @@ app.use('/api', contentRoutes);
 app.use('/api/leads', leadsRoutes);
 app.use('/api/pages', pagesRoutes);
 app.use('/api/admin', adminRoutes);
+
+// Get Brand Assets (Public)
+app.get('/api/settings/brand', async (req, res) => {
+  try {
+    const brand = await prisma.siteSettings.findUnique({
+      where: { id: 'global' }
+    });
+    if (!brand) {
+      return res.json({
+        logoUrl: 'https://www.hmhlabz.com/wp-content/uploads/hmh-labz-black.png',
+        faviconUrl: 'https://www.hmhlabz.com/wp-content/uploads/hmh-icon.webp'
+      });
+    }
+    res.json(brand);
+  } catch (error) {
+    console.error('Error fetching brand assets:', error);
+    res.status(500).json({ error: 'Failed to fetch brand assets' });
+  }
+});
 
 // Health check
 app.get('/api/health', (req, res) => {

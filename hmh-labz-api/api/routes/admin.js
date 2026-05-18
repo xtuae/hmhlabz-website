@@ -77,4 +77,20 @@ router.put('/settings/security', requireRole(), async (req, res) => {
   }
 });
 
+// Update Brand Assets
+router.put('/settings/brand', requireRole(), async (req, res) => {
+  try {
+    const { logoUrl, faviconUrl } = req.body;
+    const updatedBrand = await prisma.siteSettings.upsert({
+      where: { id: 'global' },
+      update: { logoUrl, faviconUrl },
+      create: { id: 'global', logoUrl, faviconUrl }
+    });
+    res.json(updatedBrand);
+  } catch (error) {
+    console.error('Error updating brand assets:', error);
+    res.status(500).json({ error: 'Failed to update brand assets' });
+  }
+});
+
 export default router;
