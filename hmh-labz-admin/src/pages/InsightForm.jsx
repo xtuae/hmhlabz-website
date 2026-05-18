@@ -94,8 +94,8 @@ const InsightForm = () => {
         await client.post('/insights', payload);
       }
       navigate('/insights');
-    } catch (err) {
-      alert(err.response?.data?.error || err.response?.data?.message || err.message || 'Failed to save insight.');
+    } catch (error) {
+      alert("Save Failed: " + (error.response?.data?.error || error.message));
     } finally {
       setSaving(false);
     }

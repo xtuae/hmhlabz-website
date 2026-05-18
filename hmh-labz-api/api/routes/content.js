@@ -54,7 +54,7 @@ router.post('/insights', async (req, res) => {
 
     return requireRole(['SUPERADMIN', 'ADMIN'])(req, res, async () => {
       try {
-        const { title, slug, excerpt, content, coverImage, category, tag, readTime, seoTitle, seoDescription, status } = req.body;
+        const { title, slug, excerpt, content, coverImage, category, tag, readTime, seoTitle, seoDescription, status, publishedAt } = req.body;
 
         if (!title || !slug) return res.status(400).json({ error: 'Title and slug are required.' });
 
@@ -62,30 +62,34 @@ router.post('/insights', async (req, res) => {
         const existingSlug = await prisma.insight.findUnique({ where: { slug } });
         if (existingSlug) return res.status(400).json({ error: 'Slug must be unique. This slug is already in use.' });
 
-        const insightStatus = status || 'DRAFT';
-        const publishedAt = insightStatus === 'PUBLISHED' ? new Date() : null;
+        let publishedDate = null;
+        if (req.body.status === 'PUBLISHED') {
+          publishedDate = req.body.publishedAt ? new Date(req.body.publishedAt) : new Date();
+        }
+
+        const safeTag = req.body.category || req.body.tag || 'Operations';
 
         const insight = await prisma.insight.create({
           data: {
-            title, 
+            title: title || 'Untitled', 
             slug, 
             excerpt: excerpt || '', 
             content: content || '',
             coverImage: coverImage || null, 
             category: category || 'Field Notes',
-            tag: tag || 'Operations',
+            tag: safeTag,
             readTime: readTime || '5 min read',
             seoTitle: seoTitle || null, 
             seoDescription: seoDescription || null,
-            status: insightStatus, 
-            publishedAt,
+            status: status || 'DRAFT', 
+            publishedAt: publishedDate,
             authorId: req.user?.id || null,
           },
         });
         res.status(201).json(insight);
-      } catch (err) {
-        console.error('Error creating insight:', err);
-        res.status(400).json({ error: err.message || 'Error creating insight' });
+      } catch (error) {
+        console.error('Prisma Error creating insight:', error);
+        res.status(400).json({ error: error.message || "Database error occurred" });
       }
     });
   } catch (error) {
@@ -100,7 +104,7 @@ router.put('/insights/:id', async (req, res) => {
 
     return requireRole(['SUPERADMIN', 'ADMIN'])(req, res, async () => {
       try {
-        const { title, slug, excerpt, content, coverImage, category, tag, readTime, seoTitle, seoDescription, status } = req.body;
+        const { title, slug, excerpt, content, coverImage, category, tag, readTime, seoTitle, seoDescription, status, publishedAt } = req.body;
         
         const existing = await prisma.insight.findUnique({ where: { id: req.params.id } });
         if (!existing) return res.status(404).json({ error: 'Insight not found' });
@@ -110,33 +114,36 @@ router.put('/insights/:id', async (req, res) => {
           if (existingSlug) return res.status(400).json({ error: 'Slug must be unique. This slug is already in use.' });
         }
 
-        const insightStatus = status || existing.status;
-        let publishedAt = existing.publishedAt;
-        if (insightStatus === 'PUBLISHED' && !existing.publishedAt) {
-          publishedAt = new Date();
+        let publishedDate = existing.publishedAt;
+        if (req.body.status === 'PUBLISHED') {
+          publishedDate = req.body.publishedAt ? new Date(req.body.publishedAt) : (existing.publishedAt || new Date());
+        } else if (req.body.status === 'DRAFT') {
+          publishedDate = null;
         }
+
+        const safeTag = req.body.category || req.body.tag || existing.tag || 'Operations';
 
         const insight = await prisma.insight.update({
           where: { id: req.params.id },
           data: {
-            title, 
-            slug, 
-            excerpt: excerpt || '', 
-            content: content || '',
-            coverImage: coverImage || null, 
-            category: category || 'Field Notes',
-            tag: tag || existing.tag || 'Operations',
-            readTime: readTime || existing.readTime || '5 min read',
-            seoTitle: seoTitle || null, 
-            seoDescription: seoDescription || null,
-            status: insightStatus, 
-            publishedAt
+            title: title || existing.title, 
+            slug: slug || existing.slug, 
+            excerpt: excerpt !== undefined ? excerpt : existing.excerpt, 
+            content: content !== undefined ? content : existing.content,
+            coverImage: coverImage !== undefined ? coverImage : existing.coverImage, 
+            category: category !== undefined ? category : existing.category,
+            tag: safeTag,
+            readTime: readTime !== undefined ? readTime : existing.readTime,
+            seoTitle: seoTitle !== undefined ? seoTitle : existing.seoTitle, 
+            seoDescription: seoDescription !== undefined ? seoDescription : existing.seoDescription,
+            status: status || existing.status, 
+            publishedAt: publishedDate
           }
         });
         res.status(200).json(insight);
-      } catch (err) {
-        console.error('Error updating insight:', err);
-        res.status(400).json({ error: err.message || 'Error updating insight' });
+      } catch (error) {
+        console.error('Prisma Error updating insight:', error);
+        res.status(400).json({ error: error.message || "Database error occurred" });
       }
     });
   } catch (error) {
