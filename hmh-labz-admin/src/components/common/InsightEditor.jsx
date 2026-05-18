@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
@@ -24,7 +25,8 @@ const ToolbarButton = ({ onClick, active, children, title }) => (
   </button>
 );
 
-const InsightEditor = ({ content, onChange }) => {
+const InsightEditor = ({ content, value, onChange }) => {
+  const initialContent = value !== undefined ? value : (content || '');
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -36,7 +38,7 @@ const InsightEditor = ({ content, onChange }) => {
         placeholder: 'Start writing your insight...',
       }),
     ],
-    content: content || '',
+    content: initialContent,
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
     },
@@ -46,6 +48,14 @@ const InsightEditor = ({ content, onChange }) => {
       },
     },
   });
+
+  useEffect(() => {
+    if (editor && value !== undefined && value !== editor.getHTML()) {
+      editor.commands.setContent(value || '');
+    } else if (editor && content !== undefined && content !== editor.getHTML()) {
+      editor.commands.setContent(content || '');
+    }
+  }, [editor, value, content]);
 
   if (!editor) return null;
 

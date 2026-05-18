@@ -22,7 +22,7 @@ const InsightForm = () => {
   const [saving, setSaving] = useState(false);
   const [slugEdited, setSlugEdited] = useState(false);
 
-  const [form, setForm] = useState({
+  const [formData, setFormData] = useState({
     title: '',
     slug: '',
     excerpt: '',
@@ -42,7 +42,7 @@ const InsightForm = () => {
     const fetchInsight = async () => {
       try {
         const res = await client.get(`/insights/${id}?admin=true`);
-        setForm({
+        setFormData({
           title: res.data.title || '',
           slug: res.data.slug || '',
           excerpt: res.data.excerpt || '',
@@ -67,7 +67,7 @@ const InsightForm = () => {
 
   // Auto-generate slug from title
   const handleTitleChange = (value) => {
-    setForm((prev) => ({
+    setFormData((prev) => ({
       ...prev,
       title: value,
       slug: slugEdited ? prev.slug : slugify(value),
@@ -75,23 +75,27 @@ const InsightForm = () => {
   };
 
   const handleChange = (field, value) => {
-    setForm((prev) => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSave = async () => {
-    if (!form.title.trim()) return alert('Title is required.');
-    if (!form.slug.trim()) return alert('Slug is required.');
+    if (!formData.title.trim()) return alert('Title is required.');
+
+    const payload = { ...formData };
+    if (!payload.slug || !payload.slug.trim()) {
+      payload.slug = payload.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    }
 
     setSaving(true);
     try {
       if (isEditing) {
-        await client.put(`/insights/${id}`, form);
+        await client.put(`/insights/${id}`, payload);
       } else {
-        await client.post('/insights', form);
+        await client.post('/insights', payload);
       }
       navigate('/insights');
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to save insight.');
+      alert(err.response?.data?.error || err.response?.data?.message || err.message || 'Failed to save insight.');
     } finally {
       setSaving(false);
     }
@@ -131,15 +135,15 @@ const InsightForm = () => {
           {/* Status Toggle */}
           <button
             type="button"
-            onClick={() => handleChange('status', form.status === 'PUBLISHED' ? 'DRAFT' : 'PUBLISHED')}
+            onClick={() => handleChange('status', formData.status === 'PUBLISHED' ? 'DRAFT' : 'PUBLISHED')}
             className={`flex items-center gap-2 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border transition-all ${
-              form.status === 'PUBLISHED'
+              formData.status === 'PUBLISHED'
                 ? 'bg-green-50 text-green-600 border-green-200'
                 : 'bg-yellow-50 text-yellow-600 border-yellow-200'
             }`}
           >
             <Globe size={14} />
-            {form.status === 'PUBLISHED' ? 'Published' : 'Draft'}
+            {formData.status === 'PUBLISHED' ? 'Published' : 'Draft'}
           </button>
 
           {/* Save Button */}
@@ -163,7 +167,7 @@ const InsightForm = () => {
           </label>
           <input
             type="text"
-            value={form.title}
+            value={formData.title}
             onChange={(e) => handleTitleChange(e.target.value)}
             placeholder="Enter a compelling title..."
             className="w-full p-6 bg-white rounded-2xl border border-black/5 outline-none focus:border-[#c84b21] transition-all text-2xl font-bold placeholder:text-gray-300 shadow-sm"
@@ -178,7 +182,7 @@ const InsightForm = () => {
             </label>
             <div className="relative">
               <select
-                value={form.tag}
+                value={formData.tag}
                 onChange={(e) => {
                   handleChange('tag', e.target.value);
                   handleChange('category', e.target.value); // keep both synced
@@ -204,7 +208,7 @@ const InsightForm = () => {
               <span className="pl-5 pr-2 text-gray-300 font-bold text-sm">/insights/</span>
               <input
                 type="text"
-                value={form.slug}
+                value={formData.slug}
                 onChange={(e) => {
                   setSlugEdited(true);
                   handleChange('slug', slugify(e.target.value));
@@ -222,7 +226,7 @@ const InsightForm = () => {
             Excerpt (Summary)
           </label>
           <textarea
-            value={form.excerpt}
+            value={formData.excerpt}
             onChange={(e) => handleChange('excerpt', e.target.value)}
             placeholder="A brief summary for the blog listing page..."
             rows={3}
@@ -237,7 +241,7 @@ const InsightForm = () => {
           </label>
           <input
             type="text"
-            value={form.readTime}
+            value={formData.readTime}
             onChange={(e) => handleChange('readTime', e.target.value)}
             placeholder="e.g., 5 min read"
             className="w-full p-5 bg-white rounded-2xl border border-black/5 outline-none focus:border-[#c84b21] transition-all font-bold text-sm placeholder:text-gray-300 shadow-sm"
@@ -257,7 +261,7 @@ const InsightForm = () => {
               </label>
               <input
                 type="text"
-                value={form.seoTitle}
+                value={formData.seoTitle}
                 onChange={(e) => handleChange('seoTitle', e.target.value)}
                 placeholder="Custom SEO Title (optional)"
                 className="w-full p-5 bg-white rounded-2xl border border-black/5 outline-none focus:border-[#c84b21] transition-all font-bold text-sm placeholder:text-gray-300"
@@ -269,7 +273,7 @@ const InsightForm = () => {
               </label>
               <input
                 type="text"
-                value={form.seoDescription}
+                value={formData.seoDescription}
                 onChange={(e) => handleChange('seoDescription', e.target.value)}
                 placeholder="Custom SEO Description (optional)"
                 className="w-full p-5 bg-white rounded-2xl border border-black/5 outline-none focus:border-[#c84b21] transition-all font-bold text-sm placeholder:text-gray-300"
@@ -280,14 +284,14 @@ const InsightForm = () => {
 
         {/* Cover Image */}
         <ImageUpload
-          value={form.coverImage}
+          value={formData.coverImage}
           onChange={(url) => handleChange('coverImage', url)}
         />
 
         {/* Rich Text Content */}
         <InsightEditor
-          content={form.content}
-          onChange={(html) => handleChange('content', html)}
+          value={formData.content || ''}
+          onChange={(val) => setFormData({ ...formData, content: val })}
         />
       </div>
     </div>
