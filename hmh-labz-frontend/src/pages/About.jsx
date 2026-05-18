@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import client from '../api/client';
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer';
 
 const About = () => {
   const [data, setData] = useState(null);
@@ -30,14 +32,15 @@ const About = () => {
   }
 
   return (
-    <div className="bg-paper text-ink selection:bg-terra selection:text-paper font-sans overflow-x-hidden relative min-h-screen pt-[68px] sm:pt-[76px]">
-      {/* Noise Overlay */}
-      <div 
-        className="fixed inset-0 pointer-events-none z-0 opacity-100 mix-blend-multiply" 
-        style={{ backgroundImage: 'url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMjAiIGhlaWdodD0iMjIwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC44NSIgbnVtT2N0YXZlcz0iMiIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjxmZUNvbG9yTWF0cml4IHZhbHVlcz0iMCAwIDAgMCAwLjA4ICAwIDAgMCAwIDAuMDcgIDAgMCAwIDAgMC4wNiAgMCAwIDAgMC4wNCAwIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI24pIi8+PC9zdmc+")', backgroundSize: '220px 220px' }} 
-      />
+    <>
+      <Navbar />
+      <main className="bg-paper text-ink selection:bg-terra selection:text-paper font-sans overflow-x-hidden relative min-h-screen pt-[68px] sm:pt-[76px]">
+        {/* Noise Overlay */}
+        <div 
+          className="fixed inset-0 pointer-events-none z-[100] opacity-[0.04] mix-blend-multiply bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMjAiIGhlaWdodD0iMjIwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC44NSIgbnVtT2N0YXZlcz0iMiIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjxmZUNvbG9yTWF0cml4IHZhbHVlcz0iMCAwIDAgMCAwLjA4ICAwIDAgMCAwIDAuMDcgIDAgMCAwIDAgMC4wNiAgMCAwIDAgMC4wNCAwIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI24pIi8+PC9zdmc+')] bg-[length:220px_220px]"
+        />
 
-      <div className="relative z-10">
+        <div className="relative z-10">
         {/* HERO SECTION */}
         <header className="px-6 md:px-10 lg:px-14 pt-[120px] sm:pt-[140px] pb-20 sm:pb-28 border-b border-ink/12">
           <div className="flex items-center gap-3 text-[13px] mb-10 sm:mb-14">
@@ -263,7 +266,9 @@ const About = () => {
         </section>
 
       </div>
-    </div>
+      </main>
+      <Footer />
+    </>
   );
 };
 
