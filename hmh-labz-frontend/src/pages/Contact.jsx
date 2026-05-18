@@ -9,12 +9,14 @@ const Contact = () => {
   const [loading, setLoading] = useState(true);
 
   // Form State
-  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
-  const [submitStatus, setSubmitStatus] = useState(null);
+  const [formData, setFormData] = useState({ 
+    name: '', email: '', businessName: '', phone: '', employees: '', tier: '', message: '' 
+  });
+  const [submitStatus, setSubmitStatus] = useState(null); // 'loading', 'success', 'error'
 
   useEffect(() => {
     client.get('/pages/contact')
-      .then(res => setData(res.data.content.contact))
+      .then(res => setData(res.data.content))
       .catch(err => console.error(err))
       .finally(() => setLoading(false));
   }, []);
@@ -23,7 +25,7 @@ const Contact = () => {
     e.preventDefault();
     setSubmitStatus('loading');
     try {
-      await client.post('/leads/contact', formData);
+      await client.post('/leads/fit-call', formData);
       setSubmitStatus('success');
     } catch {
       setSubmitStatus('error');
@@ -31,95 +33,148 @@ const Contact = () => {
   };
 
   if (loading) return (
-    <div className="min-h-screen bg-paper flex items-center justify-center">
-      <Loader2 className="animate-spin text-terra" size={32} />
+    <div className="min-h-screen bg-[#F4F1EA] flex items-center justify-center">
+      <Loader2 className="animate-spin text-[#C2410C]" size={32} />
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-paper font-sans selection:bg-terra selection:text-paper">
+    <div className="min-h-screen flex flex-col bg-[#F4F1EA] text-[#161513] font-sans selection:bg-[#C2410C] selection:text-[#F4F1EA]">
       <Navbar />
       
-      <main className="pt-32 pb-24 px-6 md:px-10 lg:px-14 max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
+      <main className="flex-grow pt-32 pb-24 md:pt-40 md:pb-32 relative z-10">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
           
-          {/* Left Column: Directory */}
-          <div className="space-y-16">
-            <header className="space-y-6">
-              <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-ink uppercase">
-                {data?.header?.title} <span className="text-terra italic font-serif lowercase">{data?.header?.highlight}</span>
-              </h1>
-              <p className="text-lg md:text-xl font-medium text-ink/70 max-w-md">
-                {data?.header?.description}
-              </p>
-            </header>
+          {/* Header */}
+          <div className="mb-16 md:mb-24 max-w-3xl">
+            <span className="font-mono uppercase tracking-[0.22em] text-[11px] font-semibold text-[#C2410C] mb-6 block">06 — Contact</span>
+            <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.9] text-[#161513] mb-8">
+              {data?.header?.title} <em className="font-serif italic font-normal text-[#C2410C]">{data?.header?.highlight}</em>
+            </h1>
+            <p className="text-xl text-[#161513]/65 font-light leading-relaxed">
+              {data?.header?.description}
+            </p>
+          </div>
 
-            <div className="space-y-10">
-              {data?.locations?.map((loc, idx) => (
-                <div key={idx} className="border-b border-ink/20 pb-8 space-y-4">
-                  <p className="font-mono text-[10px] font-black uppercase tracking-widest text-terra">{'//'} OFFICE : {loc.city}</p>
-                  <h3 className="text-2xl font-black uppercase text-ink">{loc.city}</h3>
-                  <div className="space-y-1 font-mono text-xs text-ink/60">
-                    <p>{loc.address}</p>
-                    <p>{loc.phone}</p>
-                    <p>{loc.email}</p>
+          <div className="grid lg:grid-cols-12 gap-16 lg:gap-24 items-start">
+            
+            {/* Contact Form */}
+            <div className="lg:col-span-7 bg-[#EDE6D3] p-8 md:p-12 rounded-[2.5rem] border border-[#161513]/5 shadow-xl shadow-[#161513]/5">
+              
+              {submitStatus === 'success' ? (
+                <div className="py-16 text-center">
+                  <div className="w-24 h-24 rounded-full bg-[#C2410C]/10 flex items-center justify-center mx-auto mb-8 text-[#C2410C] text-4xl font-serif italic border border-[#C2410C]/20">✓</div>
+                  <h3 className="text-3xl font-bold mb-4 text-[#161513] tracking-tight">Request Received.</h3>
+                  <p className="text-[#161513]/60 text-lg max-w-sm mx-auto">We are reviewing your details and will reach out within 24 hours to schedule a fit call.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    <div>
+                      <label className="font-mono uppercase tracking-[0.22em] text-[11px] font-semibold text-[#161513]/50 block mb-2">Your Name</label>
+                      <input required type="text" placeholder="Jane Doe" 
+                        value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        className="w-full bg-[#F4F1EA] border border-[#161513]/10 rounded-xl p-4 font-bold text-[#161513] focus:outline-none focus:border-[#C2410C] focus:ring-1 focus:ring-[#C2410C] transition-colors" />
+                    </div>
+                    <div>
+                      <label className="font-mono uppercase tracking-[0.22em] text-[11px] font-semibold text-[#161513]/50 block mb-2">Work Email</label>
+                      <input required type="email" placeholder="jane@company.com" 
+                        value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        className="w-full bg-[#F4F1EA] border border-[#161513]/10 rounded-xl p-4 font-bold text-[#161513] focus:outline-none focus:border-[#C2410C] focus:ring-1 focus:ring-[#C2410C] transition-colors" />
+                    </div>
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    <div>
+                      <label className="font-mono uppercase tracking-[0.22em] text-[11px] font-semibold text-[#161513]/50 block mb-2">Business Name</label>
+                      <input required type="text" placeholder="Acme Corp" 
+                        value={formData.businessName} onChange={(e) => setFormData({...formData, businessName: e.target.value})}
+                        className="w-full bg-[#F4F1EA] border border-[#161513]/10 rounded-xl p-4 font-bold text-[#161513] focus:outline-none focus:border-[#C2410C] focus:ring-1 focus:ring-[#C2410C] transition-colors" />
+                    </div>
+                    <div>
+                      <label className="font-mono uppercase tracking-[0.22em] text-[11px] font-semibold text-[#161513]/50 block mb-2">Phone Number</label>
+                      <input required type="tel" placeholder="+1 (555) 000-0000" 
+                        value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                        className="w-full bg-[#F4F1EA] border border-[#161513]/10 rounded-xl p-4 font-bold text-[#161513] focus:outline-none focus:border-[#C2410C] focus:ring-1 focus:ring-[#C2410C] transition-colors" />
+                    </div>
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    <div>
+                      <label className="font-mono uppercase tracking-[0.22em] text-[11px] font-semibold text-[#161513]/50 block mb-2">Company Size</label>
+                      <select required value={formData.employees} onChange={(e) => setFormData({...formData, employees: e.target.value})}
+                        className="w-full bg-[#F4F1EA] border border-[#161513]/10 rounded-xl p-4 font-bold text-[#161513] focus:outline-none focus:border-[#C2410C] focus:ring-1 focus:ring-[#C2410C] cursor-pointer transition-colors appearance-none">
+                        <option value="" disabled>Select size</option>
+                        <option>1-10 Employees</option>
+                        <option>11-50 Employees</option>
+                        <option>51-200 Employees</option>
+                        <option>201+ Employees</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="font-mono uppercase tracking-[0.22em] text-[11px] font-semibold text-[#161513]/50 block mb-2">Engagement Interest</label>
+                      <select required value={formData.tier} onChange={(e) => setFormData({...formData, tier: e.target.value})}
+                        className="w-full bg-[#F4F1EA] border border-[#161513]/10 rounded-xl p-4 font-bold text-[#161513] focus:outline-none focus:border-[#C2410C] focus:ring-1 focus:ring-[#C2410C] cursor-pointer transition-colors appearance-none">
+                        <option value="" disabled>Select tier</option>
+                        <option>Tier 01 · Opportunity Audit</option>
+                        <option>Tier 02 · Implementation Sprint</option>
+                        <option>Tier 03 · Digital Transformation</option>
+                        <option>Just exploring</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="font-mono uppercase tracking-[0.22em] text-[11px] font-semibold text-[#161513]/50 block mb-2">How can we help?</label>
+                    <textarea required placeholder="Tell us about your current bottlenecks, the systems you use, and what you're trying to build..." 
+                      value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})}
+                      className="w-full bg-[#F4F1EA] border border-[#161513]/10 rounded-xl p-4 font-bold text-[#161513] focus:outline-none focus:border-[#C2410C] focus:ring-1 focus:ring-[#C2410C] h-32 resize-y transition-colors"></textarea>
+                  </div>
+
+                  <button type="submit" disabled={submitStatus === 'loading'}
+                    className="w-full mt-4 py-5 bg-[#C2410C] text-[#F4F1EA] rounded-full font-mono font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-[#C2410C]/20 hover:bg-[#9A330A] transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50">
+                    {submitStatus === 'loading' ? 'Sending...' : 'Submit Inquiry →'}
+                  </button>
+                  {submitStatus === 'error' && <p className="text-red-500 text-sm mt-2 text-center">Failed to send request. Please try again later.</p>}
+                </form>
+              )}
+            </div>
+
+            {/* Office Information */}
+            <div className="lg:col-span-5 space-y-12">
+              
+              {/* Direct Contact */}
+              <div>
+                <h3 className="font-serif text-3xl text-[#161513] mb-6">Direct Line</h3>
+                <div className="space-y-6">
+                  <div>
+                    <span className="font-mono uppercase tracking-[0.22em] text-[11px] font-semibold text-[#161513]/40 block mb-1">Email Us</span>
+                    <a href="mailto:hello@hmhlabz.com" className="text-xl font-bold text-[#161513] hover:text-[#C2410C] transition-colors inline-block border-b-2 border-[#C2410C]/30 hover:border-[#C2410C] pb-1">hello@hmhlabz.com</a>
+                  </div>
+                  <div>
+                    <span className="font-mono uppercase tracking-[0.22em] text-[11px] font-semibold text-[#161513]/40 block mb-1">Call Us</span>
+                    <a href="tel:+971000000000" className="text-xl font-bold text-[#161513] hover:text-[#C2410C] transition-colors inline-block">+971 (0) 50 123 4567</a>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right Column: Form */}
-          <div>
-            <form onSubmit={handleSubmit} className="bg-white border border-ink/10 p-8 md:p-12 space-y-8 rounded-[2rem] shadow-xl shadow-ink/5">
-              <div className="space-y-6">
-                <input 
-                  type="text" 
-                  placeholder="NAME"
-                  required
-                  className="w-full bg-transparent border-b border-ink/20 py-4 font-mono text-sm placeholder:text-ink/40 focus:outline-none focus:border-terra transition-colors rounded-none"
-                  onChange={e => setFormData({...formData, name: e.target.value})}
-                />
-                <input 
-                  type="email" 
-                  placeholder="EMAIL"
-                  required
-                  className="w-full bg-transparent border-b border-ink/20 py-4 font-mono text-sm placeholder:text-ink/40 focus:outline-none focus:border-terra transition-colors rounded-none"
-                  onChange={e => setFormData({...formData, email: e.target.value})}
-                />
-                <input 
-                  type="text" 
-                  placeholder="SUBJECT"
-                  required
-                  className="w-full bg-transparent border-b border-ink/20 py-4 font-mono text-sm placeholder:text-ink/40 focus:outline-none focus:border-terra transition-colors rounded-none"
-                  onChange={e => setFormData({...formData, subject: e.target.value})}
-                />
-                <textarea 
-                  placeholder="MESSAGE"
-                  required
-                  rows={4}
-                  className="w-full bg-transparent border-b border-ink/20 py-4 font-mono text-sm placeholder:text-ink/40 focus:outline-none focus:border-terra transition-colors resize-none rounded-none"
-                  onChange={e => setFormData({...formData, message: e.target.value})}
-                />
               </div>
 
-              <button 
-                type="submit" 
-                className="w-full bg-ink text-paper py-5 px-8 flex items-center justify-between font-mono font-bold text-xs uppercase tracking-[0.2em] hover:bg-terra transition-all hover:scale-[1.02] active:scale-[0.98]"
-              >
-                <span>{submitStatus === 'loading' ? 'Sending...' : 'Send Message'}</span>
-                <span>→</span>
-              </button>
-              
-              {submitStatus === 'success' && (
-                <p className="font-mono text-xs text-green-600 uppercase tracking-widest text-center mt-4">Message sent successfully.</p>
-              )}
-            </form>
-          </div>
+              {data?.locations?.map((loc, idx) => (
+                <React.Fragment key={idx}>
+                  <hr className="border-[#161513]/10" />
+                  <div>
+                    <h3 className="font-serif text-3xl text-[#161513] mb-6">{loc.city} {idx === 0 ? 'Head Office' : 'Branch Office'}</h3>
+                    <p className="text-lg text-[#161513]/70 leading-relaxed font-light whitespace-pre-line">
+                      {loc.address}
+                    </p>
+                  </div>
+                </React.Fragment>
+              ))}
 
+            </div>
+          </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );

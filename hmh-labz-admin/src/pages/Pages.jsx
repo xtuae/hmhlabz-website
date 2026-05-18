@@ -111,6 +111,9 @@ const Pages = () => {
     { id: 'homepage', name: 'Homepage', slug: 'home', icon: Layout },
     { id: 'about', name: 'About Page', slug: 'about', icon: Info },
     { id: 'contact', name: 'Contact Page', slug: 'contact', icon: MapPin },
+    { id: 'privacy-policy', name: 'Privacy Policy', slug: 'privacy-policy', icon: Hash },
+    { id: 'terms-of-service', name: 'Terms of Service', slug: 'terms-of-service', icon: Hash },
+    { id: 'cookie-policy', name: 'Cookie Policy', slug: 'cookie-policy', icon: Hash },
   ];
 
   useEffect(() => {
@@ -375,6 +378,68 @@ const Pages = () => {
                         </div>
                       </div>
                     ))}
+                  </div>
+                </SectionWrapper>
+              </>
+            )}
+
+            {['privacy-policy', 'terms-of-service', 'cookie-policy'].includes(activePage) && (
+              <>
+                <SectionWrapper title="Legal Header" icon={Sparkles} defaultOpen>
+                  <div className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <input type="text" value={formData.content.title || ''} onChange={(e) => setFormData({...formData, content: {...formData.content, title: e.target.value}})} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Title (e.g. Privacy)" />
+                      <input type="text" value={formData.content.highlight || ''} onChange={(e) => setFormData({...formData, content: {...formData.content, highlight: e.target.value}})} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Highlight (e.g. Policy.)" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Last Updated</label>
+                      <input type="text" value={formData.content.lastUpdated || ''} onChange={(e) => setFormData({...formData, content: {...formData.content, lastUpdated: e.target.value}})} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="May 18, 2026" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Intro Text</label>
+                      <textarea value={formData.content.intro || ''} onChange={(e) => setFormData({...formData, content: {...formData.content, intro: e.target.value}})} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm h-24 resize-none" placeholder="Intro description" />
+                    </div>
+                  </div>
+                </SectionWrapper>
+
+                <SectionWrapper title="Content Sections" icon={Layers}>
+                  <div className="space-y-8">
+                    {formData.content.sections?.map((section, i) => (
+                      <div key={i} className="p-6 bg-[#f5f1e8]/30 rounded-2xl border border-black/5 space-y-4 relative">
+                        <div className="flex justify-between items-center mb-2">
+                          <p className="text-[10px] font-black uppercase text-[#c84b21]">Section 0{i+1}</p>
+                          <button onClick={() => {
+                            const newSections = [...formData.content.sections];
+                            newSections.splice(i, 1);
+                            setFormData({...formData, content: {...formData.content, sections: newSections}});
+                          }} className="text-red-500 text-xs font-bold hover:underline">Remove</button>
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <input type="text" value={section.id || ''} onChange={(e) => {
+                            const newSections = [...formData.content.sections];
+                            newSections[i].id = e.target.value;
+                            setFormData({...formData, content: {...formData.content, sections: newSections}});
+                          }} className="px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" placeholder="Section ID (e.g. data-collection)" />
+                          <input type="text" value={section.title || ''} onChange={(e) => {
+                            const newSections = [...formData.content.sections];
+                            newSections[i].title = e.target.value;
+                            setFormData({...formData, content: {...formData.content, sections: newSections}});
+                          }} className="px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" placeholder="Section Title" />
+                        </div>
+                        <textarea value={section.content || ''} onChange={(e) => {
+                            const newSections = [...formData.content.sections];
+                            newSections[i].content = e.target.value;
+                            setFormData({...formData, content: {...formData.content, sections: newSections}});
+                        }} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm h-48 resize-none font-mono" placeholder="HTML Content" />
+                      </div>
+                    ))}
+                    <button onClick={() => {
+                      const newSections = formData.content.sections ? [...formData.content.sections] : [];
+                      newSections.push({ id: '', title: '', content: '' });
+                      setFormData({...formData, content: {...formData.content, sections: newSections}});
+                    }} className="w-full py-4 border-2 border-dashed border-black/10 rounded-2xl text-xs font-bold text-gray-500 hover:border-[#c84b21] hover:text-[#c84b21] transition-colors">
+                      + Add New Section
+                    </button>
                   </div>
                 </SectionWrapper>
               </>

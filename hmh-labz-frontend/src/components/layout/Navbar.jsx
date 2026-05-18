@@ -54,15 +54,15 @@ const Navbar = () => {
 
           <div className="hidden md:flex items-center gap-8 text-[13px] text-ink font-bold uppercase tracking-widest">
             {items.map((it) => (
-              <a 
+              <Link 
                 key={it.label} 
-                href={it.path} 
+                to={it.path} 
                 onClick={(e) => handleNavClick(e, it.path)}
                 className="relative group py-2"
               >
                 <span className={isActive(it.path) ? 'text-terra' : ''}>{it.label}</span>
                 <span className={`absolute left-0 bottom-1 h-px bg-terra transition-all duration-300 ${isActive(it.path) ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
-              </a>
+              </Link>
             ))}
             <button 
               onClick={openFitCall}
@@ -96,14 +96,14 @@ const Navbar = () => {
               {['Home', ...items.map(i => i.label)].map(m => {
                 const path = m === 'Home' ? '/' : items.find(i => i.label === m).path;
                 return (
-                  <a 
+                  <Link 
                     key={m} 
-                    href={path}
+                    to={path}
                     onClick={(e) => { setIsMobileMenuOpen(false); handleNavClick(e, path); }}
                     className="text-left font-sans font-bold text-5xl tracking-tighter text-ink hover:text-terra transition-colors"
                   >
                     {m}
-                  </a>
+                  </Link>
                 );
               })}
             </div>

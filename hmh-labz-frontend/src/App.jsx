@@ -4,8 +4,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import Home from './pages/Home';
 import Insights from './pages/Insights';
 import InsightDetail from './pages/InsightDetail';
-import Privacy from './pages/Privacy';
-import Terms from './pages/Terms';
+import Legal from './pages/Legal';
 import Login from './pages/Login';
 import UserDashboard from './pages/UserDashboard';
 import About from './pages/About';
@@ -39,8 +38,7 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/insights" element={<Insights />} />
             <Route path="/insights/:slug" element={<InsightDetail />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/terms" element={<Terms />} />
+            <Route path="/legal/:slug" element={<Legal />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<UserDashboard />} />
             <Route path="*" element={<NotFound />} />

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contact — HMH Labz</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&display=swap"
+        rel="stylesheet">
+
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Geist', 'sans-serif'],
+                        serif: ['Fraunces', 'serif'],
+                        mono: ['Geist Mono', 'monospace'],
+                    },
+                    colors: {
+                        paper: '#F4F1EA',
+                        cream: '#EDE6D3',
+                        ink: '#161513',
+                        terra: '#C2410C',
+                        'terra-deep': '#9A330A',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F4F1EA;
+            color: #161513;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Premium noise overlay */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMjAiIGhlaWdodD0iMjIwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC44NSIgbnVtT2N0YXZlcz0iMiIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjxmZUNvbG9yTWF0cml4IHZhbHVlcz0iMCAwIDAgMCAwLjA4ICAwIDAgMCAwIDAuMDcgIDAgMCAwIDAgMC4wNiAgMCAwIDAgMC4wNCAwIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI24pIi8+PC9zdmc+");
+            opacity: 0.04;
+        }
+
+        ::selection {
+            background: #C2410C;
+            color: #F4F1EA;
+        }
+
+        .frauncesItalic {
+            font-family: 'Fraunces', serif;
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .mono-label {
+            font-family: 'Geist Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* Form Input Styling */
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #C2410C;
+            box-shadow: 0 0 0 1px #C2410C;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav
+        class="fixed top-0 w-full z-50 transition-all duration-500 bg-paper/80 backdrop-blur-xl border-b border-ink/10 py-4">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
+            <a href="index.html" class="flex items-center">
+                <img src="https://www.hmhlabz.com/wp-content/uploads/hmh-labz-black.png" alt="HMH Labz"
+                    class="h-5 sm:h-6 w-auto object-contain" />
+            </a>
+
+            <div
+                class="hidden md:flex items-center gap-10 font-sans font-bold text-xs uppercase tracking-widest text-ink">
+                <a href="index.html#approach" class="hover:text-terra transition-colors">Approach</a>
+                <a href="index.html#services" class="hover:text-terra transition-colors">Services</a>
+                <a href="index.html" class="hover:text-terra transition-colors">Insights</a>
+                <a href="index.html" class="hover:text-terra transition-colors">About</a>
+            </div>
+
+            <button class="md:hidden flex flex-col justify-center gap-1.5 w-8 h-8 group">
+                <span class="w-full h-[2px] bg-ink group-hover:bg-terra transition-colors"></span>
+                <span class="w-full h-[2px] bg-ink group-hover:bg-terra transition-colors"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-32 pb-24 md:pt-40 md:pb-32">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+
+            <!-- Header -->
+            <div class="mb-16 md:mb-24 max-w-3xl">
+                <span class="mono-label text-terra mb-6 block">06 — Contact</span>
+                <h1 class="text-5xl md:text-8xl font-black tracking-tighter leading-[0.9] text-ink mb-8">
+                    Start a <em class="frauncesItalic font-normal text-terra">conversation.</em>
+                </h1>
+                <p class="text-xl text-ink/65 font-light leading-relaxed">
+                    Have an engagement in mind? Skip the pitch deck. Send us the details and we'll tell you immediately
+                    if we're the right fit to build it.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-16 lg:gap-24 items-start">
+
+                <!-- Contact Form -->
+                <div
+                    class="lg:col-span-7 bg-cream p-8 md:p-12 rounded-[2.5rem] border border-ink/5 shadow-xl shadow-ink/5">
+                    <form id="contactForm" class="space-y-6"
+                        onsubmit="event.preventDefault(); document.getElementById('formSuccess').classList.remove('hidden'); document.getElementById('contactForm').classList.add('hidden');">
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="mono-label text-ink/50 block mb-2">Your Name</label>
+                                <input required type="text" placeholder="Jane Doe"
+                                    class="w-full bg-paper border border-ink/10 rounded-xl p-4 font-bold text-ink transition-colors" />
+                            </div>
+                            <div>
+                                <label class="mono-label text-ink/50 block mb-2">Work Email</label>
+                                <input required type="email" placeholder="jane@company.com"
+                                    class="w-full bg-paper border border-ink/10 rounded-xl p-4 font-bold text-ink transition-colors" />
+                            </div>
+                        </div>
+
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="mono-label text-ink/50 block mb-2">Business Name</label>
+                                <input required type="text" placeholder="Acme Corp"
+                                    class="w-full bg-paper border border-ink/10 rounded-xl p-4 font-bold text-ink transition-colors" />
+                            </div>
+                            <div>
+                                <label class="mono-label text-ink/50 block mb-2">Phone Number</label>
+                                <input required type="tel" placeholder="+1 (555) 000-0000"
+                                    class="w-full bg-paper border border-ink/10 rounded-xl p-4 font-bold text-ink transition-colors" />
+                            </div>
+                        </div>
+
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="mono-label text-ink/50 block mb-2">Company Size</label>
+                                <select required
+                                    class="w-full bg-paper border border-ink/10 rounded-xl p-4 font-bold text-ink cursor-pointer transition-colors appearance-none">
+                                    <option value="" disabled selected>Select size</option>
+                                    <option>1-10 Employees</option>
+                                    <option>11-50 Employees</option>
+                                    <option>51-200 Employees</option>
+                                    <option>201+ Employees</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="mono-label text-ink/50 block mb-2">Engagement Interest</label>
+                                <select required
+                                    class="w-full bg-paper border border-ink/10 rounded-xl p-4 font-bold text-ink cursor-pointer transition-colors appearance-none">
+                                    <option value="" disabled selected>Select tier</option>
+                                    <option>Tier 01 · Opportunity Audit</option>
+                                    <option>Tier 02 · Implementation Sprint</option>
+                                    <option>Tier 03 · Digital Transformation</option>
+                                    <option>Just exploring</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="mono-label text-ink/50 block mb-2">How can we help?</label>
+                            <textarea required
+                                placeholder="Tell us about your current bottlenecks, the systems you use, and what you're trying to build..."
+                                class="w-full bg-paper border border-ink/10 rounded-xl p-4 font-bold text-ink h-32 resize-y transition-colors"></textarea>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full mt-4 py-5 bg-terra text-paper rounded-full font-mono font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-terra/20 hover:bg-terra-deep transition-all hover:scale-[1.01] active:scale-[0.99]">
+                            Submit Inquiry →
+                        </button>
+                    </form>
+
+                    <!-- Success State (Hidden by default) -->
+                    <div id="formSuccess" class="hidden py-16 text-center">
+                        <div
+                            class="w-24 h-24 rounded-full bg-terra/10 flex items-center justify-center mx-auto mb-8 text-terra text-4xl font-serif italic border border-terra/20">
+                            ✓</div>
+                        <h3 class="text-3xl font-bold mb-4 text-ink tracking-tight">Request Received.</h3>
+                        <p class="text-ink/60 text-lg max-w-sm mx-auto">We are reviewing your details and will reach out
+                            within 24 hours to schedule a fit call.</p>
+                    </div>
+                </div>
+
+                <!-- Office Information -->
+                <div class="lg:col-span-5 space-y-12">
+
+                    <!-- Direct Contact -->
+                    <div>
+                        <h3 class="font-serif text-3xl text-ink mb-6">Direct Line</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <span class="mono-label text-ink/40 block mb-1">Email Us</span>
+                                <a href="mailto:hello@hmhlabz.com"
+                                    class="text-xl font-bold text-ink hover:text-terra transition-colors inline-block border-b-2 border-terra/30 hover:border-terra pb-1">hello@hmhlabz.com</a>
+                            </div>
+                            <div>
+                                <span class="mono-label text-ink/40 block mb-1">Call Us</span>
+                                <a href="tel:+971000000000"
+                                    class="text-xl font-bold text-ink hover:text-terra transition-colors inline-block">+971
+                                    (0) 50 123 4567</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="border-ink/10" />
+
+                    <!-- Chennai Office -->
+                    <div>
+                        <h3 class="font-serif text-3xl text-ink mb-6">Chennai Head Office</h3>
+                        <p class="text-lg text-ink/70 leading-relaxed font-light">
+                            W-32/117, Plot No. C-10,<br />
+                            2nd Floor, 3rd Avenue,<br />
+                            Anna Nagar, Chennai,<br />
+                            Tamil Nadu, India 600040.
+                        </p>
+                    </div>
+
+                    <hr class="border-ink/10" />
+
+                    <!-- Dubai Office -->
+                    <div>
+                        <h3 class="font-serif text-3xl text-ink mb-6">Dubai Branch Office</h3>
+                        <p class="text-lg text-ink/70 leading-relaxed font-light">
+                            Al Quasis 2,<br />
+                            Dubai, United Arab Emirates
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-ink text-paper/40 px-6 py-24 md:py-28 text-left rounded-t-[3rem]">
+        <div
+            class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-12 pb-16 border-b border-white/10 text-white">
+            <div>
+                <img src="https://www.hmhlabz.com/wp-content/uploads/hmh-icon.webp" alt="HMH Labz"
+                    class="h-10 invert brightness-0 mb-8" />
+                <p class="frauncesItalic text-2xl text-paper/60 max-w-sm">Strategy + build, in one team. We tell you
+                    what to do, then we ship it.</p>
+            </div>
+            <div class="flex gap-20 font-bold text-xs uppercase tracking-[0.2em]">
+                <div class="flex flex-col gap-5">
+                    <a href="index.html#approach" class="hover:text-terra transition-colors">Approach</a>
+                    <a href="index.html#services" class="hover:text-terra transition-colors">Services</a>
+                </div>
+                <div class="flex flex-col gap-5">
+                    <a href="mailto:hello@hmhlabz.com" class="hover:text-terra transition-colors">Email</a>
+                    <a href="contact.html" class="text-terra transition-colors">Contact</a>
+                </div>
+            </div>
+        </div>
+        <div
+            class="max-w-7xl mx-auto flex justify-between items-center mt-10 font-mono text-[10px] uppercase tracking-widest text-paper/30 font-bold">
+            <span>© 2026 HMH LABZ</span>
+            <span>Dubai · Chennai</span>
+        </div>
+    </footer>
+
+</body>
+
+</html>

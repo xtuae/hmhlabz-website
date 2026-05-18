@@ -19,9 +19,9 @@ const Footer = () => {
           <div className="md:col-span-3 text-left">
             <h5 className="font-mono uppercase text-xs font-bold text-terra mb-8">Legal</h5>
             <ul className="space-y-4 text-sm text-paper/85">
-              <li><Link to="/privacy" className="hover:text-terra transition-colors">Privacy Policy</Link></li>
-              <li><Link to="/terms" className="hover:text-terra transition-colors">Terms of Service</Link></li>
-              <li><Link to="/cookies" className="hover:text-terra transition-colors">Cookie Policy</Link></li>
+              <li><Link to="/legal/privacy-policy" className="hover:text-terra transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/legal/terms-of-service" className="hover:text-terra transition-colors">Terms of Service</Link></li>
+              <li><Link to="/legal/cookie-policy" className="hover:text-terra transition-colors">Cookie Policy</Link></li>
             </ul>
           </div>
           <div className="md:col-span-3 text-left">
