@@ -17,30 +17,34 @@ const Navbar = () => {
   }, []);
 
   const items = [
-    { label: 'Approach', path: '#approach' },
-    { label: 'Services', path: '#how-we-work' },
+    { label: 'Approach', path: '/#approach' },
+    { label: 'Services', path: '/#services' },
     { label: 'Insights', path: '/insights' },
     { label: 'About', path: '/about' },
     { label: 'Contact', path: '/contact' }
   ];
 
   const handleNavClick = (e, path) => {
-    if (path.startsWith('#')) {
-      e.preventDefault();
-      const id = path.substring(1);
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-        window.history.pushState(null, '', path);
-      } else if (location.pathname !== '/') {
-        window.location.href = '/' + path;
+    if (path.startsWith('/#') || path.startsWith('#')) {
+      const isHashOnly = path.startsWith('#');
+      const hashValue = isHashOnly ? path : path.substring(1);
+      
+      if (location.pathname === '/') {
+        e.preventDefault();
+        const id = hashValue.substring(1);
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+          window.history.pushState(null, '', path);
+        }
       }
     }
   };
 
   const isActive = (path) => {
-    if (path.startsWith('#')) {
-      return location.pathname === '/' && location.hash === path;
+    if (path.startsWith('/#') || path.startsWith('#')) {
+      const hashValue = path.startsWith('/#') ? path.substring(1) : path;
+      return location.pathname === '/' && location.hash === hashValue;
     }
     return location.pathname === path;
   };

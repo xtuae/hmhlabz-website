@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Hero from '../components/home/Hero';
@@ -15,6 +16,7 @@ import api from '../api/client';
 const Home = () => {
   const [pageData, setPageData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { hash } = useLocation();
 
   useEffect(() => {
     const fetchHomeData = async () => {
@@ -30,6 +32,17 @@ const Home = () => {
     };
     fetchHomeData();
   }, []);
+
+  useEffect(() => {
+    if (hash) {
+      const element = document.getElementById(hash.replace('#', ''));
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, [hash]);
 
   return (
     <div className="bg-paper selection:bg-terra selection:text-paper min-h-screen relative">
@@ -54,7 +67,7 @@ const Home = () => {
 
         <CostOfWaiting content={pageData?.content?.costOfWaiting} />
 
-        <section id="how-we-work">
+        <section id="services">
           <Services content={pageData?.content?.howWeWork} />
         </section>
 
