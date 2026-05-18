@@ -3,26 +3,6 @@ import prisma from '../lib/prisma.js';
 
 const router = express.Router();
 
-// --- Upload ---
-router.post('/upload', async (req, res) => {
-  try {
-    const { requireRole } = await import('../lib/auth.js');
-    const { put } = await import('@vercel/blob');
-    
-    return requireRole(['SUPERADMIN', 'ADMIN', 'MODERATOR'])(req, res, async () => {
-      const { filename, contentType } = req.query;
-      try {
-        const blob = await put(filename, req, { access: 'public', contentType });
-        return res.status(200).json(blob);
-      } catch (error) {
-        return res.status(500).json({ message: 'Upload failed', error });
-      }
-    });
-  } catch (err) {
-    res.status(500).json({ message: 'Internal error loading dependencies' });
-  }
-});
-
 // --- Insights ---
 router.get('/insights', async (req, res) => {
   try {

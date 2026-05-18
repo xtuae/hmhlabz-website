@@ -5,6 +5,7 @@ import contentRoutes from './routes/content.js';
 import leadsRoutes from './routes/leads.js';
 import pagesRoutes from './routes/pages.js';
 import adminRoutes from './routes/admin.js';
+import uploadRoutes from './routes/upload.js';
 import prisma from './lib/prisma.js';
 
 const app = express();
@@ -57,6 +58,7 @@ app.use('/api', contentRoutes);
 app.use('/api/leads', leadsRoutes);
 app.use('/api/pages', pagesRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // Get Brand Assets (Public)
 app.get('/api/settings/brand', async (req, res) => {

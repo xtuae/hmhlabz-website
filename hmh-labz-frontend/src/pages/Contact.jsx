@@ -142,25 +142,10 @@ const Contact = () => {
 
             {/* Office Information */}
             <div className="lg:col-span-5 space-y-12">
-              
-              {/* Direct Contact */}
-              <div>
-                <h3 className="font-serif text-3xl text-[#161513] mb-6">Direct Line</h3>
-                <div className="space-y-6">
-                  <div>
-                    <span className="font-mono uppercase tracking-[0.22em] text-[11px] font-semibold text-[#161513]/40 block mb-1">Email Us</span>
-                    <a href="mailto:hello@hmhlabz.com" className="text-xl font-bold text-[#161513] hover:text-[#C2410C] transition-colors inline-block border-b-2 border-[#C2410C]/30 hover:border-[#C2410C] pb-1">hello@hmhlabz.com</a>
-                  </div>
-                  <div>
-                    <span className="font-mono uppercase tracking-[0.22em] text-[11px] font-semibold text-[#161513]/40 block mb-1">Call Us</span>
-                    <a href="tel:+971000000000" className="text-xl font-bold text-[#161513] hover:text-[#C2410C] transition-colors inline-block">+971 (0) 50 123 4567</a>
-                  </div>
-                </div>
-              </div>
 
               {data?.locations?.map((loc, idx) => (
                 <React.Fragment key={idx}>
-                  <hr className="border-[#161513]/10" />
+                  {idx > 0 && <hr className="border-[#161513]/10" />}
                   <div className="space-y-6">
                     <div>
                       <h3 className="font-serif text-3xl text-[#161513] mb-4">{loc.city} {idx === 0 ? 'Head Office' : 'Branch Office'}</h3>
