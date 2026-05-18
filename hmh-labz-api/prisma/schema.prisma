@@ -32,20 +32,24 @@ model User {
 }
 
 model Insight {
-  id          String   @id @default(uuid())
-  title       String
-  slug        String   @unique
-  excerpt     String?
-  content     String   // Markdown or Rich Text HTML
-  coverImage  String?  // Vercel Blob URL
-  published   Boolean  @default(false)
+  id              String   @id @default(uuid())
+  slug            String   @unique
+  title           String
+  excerpt         String
+  content         String   // Rich Text / HTML
+  coverImage      String?  // Vercel Blob URL
+  category        String?  @default("Field Notes")
+  seoTitle        String?
+  seoDescription  String?
+  status          String   @default("DRAFT") // DRAFT or PUBLISHED
+  publishedAt     DateTime?
   
   // Relations
-  authorId    String
-  author      User     @relation(fields: [authorId], references: [id])
+  authorId        String?
+  author          User?    @relation(fields: [authorId], references: [id])
   
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 // Optional: If you want legal pages to be editable via Admin rather than hardcoded

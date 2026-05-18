@@ -48,8 +48,8 @@ const InsightDetail = () => {
   return (
     <div className="bg-paper selection:bg-terra selection:text-paper min-h-screen relative">
       <SEO 
-        title={`${insight.title} | HMH Labz Insights`}
-        description={insight.excerpt || 'Deep dives into operations, AI, and workflow automation.'}
+        title={insight.seoTitle || `${insight.title} | HMH Labz Insights`}
+        description={insight.seoDescription || insight.excerpt || 'Deep dives into operations, AI, and workflow automation.'}
         image={insight.coverImage}
       />
       
