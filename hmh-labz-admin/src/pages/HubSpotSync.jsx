@@ -63,7 +63,7 @@ const HubSpotSync = () => {
                   <tr key={lead.id} className="hover:bg-[#f5f1e8]/30 transition-colors">
                     <td className="px-10 py-8">
                       <p className="font-bold text-[#1a1a1a]">{lead.name}</p>
-                      <p className="text-xs text-gray-400 font-medium">{lead.email}</p>
+                      <p className="text-xs text-gray-400 font-medium">{new Date(lead.createdAt).toLocaleDateString()}</p>
                     </td>
                     <td className="px-10 py-8">
                       <p className="text-sm font-bold text-[#1a1a1a]">{lead.businessName || 'N/A'}</p>

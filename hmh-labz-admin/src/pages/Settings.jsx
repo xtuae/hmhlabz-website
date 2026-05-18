@@ -20,7 +20,7 @@ const Settings = () => {
     setLoading(true);
     setMessage(null);
     try {
-      const response = await client.put('/auth/profile', {
+      const response = await client.put('/admin/settings/profile', {
         name: formData.name,
         email: formData.email
       });
@@ -41,7 +41,7 @@ const Settings = () => {
     setLoading(true);
     setMessage(null);
     try {
-      await client.put('/auth/change-password', {
+      await client.put('/admin/settings/security', {
         currentPassword: formData.currentPassword,
         newPassword: formData.newPassword
       });

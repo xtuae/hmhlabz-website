@@ -168,20 +168,20 @@ const Pages = () => {
       ...prev,
       content: {
         ...prev.content,
-        [section]: { ...prev.content[section], ...updates }
+        [section]: { ...(prev.content?.[section] || {}), ...updates }
       }
     }));
   };
 
   const updateNestedList = (section, listKey, index, updates) => {
     setFormData(prev => {
-      const newList = [...prev.content[section][listKey]];
+      const newList = [...(prev.content?.[section]?.[listKey] || [])];
       newList[index] = { ...newList[index], ...updates };
       return {
         ...prev,
         content: {
           ...prev.content,
-          [section]: { ...prev.content[section], [listKey]: newList }
+          [section]: { ...(prev.content?.[section] || {}), [listKey]: newList }
         }
       };
     });
@@ -243,10 +243,10 @@ const Pages = () => {
             <SectionWrapper title="SEO & Meta" icon={Globe} defaultOpen>
               <div className="space-y-6">
                 <LabeledInput label="Meta Title">
-                  <input type="text" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" />
+                  <input type="text" value={formData?.title || ''} onChange={(e) => setFormData({ ...formData, title: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" />
                 </LabeledInput>
                 <LabeledInput label="Meta Description">
-                  <textarea value={formData.metaDescription} onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm h-24 resize-none" />
+                  <textarea value={formData?.metaDescription || ''} onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm h-24 resize-none" />
                 </LabeledInput>
               </div>
             </SectionWrapper>
@@ -257,27 +257,27 @@ const Pages = () => {
                   <div className="space-y-10">
                     <div className="grid md:grid-cols-2 gap-6">
                       <LabeledInput label="Main Title">
-                        <input type="text" value={formData.content.hero.title} onChange={(e) => updateSection('hero', { title: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" />
+                        <input type="text" value={formData?.content?.hero?.title || ''} onChange={(e) => updateSection('hero', { title: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" />
                       </LabeledInput>
                       <LabeledInput label="Highlight (Orange)">
-                        <input type="text" value={formData.content.hero.highlight} onChange={(e) => updateSection('hero', { highlight: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" />
+                        <input type="text" value={formData?.content?.hero?.highlight || ''} onChange={(e) => updateSection('hero', { highlight: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" />
                       </LabeledInput>
                     </div>
                     <LabeledInput label="Description">
-                      <textarea value={formData.content.hero.description} onChange={(e) => updateSection('hero', { description: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm h-24 resize-none" />
+                      <textarea value={formData?.content?.hero?.description || ''} onChange={(e) => updateSection('hero', { description: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm h-24 resize-none" />
                     </LabeledInput>
 
                     <div className="pt-6 border-t border-black/5">
                       <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1 block mb-6">Metrics Cards (3)</label>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {formData.content.hero.stats.map((stat, i) => (
+                        {(formData?.content?.hero?.stats || []).map((stat, i) => (
                           <div key={i} className="p-5 bg-gray-50 rounded-2xl border border-black/5 space-y-3">
                             <div className="grid grid-cols-3 gap-2">
-                              <LabeledInput label="Prefix"><input type="text" placeholder="Prefix" value={stat.prefix} onChange={(e) => updateNestedList('hero', 'stats', i, { prefix: e.target.value })} className="w-full px-3 py-2 bg-white rounded-lg border border-black/5 text-xs font-bold" /></LabeledInput>
-                              <LabeledInput label="Number"><input type="text" placeholder="2.4" value={stat.number} onChange={(e) => updateNestedList('hero', 'stats', i, { number: e.target.value })} className="w-full px-3 py-2 bg-white rounded-lg border border-black/5 text-xs font-bold text-center" /></LabeledInput>
-                              <LabeledInput label="Suffix"><input type="text" placeholder="Suffix" value={stat.suffix} onChange={(e) => updateNestedList('hero', 'stats', i, { suffix: e.target.value })} className="w-full px-3 py-2 bg-white rounded-lg border border-black/5 text-xs font-bold" /></LabeledInput>
+                              <LabeledInput label="Prefix"><input type="text" placeholder="Prefix" value={stat?.prefix || ''} onChange={(e) => updateNestedList('hero', 'stats', i, { prefix: e.target.value })} className="w-full px-3 py-2 bg-white rounded-lg border border-black/5 text-xs font-bold" /></LabeledInput>
+                              <LabeledInput label="Number"><input type="text" placeholder="2.4" value={stat?.number || ''} onChange={(e) => updateNestedList('hero', 'stats', i, { number: e.target.value })} className="w-full px-3 py-2 bg-white rounded-lg border border-black/5 text-xs font-bold text-center" /></LabeledInput>
+                              <LabeledInput label="Suffix"><input type="text" placeholder="Suffix" value={stat?.suffix || ''} onChange={(e) => updateNestedList('hero', 'stats', i, { suffix: e.target.value })} className="w-full px-3 py-2 bg-white rounded-lg border border-black/5 text-xs font-bold" /></LabeledInput>
                             </div>
-                            <LabeledInput label="Description"><textarea placeholder="Description" value={stat.desc} onChange={(e) => updateNestedList('hero', 'stats', i, { desc: e.target.value })} className="w-full px-3 py-2 bg-white rounded-lg border border-black/5 text-[11px] h-16 resize-none" /></LabeledInput>
+                            <LabeledInput label="Description"><textarea placeholder="Description" value={stat?.desc || ''} onChange={(e) => updateNestedList('hero', 'stats', i, { desc: e.target.value })} className="w-full px-3 py-2 bg-white rounded-lg border border-black/5 text-[11px] h-16 resize-none" /></LabeledInput>
                           </div>
                         ))}
                       </div>
@@ -288,14 +288,14 @@ const Pages = () => {
                 <SectionWrapper title="Approach" icon={Layers}>
                   <div className="space-y-8">
                     <div className="grid md:grid-cols-2 gap-6">
-                      <LabeledInput label="Title"><input type="text" value={formData.content.approach.title} onChange={(e) => updateSection('approach', { title: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Title" /></LabeledInput>
-                      <LabeledInput label="Highlight"><input type="text" value={formData.content.approach.highlight} onChange={(e) => updateSection('approach', { highlight: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Highlight" /></LabeledInput>
+                      <LabeledInput label="Title"><input type="text" value={formData?.content?.approach?.title || ''} onChange={(e) => updateSection('approach', { title: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Title" /></LabeledInput>
+                      <LabeledInput label="Highlight"><input type="text" value={formData?.content?.approach?.highlight || ''} onChange={(e) => updateSection('approach', { highlight: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Highlight" /></LabeledInput>
                     </div>
-                    {formData.content.approach.steps.map((step, i) => (
+                    {(formData?.content?.approach?.steps || []).map((step, i) => (
                       <div key={i} className="p-6 bg-[#f5f1e8]/30 rounded-2xl border border-black/5 space-y-4">
                         <p className="text-[10px] font-black uppercase text-[#c84b21]">Step 0{i+1}</p>
-                        <LabeledInput label="Step Title"><input type="text" value={step.title} onChange={(e) => updateNestedList('approach', 'steps', i, { title: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" placeholder="Step Title" /></LabeledInput>
-                        <LabeledInput label="Step Description"><textarea value={step.desc} onChange={(e) => updateNestedList('approach', 'steps', i, { desc: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm h-20 resize-none" placeholder="Step Description" /></LabeledInput>
+                        <LabeledInput label="Step Title"><input type="text" value={step?.title || ''} onChange={(e) => updateNestedList('approach', 'steps', i, { title: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" placeholder="Step Title" /></LabeledInput>
+                        <LabeledInput label="Step Description"><textarea value={step?.desc || ''} onChange={(e) => updateNestedList('approach', 'steps', i, { desc: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm h-20 resize-none" placeholder="Step Description" /></LabeledInput>
                       </div>
                     ))}
                   </div>
@@ -303,16 +303,16 @@ const Pages = () => {
 
                 <SectionWrapper title="Cost of Waiting" icon={Timer}>
                   <div className="space-y-6">
-                    <LabeledInput label="Headline Part 1"><input type="text" value={formData.content.costOfWaiting.title} onChange={(e) => updateSection('costOfWaiting', { title: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Headline Part 1" /></LabeledInput>
-                    <LabeledInput label="Highlight"><input type="text" value={formData.content.costOfWaiting.highlight} onChange={(e) => updateSection('costOfWaiting', { highlight: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Highlight" /></LabeledInput>
-                    <LabeledInput label="Quote"><textarea value={formData.content.costOfWaiting.quote} onChange={(e) => updateSection('costOfWaiting', { quote: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm h-24 resize-none" placeholder="Quote" /></LabeledInput>
+                    <LabeledInput label="Headline Part 1"><input type="text" value={formData?.content?.costOfWaiting?.title || ''} onChange={(e) => updateSection('costOfWaiting', { title: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Headline Part 1" /></LabeledInput>
+                    <LabeledInput label="Highlight"><input type="text" value={formData?.content?.costOfWaiting?.highlight || ''} onChange={(e) => updateSection('costOfWaiting', { highlight: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Highlight" /></LabeledInput>
+                    <LabeledInput label="Quote"><textarea value={formData?.content?.costOfWaiting?.quote || ''} onChange={(e) => updateSection('costOfWaiting', { quote: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm h-24 resize-none" placeholder="Quote" /></LabeledInput>
                   </div>
                 </SectionWrapper>
 
                 <SectionWrapper title="Final CTA" icon={MousePointer2}>
                   <div className="space-y-6">
-                    <LabeledInput label="CTA Title"><input type="text" value={formData.content.cta.title} onChange={(e) => updateSection('cta', { title: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="CTA Title" /></LabeledInput>
-                    <LabeledInput label="Button Text"><input type="text" value={formData.content.cta.buttonText} onChange={(e) => updateSection('cta', { buttonText: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Button Text" /></LabeledInput>
+                    <LabeledInput label="CTA Title"><input type="text" value={formData?.content?.cta?.title || ''} onChange={(e) => updateSection('cta', { title: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="CTA Title" /></LabeledInput>
+                    <LabeledInput label="Button Text"><input type="text" value={formData?.content?.cta?.buttonText || ''} onChange={(e) => updateSection('cta', { buttonText: e.target.value })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" placeholder="Button Text" /></LabeledInput>
                   </div>
                 </SectionWrapper>
               </>
@@ -323,29 +323,29 @@ const Pages = () => {
                 <SectionWrapper title="About Hero" icon={Sparkles} defaultOpen>
                   <div className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
-                      <LabeledInput label="Title"><input type="text" value={formData.content.about.hero.title} onChange={(e) => updateSection('about', { hero: { ...formData.content.about.hero, title: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Title" /></LabeledInput>
-                      <LabeledInput label="Highlight"><input type="text" value={formData.content.about.hero.highlight} onChange={(e) => updateSection('about', { hero: { ...formData.content.about.hero, highlight: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Highlight" /></LabeledInput>
+                      <LabeledInput label="Title"><input type="text" value={formData?.content?.about?.hero?.title || ''} onChange={(e) => updateSection('about', { hero: { ...(formData?.content?.about?.hero || {}), title: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Title" /></LabeledInput>
+                      <LabeledInput label="Highlight"><input type="text" value={formData?.content?.about?.hero?.highlight || ''} onChange={(e) => updateSection('about', { hero: { ...(formData?.content?.about?.hero || {}), highlight: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Highlight" /></LabeledInput>
                     </div>
-                    <LabeledInput label="Description"><textarea value={formData.content.about.hero.description} onChange={(e) => updateSection('about', { hero: { ...formData.content.about.hero, description: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm h-24 resize-none" placeholder="Description" /></LabeledInput>
+                    <LabeledInput label="Description"><textarea value={formData?.content?.about?.hero?.description || ''} onChange={(e) => updateSection('about', { hero: { ...(formData?.content?.about?.hero || {}), description: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm h-24 resize-none" placeholder="Description" /></LabeledInput>
                   </div>
                 </SectionWrapper>
 
                 <SectionWrapper title="Our Story" icon={Layers}>
                   <div className="space-y-6">
-                    <LabeledInput label="Heading"><input type="text" value={formData.content.about.story.heading} onChange={(e) => updateSection('about', { story: { ...formData.content.about.story, heading: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Heading" /></LabeledInput>
-                    <LabeledInput label="Story Text"><textarea value={formData.content.about.story.text} onChange={(e) => updateSection('about', { story: { ...formData.content.about.story, text: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm h-48 resize-none" placeholder="Story text" /></LabeledInput>
+                    <LabeledInput label="Heading"><input type="text" value={formData?.content?.about?.story?.heading || ''} onChange={(e) => updateSection('about', { story: { ...(formData?.content?.about?.story || {}), heading: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Heading" /></LabeledInput>
+                    <LabeledInput label="Story Text"><textarea value={formData?.content?.about?.story?.text || ''} onChange={(e) => updateSection('about', { story: { ...(formData?.content?.about?.story || {}), text: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm h-48 resize-none" placeholder="Story text" /></LabeledInput>
                   </div>
                 </SectionWrapper>
 
                 <SectionWrapper title="Team Members" icon={Type}>
                   <div className="space-y-8">
-                    {formData.content.about.team.members.map((member, i) => (
+                    {(formData?.content?.about?.team?.members || []).map((member, i) => (
                       <div key={i} className="p-6 bg-[#f5f1e8]/30 rounded-2xl border border-black/5 space-y-4">
                         <div className="grid md:grid-cols-2 gap-4">
-                          <LabeledInput label="Name"><input type="text" value={member.name} onChange={(e) => updateNestedList('about', 'team', i, { name: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" placeholder="Name" /></LabeledInput>
-                          <LabeledInput label="Role"><input type="text" value={member.role} onChange={(e) => updateNestedList('about', 'team', i, { role: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Role" /></LabeledInput>
+                          <LabeledInput label="Name"><input type="text" value={member?.name || ''} onChange={(e) => updateNestedList('about', 'team', i, { name: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" placeholder="Name" /></LabeledInput>
+                          <LabeledInput label="Role"><input type="text" value={member?.role || ''} onChange={(e) => updateNestedList('about', 'team', i, { role: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Role" /></LabeledInput>
                         </div>
-                        <LabeledInput label="Bio"><textarea value={member.bio} onChange={(e) => updateNestedList('about', 'team', i, { bio: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm h-20 resize-none" placeholder="Bio" /></LabeledInput>
+                        <LabeledInput label="Bio"><textarea value={member?.bio || ''} onChange={(e) => updateNestedList('about', 'team', i, { bio: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm h-20 resize-none" placeholder="Bio" /></LabeledInput>
                       </div>
                     ))}
                   </div>
@@ -358,25 +358,25 @@ const Pages = () => {
                 <SectionWrapper title="Contact Header" icon={Sparkles} defaultOpen>
                   <div className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
-                      <LabeledInput label="Title"><input type="text" value={formData.content.contact?.header?.title || ''} onChange={(e) => updateSection('contact', { header: { ...formData.content.contact.header, title: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Title" /></LabeledInput>
-                      <LabeledInput label="Highlight"><input type="text" value={formData.content.contact?.header?.highlight || ''} onChange={(e) => updateSection('contact', { header: { ...formData.content.contact.header, highlight: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Highlight" /></LabeledInput>
+                      <LabeledInput label="Title"><input type="text" value={formData?.content?.contact?.header?.title || ''} onChange={(e) => updateSection('contact', { header: { ...(formData?.content?.contact?.header || {}), title: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Title" /></LabeledInput>
+                      <LabeledInput label="Highlight"><input type="text" value={formData?.content?.contact?.header?.highlight || ''} onChange={(e) => updateSection('contact', { header: { ...(formData?.content?.contact?.header || {}), highlight: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Highlight" /></LabeledInput>
                     </div>
-                    <LabeledInput label="Description"><textarea value={formData.content.contact?.header?.description || ''} onChange={(e) => updateSection('contact', { header: { ...formData.content.contact.header, description: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm h-24 resize-none" placeholder="Description" /></LabeledInput>
+                    <LabeledInput label="Description"><textarea value={formData?.content?.contact?.header?.description || ''} onChange={(e) => updateSection('contact', { header: { ...(formData?.content?.contact?.header || {}), description: e.target.value } })} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm h-24 resize-none" placeholder="Description" /></LabeledInput>
                   </div>
                 </SectionWrapper>
 
                 <SectionWrapper title="Office Locations" icon={MapPin}>
                   <div className="space-y-8">
-                    {formData.content.contact?.locations?.map((loc, i) => (
+                    {(formData?.content?.contact?.locations || []).map((loc, i) => (
                       <div key={i} className="p-6 bg-[#f5f1e8]/30 rounded-2xl border border-black/5 space-y-4">
                         <p className="text-[10px] font-black uppercase text-[#c84b21]">Location 0{i+1}</p>
                         <div className="grid md:grid-cols-2 gap-4">
-                          <LabeledInput label="City Name"><input type="text" value={loc.city} onChange={(e) => updateNestedList('contact', 'locations', i, { city: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" placeholder="City Name" /></LabeledInput>
-                          <LabeledInput label="Phone Number"><input type="text" value={loc.phone} onChange={(e) => updateNestedList('contact', 'locations', i, { phone: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Phone Number" /></LabeledInput>
+                          <LabeledInput label="City Name"><input type="text" value={loc?.city || ''} onChange={(e) => updateNestedList('contact', 'locations', i, { city: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" placeholder="City Name" /></LabeledInput>
+                          <LabeledInput label="Phone Number"><input type="text" value={loc?.phone || ''} onChange={(e) => updateNestedList('contact', 'locations', i, { phone: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Phone Number" /></LabeledInput>
                         </div>
                         <div className="grid md:grid-cols-2 gap-4">
-                          <LabeledInput label="Address"><input type="text" value={loc.address} onChange={(e) => updateNestedList('contact', 'locations', i, { address: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Address" /></LabeledInput>
-                          <LabeledInput label="Email Address"><input type="email" value={loc.email} onChange={(e) => updateNestedList('contact', 'locations', i, { email: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Email" /></LabeledInput>
+                          <LabeledInput label="Address"><input type="text" value={loc?.address || ''} onChange={(e) => updateNestedList('contact', 'locations', i, { address: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Address" /></LabeledInput>
+                          <LabeledInput label="Email Address"><input type="email" value={loc?.email || ''} onChange={(e) => updateNestedList('contact', 'locations', i, { email: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Email" /></LabeledInput>
                         </div>
                       </div>
                     ))}
@@ -390,49 +390,49 @@ const Pages = () => {
                 <SectionWrapper title="Legal Header" icon={Sparkles} defaultOpen>
                   <div className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
-                      <LabeledInput label="Title"><input type="text" value={formData.content.title || ''} onChange={(e) => setFormData({...formData, content: {...formData.content, title: e.target.value}})} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Title (e.g. Privacy)" /></LabeledInput>
-                      <LabeledInput label="Highlight"><input type="text" value={formData.content.highlight || ''} onChange={(e) => setFormData({...formData, content: {...formData.content, highlight: e.target.value}})} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Highlight (e.g. Policy.)" /></LabeledInput>
+                      <LabeledInput label="Title"><input type="text" value={formData?.content?.title || ''} onChange={(e) => setFormData({...formData, content: {...(formData?.content || {}), title: e.target.value}})} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Title (e.g. Privacy)" /></LabeledInput>
+                      <LabeledInput label="Highlight"><input type="text" value={formData?.content?.highlight || ''} onChange={(e) => setFormData({...formData, content: {...(formData?.content || {}), highlight: e.target.value}})} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="Highlight (e.g. Policy.)" /></LabeledInput>
                     </div>
-                    <LabeledInput label="Last Updated"><input type="text" value={formData.content.lastUpdated || ''} onChange={(e) => setFormData({...formData, content: {...formData.content, lastUpdated: e.target.value}})} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="May 18, 2026" /></LabeledInput>
-                    <LabeledInput label="Intro Text"><textarea value={formData.content.intro || ''} onChange={(e) => setFormData({...formData, content: {...formData.content, intro: e.target.value}})} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm h-24 resize-none" placeholder="Intro description" /></LabeledInput>
+                    <LabeledInput label="Last Updated"><input type="text" value={formData?.content?.lastUpdated || ''} onChange={(e) => setFormData({...formData, content: {...(formData?.content || {}), lastUpdated: e.target.value}})} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm" placeholder="May 18, 2026" /></LabeledInput>
+                    <LabeledInput label="Intro Text"><textarea value={formData?.content?.intro || ''} onChange={(e) => setFormData({...formData, content: {...(formData?.content || {}), intro: e.target.value}})} className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 outline-none font-bold text-sm h-24 resize-none" placeholder="Intro description" /></LabeledInput>
                   </div>
                 </SectionWrapper>
 
                 <SectionWrapper title="Content Sections" icon={Layers}>
                   <div className="space-y-8">
-                    {formData.content.sections?.map((section, i) => (
+                    {(formData?.content?.sections || []).map((section, i) => (
                       <div key={i} className="p-6 bg-[#f5f1e8]/30 rounded-2xl border border-black/5 space-y-4 relative">
                         <div className="flex justify-between items-center mb-2">
                           <p className="text-[10px] font-black uppercase text-[#c84b21]">Section 0{i+1}</p>
                           <button onClick={() => {
-                            const newSections = [...formData.content.sections];
+                            const newSections = [...(formData?.content?.sections || [])];
                             newSections.splice(i, 1);
-                            setFormData({...formData, content: {...formData.content, sections: newSections}});
+                            setFormData({...formData, content: {...(formData?.content || {}), sections: newSections}});
                           }} className="text-red-500 text-xs font-bold hover:underline">Remove</button>
                         </div>
                         <div className="grid md:grid-cols-2 gap-4">
-                          <LabeledInput label="Section ID (slug)"><input type="text" value={section.id || ''} onChange={(e) => {
-                            const newSections = [...formData.content.sections];
+                          <LabeledInput label="Section ID (slug)"><input type="text" value={section?.id || ''} onChange={(e) => {
+                            const newSections = [...(formData?.content?.sections || [])];
                             newSections[i].id = e.target.value;
-                            setFormData({...formData, content: {...formData.content, sections: newSections}});
+                            setFormData({...formData, content: {...(formData?.content || {}), sections: newSections}});
                           }} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" placeholder="Section ID (e.g. data-collection)" /></LabeledInput>
-                          <LabeledInput label="Section Title"><input type="text" value={section.title || ''} onChange={(e) => {
-                            const newSections = [...formData.content.sections];
+                          <LabeledInput label="Section Title"><input type="text" value={section?.title || ''} onChange={(e) => {
+                            const newSections = [...(formData?.content?.sections || [])];
                             newSections[i].title = e.target.value;
-                            setFormData({...formData, content: {...formData.content, sections: newSections}});
+                            setFormData({...formData, content: {...(formData?.content || {}), sections: newSections}});
                           }} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" placeholder="Section Title" /></LabeledInput>
                         </div>
-                        <LabeledInput label="HTML Content"><textarea value={section.content || ''} onChange={(e) => {
-                            const newSections = [...formData.content.sections];
+                        <LabeledInput label="HTML Content"><textarea value={section?.content || ''} onChange={(e) => {
+                            const newSections = [...(formData?.content?.sections || [])];
                             newSections[i].content = e.target.value;
-                            setFormData({...formData, content: {...formData.content, sections: newSections}});
+                            setFormData({...formData, content: {...(formData?.content || {}), sections: newSections}});
                         }} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm h-48 resize-none font-mono" placeholder="HTML Content" /></LabeledInput>
                       </div>
                     ))}
                     <button onClick={() => {
-                      const newSections = formData.content.sections ? [...formData.content.sections] : [];
+                      const newSections = formData?.content?.sections ? [...formData.content.sections] : [];
                       newSections.push({ id: '', title: '', content: '' });
-                      setFormData({...formData, content: {...formData.content, sections: newSections}});
+                      setFormData({...formData, content: {...(formData?.content || {}), sections: newSections}});
                     }} className="w-full py-4 border-2 border-dashed border-black/10 rounded-2xl text-xs font-bold text-gray-500 hover:border-[#c84b21] hover:text-[#c84b21] transition-colors">
                       + Add New Section
                     </button>
