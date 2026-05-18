@@ -161,11 +161,43 @@ const Contact = () => {
               {data?.locations?.map((loc, idx) => (
                 <React.Fragment key={idx}>
                   <hr className="border-[#161513]/10" />
-                  <div>
-                    <h3 className="font-serif text-3xl text-[#161513] mb-6">{loc.city} {idx === 0 ? 'Head Office' : 'Branch Office'}</h3>
-                    <p className="text-lg text-[#161513]/70 leading-relaxed font-light whitespace-pre-line">
-                      {loc.address}
-                    </p>
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="font-serif text-3xl text-[#161513] mb-4">{loc.city} {idx === 0 ? 'Head Office' : 'Branch Office'}</h3>
+                      <p className="text-lg text-[#161513]/70 leading-relaxed font-light whitespace-pre-line">
+                        {loc.address}
+                      </p>
+                    </div>
+
+                    <div className="grid sm:grid-cols-2 gap-6 pt-2">
+                      {loc.primaryPhone && (
+                        <div>
+                          <span className="font-mono uppercase tracking-[0.22em] text-[10px] font-semibold text-[#161513]/40 block mb-1">Primary Phone</span>
+                          <a href={`tel:${loc.primaryPhone.replace(/[^\d+]/g, '')}`} className="text-base font-bold text-[#161513] hover:text-[#C2410C] transition-colors inline-block">{loc.primaryPhone}</a>
+                        </div>
+                      )}
+                      {loc.secondaryPhone && (
+                        <div>
+                          <span className="font-mono uppercase tracking-[0.22em] text-[10px] font-semibold text-[#161513]/40 block mb-1">Secondary Phone</span>
+                          <a href={`tel:${loc.secondaryPhone.replace(/[^\d+]/g, '')}`} className="text-base font-bold text-[#161513] hover:text-[#C2410C] transition-colors inline-block">{loc.secondaryPhone}</a>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="grid sm:grid-cols-2 gap-6 pt-2">
+                      {loc.primaryEmail && (
+                        <div>
+                          <span className="font-mono uppercase tracking-[0.22em] text-[10px] font-semibold text-[#161513]/40 block mb-1">Primary Email</span>
+                          <a href={`mailto:${loc.primaryEmail}`} className="text-base font-bold text-[#161513] hover:text-[#C2410C] transition-colors inline-block border-b border-[#C2410C]/30 hover:border-[#C2410C] pb-0.5">{loc.primaryEmail}</a>
+                        </div>
+                      )}
+                      {loc.secondaryEmail && (
+                        <div>
+                          <span className="font-mono uppercase tracking-[0.22em] text-[10px] font-semibold text-[#161513]/40 block mb-1">Secondary Email</span>
+                          <a href={`mailto:${loc.secondaryEmail}`} className="text-base font-bold text-[#161513] hover:text-[#C2410C] transition-colors inline-block border-b border-[#C2410C]/30 hover:border-[#C2410C] pb-0.5">{loc.secondaryEmail}</a>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </React.Fragment>
               ))}

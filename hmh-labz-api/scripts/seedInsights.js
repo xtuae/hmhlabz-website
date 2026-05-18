@@ -167,6 +167,16 @@ const insights = [
 ];
 
 async function main() {
+  console.log("Cleaning up mock/dummy insights...");
+  const validSlugs = insights.map(i => slugify(i.title));
+  await prisma.insight.deleteMany({
+    where: {
+      NOT: {
+        slug: { in: validSlugs }
+      }
+    }
+  });
+
   console.log("Seeding insights...");
   for (const item of insights) {
     const slug = slugify(item.title);

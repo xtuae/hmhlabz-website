@@ -18,7 +18,7 @@ router.get('/leads', async (req, res) => {
 });
 
 // Get all users
-router.get('/users', async (req, res) => {
+router.get('/users', requireRole(['SUPERADMIN', 'ADMIN']), async (req, res) => {
   try {
     const users = await prisma.user.findMany({
       select: {
@@ -26,6 +26,7 @@ router.get('/users', async (req, res) => {
         name: true,
         email: true,
         role: true,
+        status: true,
         createdAt: true
       },
       orderBy: { createdAt: 'desc' }
@@ -34,6 +35,69 @@ router.get('/users', async (req, res) => {
   } catch (error) {
     console.error('Error fetching users:', error);
     res.status(500).json({ error: 'Failed to fetch users' });
+  }
+});
+
+// Create User
+router.post('/users', requireRole(['SUPERADMIN']), async (req, res) => {
+  try {
+    const { name, email, password, role } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
+    }
+    const existing = await prisma.user.findUnique({ where: { email } });
+    if (existing) {
+      return res.status(400).json({ message: 'User already exists with this email' });
+    }
+    const hashed = await hashPassword(password);
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashed,
+        role: role || 'ADMIN',
+        status: 'ACTIVE'
+      },
+      select: { id: true, name: true, email: true, role: true, status: true, createdAt: true }
+    });
+    res.status(201).json(user);
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).json({ error: 'Failed to create user' });
+  }
+});
+
+// Update User (Edit/Suspend)
+router.put('/users/:id', requireRole(['SUPERADMIN']), async (req, res) => {
+  try {
+    const { name, email, role, status, password } = req.body;
+    const updateData = { name, email, role, status };
+    if (password) {
+      updateData.password = await hashPassword(password);
+    }
+    const user = await prisma.user.update({
+      where: { id: req.params.id },
+      data: updateData,
+      select: { id: true, name: true, email: true, role: true, status: true, createdAt: true }
+    });
+    res.json(user);
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ error: 'Failed to update user' });
+  }
+});
+
+// Delete User
+router.delete('/users/:id', requireRole(['SUPERADMIN']), async (req, res) => {
+  try {
+    if (req.params.id === req.user.id) {
+      return res.status(400).json({ message: 'Cannot delete your own account' });
+    }
+    await prisma.user.delete({ where: { id: req.params.id } });
+    res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ error: 'Failed to delete user' });
   }
 });
 

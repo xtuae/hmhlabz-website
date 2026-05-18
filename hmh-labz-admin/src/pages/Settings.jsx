@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { User, Shield, Key, Save, Loader2, CheckCircle2, AlertCircle, Image } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import client from '../api/client';
+import ImageUpload from '../components/common/ImageUpload';
 
 const Settings = () => {
-  const { user } = useAuthStore();
+  const { user, updateUser } = useAuthStore();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
   
@@ -39,10 +40,13 @@ const Settings = () => {
     setLoading(true);
     setMessage(null);
     try {
-      await client.put('/admin/settings/profile', {
+      const res = await client.put('/admin/settings/profile', {
         name: formData.name,
         email: formData.email
       });
+      if (res.data) {
+        updateUser({ ...user, name: res.data.name, email: res.data.email });
+      }
       setMessage({ type: 'success', text: 'Profile updated successfully.' });
     } catch (err) {
       setMessage({ type: 'error', text: err.response?.data?.message || 'Failed to update profile.' });
@@ -206,26 +210,16 @@ const Settings = () => {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Logo URL</label>
-            <input 
-              type="url" 
-              value={brandData.logoUrl} 
-              onChange={(e) => setBrandData({...brandData, logoUrl: e.target.value})}
-              className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" 
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Favicon URL</label>
-            <input 
-              type="url" 
-              value={brandData.faviconUrl} 
-              onChange={(e) => setBrandData({...brandData, faviconUrl: e.target.value})}
-              className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" 
-              required
-            />
-          </div>
+          <ImageUpload 
+            label="Logo Image" 
+            value={brandData.logoUrl} 
+            onChange={(url) => setBrandData({...brandData, logoUrl: url})} 
+          />
+          <ImageUpload 
+            label="Favicon Image" 
+            value={brandData.faviconUrl} 
+            onChange={(url) => setBrandData({...brandData, faviconUrl: url})} 
+          />
         </div>
 
         <div className="pt-6 border-t border-black/5 flex justify-end">

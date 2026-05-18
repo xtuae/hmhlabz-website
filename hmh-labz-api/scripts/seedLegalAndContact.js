@@ -16,14 +16,18 @@ async function main() {
           { 
             city: "CHENNAI", 
             address: "W-32/117, Plot No. C-10,\n2nd Floor, 3rd Avenue,\nAnna Nagar, Chennai,\nTamil Nadu, India 600040.", 
-            phone: "+91 90805 50655", 
-            email: "hello@hmhlabz.com" 
+            primaryPhone: "+91 44 2254 1234", 
+            secondaryPhone: "+91 90805 50655",
+            primaryEmail: "chennai@hmhlabz.com",
+            secondaryEmail: "hello@hmhlabz.com"
           },
           { 
             city: "DUBAI", 
             address: "Al Quasis 2,\nDubai, United Arab Emirates", 
-            phone: "+971 (0) 50 123 4567", 
-            email: "hello@hmhlabz.com" 
+            primaryPhone: "+971 4 367 1234", 
+            secondaryPhone: "+971 (0) 50 123 4567",
+            primaryEmail: "dubai@hmhlabz.com",
+            secondaryEmail: "hello@hmhlabz.com"
           }
         ]
       }
@@ -42,14 +46,18 @@ async function main() {
           { 
             city: "CHENNAI", 
             address: "W-32/117, Plot No. C-10,\n2nd Floor, 3rd Avenue,\nAnna Nagar, Chennai,\nTamil Nadu, India 600040.", 
-            phone: "+91 90805 50655", 
-            email: "hello@hmhlabz.com" 
+            primaryPhone: "+91 44 2254 1234", 
+            secondaryPhone: "+91 90805 50655",
+            primaryEmail: "chennai@hmhlabz.com",
+            secondaryEmail: "hello@hmhlabz.com"
           },
           { 
             city: "DUBAI", 
             address: "Al Quasis 2,\nDubai, United Arab Emirates", 
-            phone: "+971 (0) 50 123 4567", 
-            email: "hello@hmhlabz.com" 
+            primaryPhone: "+971 4 367 1234", 
+            secondaryPhone: "+971 (0) 50 123 4567",
+            primaryEmail: "dubai@hmhlabz.com",
+            secondaryEmail: "hello@hmhlabz.com"
           }
         ]
       }

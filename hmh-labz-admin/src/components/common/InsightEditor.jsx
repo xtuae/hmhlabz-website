@@ -3,6 +3,7 @@ import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
+import client from '../../api/client';
 import {
   Bold, Italic, Heading2, Heading3, List, ListOrdered,
   Code, Link as LinkIcon, ImageIcon, Undo, Redo, Minus,
@@ -49,10 +50,22 @@ const InsightEditor = ({ content, onChange }) => {
   if (!editor) return null;
 
   const addImage = () => {
-    const url = prompt('Enter the image URL:');
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
-    }
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = async () => {
+      const file = input.files[0];
+      if (!file) return;
+      try {
+        const res = await client.post(`/upload?filename=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`, file, {
+          headers: { 'Content-Type': file.type }
+        });
+        editor.chain().focus().setImage({ src: res.data.url }).run();
+      } catch (err) {
+        alert('Failed to upload image');
+      }
+    };
+    input.click();
   };
 
   const addLink = () => {

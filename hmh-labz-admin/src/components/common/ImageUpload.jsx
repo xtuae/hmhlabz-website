@@ -23,8 +23,8 @@ const ImageUpload = ({ value, onChange, label = 'Cover Image' }) => {
     setError(null);
 
     try {
-      const response = await client.put(
-        `/api/upload?filename=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`,
+      const response = await client.post(
+        `/upload?filename=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`,
         file,
         {
           headers: { 'Content-Type': file.type },

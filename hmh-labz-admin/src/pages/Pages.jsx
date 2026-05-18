@@ -102,8 +102,8 @@ const Pages = () => {
     contact: {
       header: { title: "Initiate", highlight: "contact.", description: "Reach out to discuss how we can transform your operations." },
       locations: [
-        { city: "Chennai", address: "Tech Park, Taramani", phone: "+91 98765 43210", email: "chennai@hmhlabz.com" },
-        { city: "Dubai", address: "Dubai Internet City", phone: "+971 50 123 4567", email: "dubai@hmhlabz.com" }
+        { city: "Chennai", address: "Tech Park, Taramani", primaryPhone: "+91 44 2254 1234", secondaryPhone: "+91 98765 43210", primaryEmail: "chennai@hmhlabz.com", secondaryEmail: "careers.in@hmhlabz.com" },
+        { city: "Dubai", address: "Dubai Internet City", primaryPhone: "+971 4 367 1234", secondaryPhone: "+971 50 123 4567", primaryEmail: "dubai@hmhlabz.com", secondaryEmail: "mena@hmhlabz.com" }
       ]
     }
   };
@@ -436,11 +436,15 @@ const Pages = () => {
                         <p className="text-[10px] font-black uppercase text-[#c84b21]">Location 0{i+1}</p>
                         <div className="grid md:grid-cols-2 gap-4">
                           <LabeledInput label="City Name"><input type="text" value={loc?.city || ''} onChange={(e) => updateContactLocation(i, { city: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 font-bold text-sm" placeholder="City Name" /></LabeledInput>
-                          <LabeledInput label="Phone Number"><input type="text" value={loc?.phone || ''} onChange={(e) => updateContactLocation(i, { phone: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Phone Number" /></LabeledInput>
+                          <LabeledInput label="Address"><input type="text" value={loc?.address || ''} onChange={(e) => updateContactLocation(i, { address: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Address" /></LabeledInput>
                         </div>
                         <div className="grid md:grid-cols-2 gap-4">
-                          <LabeledInput label="Address"><input type="text" value={loc?.address || ''} onChange={(e) => updateContactLocation(i, { address: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Address" /></LabeledInput>
-                          <LabeledInput label="Email Address"><input type="email" value={loc?.email || ''} onChange={(e) => updateContactLocation(i, { email: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Email" /></LabeledInput>
+                          <LabeledInput label="Primary Phone"><input type="text" value={loc?.primaryPhone || ''} onChange={(e) => updateContactLocation(i, { primaryPhone: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Primary Phone" /></LabeledInput>
+                          <LabeledInput label="Secondary Phone"><input type="text" value={loc?.secondaryPhone || ''} onChange={(e) => updateContactLocation(i, { secondaryPhone: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Secondary Phone" /></LabeledInput>
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <LabeledInput label="Primary Email"><input type="email" value={loc?.primaryEmail || ''} onChange={(e) => updateContactLocation(i, { primaryEmail: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Primary Email" /></LabeledInput>
+                          <LabeledInput label="Secondary Email"><input type="email" value={loc?.secondaryEmail || ''} onChange={(e) => updateContactLocation(i, { secondaryEmail: e.target.value })} className="w-full px-4 py-2 bg-white rounded-lg border border-black/5 text-sm" placeholder="Secondary Email" /></LabeledInput>
                         </div>
                       </div>
                     ))}
