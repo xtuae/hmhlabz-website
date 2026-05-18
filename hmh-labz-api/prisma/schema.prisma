@@ -87,7 +87,10 @@ model ContactMessage {
 }
 
 model SiteSettings {
-  id         String @id @default("global")
-  logoUrl    String @default("https://www.hmhlabz.com/wp-content/uploads/hmh-labz-black.png")
-  faviconUrl String @default("https://www.hmhlabz.com/wp-content/uploads/hmh-icon.webp")
+  id                String  @id @default("global")
+  logoUrl           String  @default("https://www.hmhlabz.com/wp-content/uploads/hmh-labz-black.png")
+  faviconUrl        String  @default("https://www.hmhlabz.com/wp-content/uploads/hmh-icon.webp")
+  googleAnalyticsId String?
+  metaPixelId       String?
+  customScripts     String?
 }

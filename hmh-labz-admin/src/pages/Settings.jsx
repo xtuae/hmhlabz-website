@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { User, Shield, Key, Save, Loader2, CheckCircle2, AlertCircle, Image } from 'lucide-react';
+import { User, Shield, Key, Save, Loader2, CheckCircle2, AlertCircle, Image, BarChart } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import client from '../api/client';
 import ImageUpload from '../components/common/ImageUpload';
@@ -19,7 +19,10 @@ const Settings = () => {
 
   const [brandData, setBrandData] = useState({
     logoUrl: 'https://www.hmhlabz.com/wp-content/uploads/hmh-labz-black.png',
-    faviconUrl: 'https://www.hmhlabz.com/wp-content/uploads/hmh-icon.webp'
+    faviconUrl: 'https://www.hmhlabz.com/wp-content/uploads/hmh-icon.webp',
+    googleAnalyticsId: '',
+    metaPixelId: '',
+    customScripts: ''
   });
 
   useEffect(() => {
@@ -28,7 +31,10 @@ const Settings = () => {
         if (res.data) {
           setBrandData({
             logoUrl: res.data.logoUrl || 'https://www.hmhlabz.com/wp-content/uploads/hmh-labz-black.png',
-            faviconUrl: res.data.faviconUrl || 'https://www.hmhlabz.com/wp-content/uploads/hmh-icon.webp'
+            faviconUrl: res.data.faviconUrl || 'https://www.hmhlabz.com/wp-content/uploads/hmh-icon.webp',
+            googleAnalyticsId: res.data.googleAnalyticsId || '',
+            metaPixelId: res.data.metaPixelId || '',
+            customScripts: res.data.customScripts || ''
           });
         }
       })
@@ -82,9 +88,9 @@ const Settings = () => {
     setMessage(null);
     try {
       await client.put('/admin/settings/brand', brandData);
-      setMessage({ type: 'success', text: 'Brand assets updated successfully.' });
+      setMessage({ type: 'success', text: 'Settings saved successfully.' });
     } catch (err) {
-      setMessage({ type: 'error', text: err.response?.data?.message || 'Failed to update brand assets.' });
+      setMessage({ type: 'error', text: err.response?.data?.message || 'Failed to save settings.' });
     } finally {
       setLoading(false);
     }
@@ -230,6 +236,58 @@ const Settings = () => {
           >
             {loading ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
             Save Brand Assets
+          </button>
+        </div>
+      </form>
+
+      {/* Analytics & Tracking Section */}
+      <form onSubmit={handleBrandUpdate} className="bg-white rounded-[2.5rem] border border-black/5 shadow-sm p-10 space-y-8">
+        <div className="flex items-center gap-4 mb-2">
+          <div className="p-3 bg-[#c84b21]/5 rounded-xl text-[#c84b21]"><BarChart size={20} /></div>
+          <h3 className="text-xl font-bold tracking-tight">Analytics & Tracking</h3>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Google Analytics ID</label>
+            <input 
+              type="text" 
+              placeholder="e.g. G-XXXXXX"
+              value={brandData.googleAnalyticsId} 
+              onChange={(e) => setBrandData({...brandData, googleAnalyticsId: e.target.value})}
+              className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" 
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Meta Pixel ID</label>
+            <input 
+              type="text" 
+              placeholder="e.g. 1234567890"
+              value={brandData.metaPixelId} 
+              onChange={(e) => setBrandData({...brandData, metaPixelId: e.target.value})}
+              className="w-full px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-bold text-sm" 
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Custom Head Scripts</label>
+          <textarea 
+            placeholder="<!-- Paste AISEO, Site Kit, or other <head> scripts here -->"
+            value={brandData.customScripts} 
+            onChange={(e) => setBrandData({...brandData, customScripts: e.target.value})}
+            className="w-full h-36 px-6 py-4 rounded-2xl bg-[#f5f1e8]/50 border border-black/5 focus:border-[#c84b21] outline-none font-mono text-xs leading-relaxed" 
+          />
+        </div>
+
+        <div className="pt-6 border-t border-black/5 flex justify-end">
+          <button 
+            type="submit"
+            disabled={loading}
+            className="bg-[#1a1a1a] text-white px-10 py-4 rounded-full font-black uppercase text-[10px] tracking-[0.2em] hover:bg-[#c84b21] transition-all flex items-center gap-3 disabled:opacity-50 shadow-xl shadow-black/10"
+          >
+            {loading ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
+            Save Tracking Settings
           </button>
         </div>
       </form>

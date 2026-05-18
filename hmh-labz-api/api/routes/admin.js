@@ -141,19 +141,39 @@ router.put('/settings/security', requireRole(), async (req, res) => {
   }
 });
 
-// Update Brand Assets
+// Dashboard Stats
+router.get('/dashboard-stats', requireRole(['SUPERADMIN', 'ADMIN', 'MODERATOR']), async (req, res) => {
+  try {
+    const [totalLeads, totalInsights, totalUsers, recentLeads] = await Promise.all([
+      prisma.lead.count(),
+      prisma.insight.count({ where: { status: 'PUBLISHED' } }),
+      prisma.user.count({ where: { status: 'ACTIVE' } }),
+      prisma.lead.findMany({
+        take: 5,
+        orderBy: { createdAt: 'desc' },
+        select: { id: true, name: true, businessName: true, createdAt: true }
+      })
+    ]);
+    res.json({ totalLeads, totalInsights, totalUsers, recentLeads });
+  } catch (error) {
+    console.error('Error fetching dashboard stats:', error);
+    res.status(500).json({ error: 'Failed to fetch dashboard stats' });
+  }
+});
+
+// Update Brand Assets & Tracking
 router.put('/settings/brand', requireRole(), async (req, res) => {
   try {
-    const { logoUrl, faviconUrl } = req.body;
+    const { logoUrl, faviconUrl, googleAnalyticsId, metaPixelId, customScripts } = req.body;
     const updatedBrand = await prisma.siteSettings.upsert({
       where: { id: 'global' },
-      update: { logoUrl, faviconUrl },
-      create: { id: 'global', logoUrl, faviconUrl }
+      update: { logoUrl, faviconUrl, googleAnalyticsId, metaPixelId, customScripts },
+      create: { id: 'global', logoUrl, faviconUrl, googleAnalyticsId, metaPixelId, customScripts }
     });
     res.json(updatedBrand);
   } catch (error) {
-    console.error('Error updating brand assets:', error);
-    res.status(500).json({ error: 'Failed to update brand assets' });
+    console.error('Error updating brand & tracking settings:', error);
+    res.status(500).json({ error: 'Failed to update brand & tracking settings' });
   }
 });
 
