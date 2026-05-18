@@ -173,12 +173,12 @@ const Insights = () => {
               <Link to={`/insights/${featured.slug}`}>
                 <div className="grid md:grid-cols-12 gap-8 md:gap-12 items-stretch">
                   {/* visual */}
-                  <div className="md:col-span-7 relative rounded-2xl overflow-hidden border border-ink/10 bg-cream aspect-[5/4] md:aspect-[16/10]">
+                  <div className="md:col-span-7 relative rounded-2xl overflow-hidden border border-ink/10 bg-cream min-h-[300px] lg:min-h-full flex-shrink-0">
                     {featured.coverImage ? (
                       <img 
                         src={featured.coverImage} 
                         alt={featured.title}
-                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                        className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                       />
                     ) : (
                       <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 w-full h-full">
