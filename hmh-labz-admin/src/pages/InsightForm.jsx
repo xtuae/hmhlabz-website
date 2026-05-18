@@ -1,4 +1,4 @@
-// BUILD VERSION 2.0.1 - FORCED REWRITE
+// VERSION_VERIFICATION_TAG: 2026-05-18-NUCLEAR-v1
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import client from '../api/client';
@@ -37,7 +37,6 @@ const InsightForm = () => {
     status: 'DRAFT',
   });
 
-  // Fetch existing insight for editing
   useEffect(() => {
     if (!isEditing) return;
     const fetchInsight = async () => {
@@ -56,7 +55,7 @@ const InsightForm = () => {
           seoDescription: res.data.seoDescription || '',
           status: res.data.status || 'DRAFT',
         });
-        setSlugEdited(true); // Don't auto-overwrite existing slug
+        setSlugEdited(true);
       } catch (err) {
         console.error('Failed to load insight:', err);
       } finally {
@@ -66,7 +65,6 @@ const InsightForm = () => {
     fetchInsight();
   }, [id, isEditing]);
 
-  // Auto-generate slug from title
   const handleTitleChange = (value) => {
     setFormData((prev) => ({
       ...prev,
@@ -119,7 +117,6 @@ const InsightForm = () => {
 
   return (
     <div className="space-y-10 max-w-4xl pb-20">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-6">
           <button
@@ -140,7 +137,6 @@ const InsightForm = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          {/* Status Toggle */}
           <button
             type="button"
             onClick={() => handleChange('status', formData.status === 'PUBLISHED' ? 'DRAFT' : 'PUBLISHED')}
@@ -154,7 +150,6 @@ const InsightForm = () => {
             {formData.status === 'PUBLISHED' ? 'Published' : 'Draft'}
           </button>
 
-          {/* Save Button */}
           <button
             onClick={handleSubmit}
             disabled={saving}
@@ -166,9 +161,7 @@ const InsightForm = () => {
         </div>
       </div>
 
-      {/* Form Fields */}
       <div className="space-y-8">
-        {/* Title */}
         <div>
           <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-1">
             Report Title
@@ -182,7 +175,6 @@ const InsightForm = () => {
           />
         </div>
 
-        {/* URL Slug */}
         <div>
           <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-1">
             URL Slug
@@ -202,7 +194,6 @@ const InsightForm = () => {
           </div>
         </div>
 
-        {/* Excerpt */}
         <div>
           <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-1">
             Excerpt (Summary)
@@ -234,7 +225,6 @@ const InsightForm = () => {
           </datalist>
         </div>
 
-        {/* Read Time */}
         <div>
           <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-1">
             Read Time
@@ -248,13 +238,12 @@ const InsightForm = () => {
           />
         </div>
 
-        {/* Cover Image */}
         <ImageUpload
           value={formData.coverImage}
           onChange={(url) => handleChange('coverImage', url)}
         />
 
-        {/* Rich Text Content */}
+        {/* Note: Project relies on Tiptap (InsightEditor) internally instead of ReactQuill. */}
         <InsightEditor
           value={formData.content || ''}
           onChange={(val) => setFormData({ ...formData, content: val })}

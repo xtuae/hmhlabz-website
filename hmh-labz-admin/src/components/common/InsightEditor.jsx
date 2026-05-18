@@ -1,3 +1,4 @@
+// VERSION_VERIFICATION_TAG: 2026-05-18-NUCLEAR-v1
 import { useEffect } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
