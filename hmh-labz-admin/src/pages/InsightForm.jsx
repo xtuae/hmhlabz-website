@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import client from '../api/client';
 import ImageUpload from '../components/common/ImageUpload';
 import InsightEditor from '../components/common/InsightEditor';
-import { ArrowLeft, Save, Globe, Loader2, Search } from 'lucide-react';
+import { ArrowLeft, Save, Globe, Loader2 } from 'lucide-react';
 
 const slugify = (text) =>
   text
@@ -181,45 +181,23 @@ const InsightForm = () => {
           />
         </div>
 
-        {/* Category & Slug */}
-        <div className="grid md:grid-cols-12 gap-6">
-          <div className="md:col-span-4">
-            <div className="mb-4">
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Category</label>
-              <input 
-                list="category-options" 
-                className="w-full bg-white border border-black/5 rounded-2xl p-5 font-bold text-sm text-[#1a1a1a] focus:border-[#c84b21] outline-none shadow-sm transition-all"
-                value={formData.category || formData.tag || ''} 
-                onChange={(e) => setFormData({ ...formData, category: e.target.value, tag: e.target.value })} 
-                placeholder="Select or type a new category..."
-              />
-              <datalist id="category-options">
-                <option value="Operations" />
-                <option value="AI Workflows" />
-                <option value="Engineering" />
-                <option value="Playbooks" />
-                <option value="Field Notes" />
-              </datalist>
-            </div>
-          </div>
-
-          <div className="md:col-span-8">
-            <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-1">
-              URL Slug
-            </label>
-            <div className="flex items-center bg-white rounded-2xl border border-black/5 overflow-hidden focus-within:border-[#c84b21] transition-all shadow-sm">
-              <span className="pl-5 pr-2 text-gray-300 font-bold text-sm">/insights/</span>
-              <input
-                type="text"
-                value={formData.slug}
-                onChange={(e) => {
-                  setSlugEdited(true);
-                  handleChange('slug', slugify(e.target.value));
-                }}
-                placeholder="auto-generated-slug"
-                className="flex-grow p-5 pl-0 outline-none font-bold text-sm text-[#1a1a1a] placeholder:text-gray-300"
-              />
-            </div>
+        {/* URL Slug */}
+        <div>
+          <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-1">
+            URL Slug
+          </label>
+          <div className="flex items-center bg-white rounded-2xl border border-black/5 overflow-hidden focus-within:border-[#c84b21] transition-all shadow-sm">
+            <span className="pl-5 pr-2 text-gray-300 font-bold text-sm">/insights/</span>
+            <input
+              type="text"
+              value={formData.slug}
+              onChange={(e) => {
+                setSlugEdited(true);
+                handleChange('slug', slugify(e.target.value));
+              }}
+              placeholder="auto-generated-slug"
+              className="flex-grow p-5 pl-0 outline-none font-bold text-sm text-[#1a1a1a] placeholder:text-gray-300"
+            />
           </div>
         </div>
 
@@ -235,6 +213,24 @@ const InsightForm = () => {
             rows={3}
             className="w-full p-5 bg-white rounded-2xl border border-black/5 outline-none focus:border-[#c84b21] transition-all font-bold text-sm resize-none placeholder:text-gray-300 shadow-sm"
           />
+        </div>
+
+        {/* Category / Tag Combo Box */}
+        <div className="mb-4">
+          <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Category</label>
+          <input 
+            list="category-options" 
+            className="w-full bg-transparent border-b border-black/20 p-2 text-ink focus:border-terra outline-none"
+            value={formData.category || formData.tag || ''} 
+            onChange={(e) => setFormData({ ...formData, category: e.target.value, tag: e.target.value })} 
+            placeholder="Select or type a new category..."
+          />
+          <datalist id="category-options">
+            <option value="Operations" />
+            <option value="AI Workflows" />
+            <option value="Engineering" />
+            <option value="Playbooks" />
+          </datalist>
         </div>
 
         {/* Read Time */}
@@ -264,39 +260,24 @@ const InsightForm = () => {
         />
 
         {/* SEO Settings Panel */}
-        <div className="p-8 bg-gray-50 rounded-[2.5rem] border-2 border-black/10 space-y-6 shadow-sm">
-          <div className="flex items-center gap-3 mb-4">
-            <Search size={20} className="text-[#c84b21]" />
-            <div>
-              <h4 className="font-bold text-lg tracking-tight text-[#1a1a1a]">SEO Settings</h4>
-              <p className="text-xs text-gray-400">Optimize how this report appears on Google and social media preview cards.</p>
-            </div>
+        <div className="mt-8 p-4 border border-black/10 bg-black/5">
+          <h3 className="text-xs font-black uppercase tracking-widest text-ink mb-4">SEO Settings</h3>
+          <div className="mb-4">
+            <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">SEO Title</label>
+            <input 
+              type="text"
+              className="w-full bg-transparent border-b border-black/20 p-2 text-ink focus:border-terra outline-none"
+              value={formData.seoTitle || ''} 
+              onChange={(e) => setFormData({ ...formData, seoTitle: e.target.value })} 
+            />
           </div>
-          <div className="space-y-6">
-            <div>
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-1">
-                SEO Title
-              </label>
-              <input
-                type="text"
-                value={formData.seoTitle || ''}
-                onChange={(e) => setFormData({ ...formData, seoTitle: e.target.value })}
-                placeholder="Custom SEO Title (optional)"
-                className="w-full p-5 bg-white rounded-2xl border border-black/5 outline-none focus:border-[#c84b21] transition-all font-bold text-sm placeholder:text-gray-300 shadow-sm"
-              />
-            </div>
-            <div>
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-1">
-                SEO Description
-              </label>
-              <textarea
-                value={formData.seoDescription || ''}
-                onChange={(e) => setFormData({ ...formData, seoDescription: e.target.value })}
-                placeholder="Custom SEO Description (optional)"
-                rows={3}
-                className="w-full p-5 bg-white rounded-2xl border border-black/5 outline-none focus:border-[#c84b21] transition-all font-bold text-sm resize-none placeholder:text-gray-300 shadow-sm"
-              />
-            </div>
+          <div className="mb-4">
+            <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">SEO Description</label>
+            <textarea 
+              className="w-full bg-transparent border-b border-black/20 p-2 text-ink focus:border-terra outline-none resize-y"
+              value={formData.seoDescription || ''} 
+              onChange={(e) => setFormData({ ...formData, seoDescription: e.target.value })} 
+            />
           </div>
         </div>
       </div>
@@ -305,3 +286,4 @@ const InsightForm = () => {
 };
 
 export default InsightForm;
+
