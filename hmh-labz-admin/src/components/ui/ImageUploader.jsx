@@ -18,7 +18,7 @@ const ImageUploader = ({ onUploadSuccess, label = "Cover Image" }) => {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await client.post(`/api/upload?filename=${file.name}&contentType=${file.type}`, file, {
+      const response = await client.post(`/upload?filename=${file.name}&contentType=${file.type}`, file, {
         headers: {
           'Content-Type': file.type
         }
