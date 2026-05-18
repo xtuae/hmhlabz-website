@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import client from '../api/client';
 import ImageUpload from '../components/common/ImageUpload';
 import InsightEditor from '../components/common/InsightEditor';
-import { ArrowLeft, Save, Globe, Loader2, Tag, Search } from 'lucide-react';
+import { ArrowLeft, Save, Globe, Loader2, Search } from 'lucide-react';
 
 const slugify = (text) =>
   text
@@ -78,10 +78,17 @@ const InsightForm = () => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = async () => {
+  const handleSubmit = async () => {
     if (!formData.title.trim()) return alert('Title is required.');
 
-    const payload = { ...formData };
+    const payload = { 
+      ...formData,
+      category: formData.category || formData.tag || 'Field Notes',
+      tag: formData.tag || formData.category || 'Field Notes',
+      seoTitle: formData.seoTitle || '',
+      seoDescription: formData.seoDescription || ''
+    };
+
     if (!payload.slug || !payload.slug.trim()) {
       payload.slug = payload.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
     }
@@ -148,7 +155,7 @@ const InsightForm = () => {
 
           {/* Save Button */}
           <button
-            onClick={handleSave}
+            onClick={handleSubmit}
             disabled={saving}
             className="bg-[#1a1a1a] text-white px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#c84b21] transition-all flex items-center gap-2 shadow-xl shadow-black/10 disabled:opacity-50"
           >
@@ -177,31 +184,27 @@ const InsightForm = () => {
         {/* Category & Slug */}
         <div className="grid md:grid-cols-12 gap-6">
           <div className="md:col-span-4">
-            <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-1">
-              Category / Tag
-            </label>
-            <div className="relative">
-              <select
-                value={formData.tag}
-                onChange={(e) => {
-                  handleChange('tag', e.target.value);
-                  handleChange('category', e.target.value); // keep both synced
-                }}
-                className="w-full p-5 bg-white rounded-2xl border border-black/5 outline-none focus:border-[#c84b21] transition-all font-bold text-sm appearance-none cursor-pointer shadow-sm"
-              >
-                <option value="Field Notes">Field Notes</option>
-                <option value="Playbook">Playbook</option>
-                <option value="Case Note">Case Note</option>
-                <option value="Operations">Operations</option>
-                <option value="AI Workflows">AI Workflows</option>
-                <option value="Engineering">Engineering</option>
-              </select>
-              <Tag size={16} className="absolute right-5 top-5 text-gray-400 pointer-events-none" />
+            <div className="mb-4">
+              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Category</label>
+              <input 
+                list="category-options" 
+                className="w-full bg-white border border-black/5 rounded-2xl p-5 font-bold text-sm text-[#1a1a1a] focus:border-[#c84b21] outline-none shadow-sm transition-all"
+                value={formData.category || formData.tag || ''} 
+                onChange={(e) => setFormData({ ...formData, category: e.target.value, tag: e.target.value })} 
+                placeholder="Select or type a new category..."
+              />
+              <datalist id="category-options">
+                <option value="Operations" />
+                <option value="AI Workflows" />
+                <option value="Engineering" />
+                <option value="Playbooks" />
+                <option value="Field Notes" />
+              </datalist>
             </div>
           </div>
 
           <div className="md:col-span-8">
-            <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-1">
+            <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-1">
               URL Slug
             </label>
             <div className="flex items-center bg-white rounded-2xl border border-black/5 overflow-hidden focus-within:border-[#c84b21] transition-all shadow-sm">
@@ -248,40 +251,6 @@ const InsightForm = () => {
           />
         </div>
 
-        {/* SEO Section */}
-        <div className="p-8 bg-gray-50 rounded-[2.5rem] border border-black/5 space-y-6">
-          <div className="flex items-center gap-3 mb-2">
-            <Search size={18} className="text-[#c84b21]" />
-            <h4 className="font-bold text-base tracking-tight">Search Engine Optimization</h4>
-          </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-1">
-                SEO Title
-              </label>
-              <input
-                type="text"
-                value={formData.seoTitle}
-                onChange={(e) => handleChange('seoTitle', e.target.value)}
-                placeholder="Custom SEO Title (optional)"
-                className="w-full p-5 bg-white rounded-2xl border border-black/5 outline-none focus:border-[#c84b21] transition-all font-bold text-sm placeholder:text-gray-300"
-              />
-            </div>
-            <div>
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-1">
-                SEO Description
-              </label>
-              <input
-                type="text"
-                value={formData.seoDescription}
-                onChange={(e) => handleChange('seoDescription', e.target.value)}
-                placeholder="Custom SEO Description (optional)"
-                className="w-full p-5 bg-white rounded-2xl border border-black/5 outline-none focus:border-[#c84b21] transition-all font-bold text-sm placeholder:text-gray-300"
-              />
-            </div>
-          </div>
-        </div>
-
         {/* Cover Image */}
         <ImageUpload
           value={formData.coverImage}
@@ -293,6 +262,43 @@ const InsightForm = () => {
           value={formData.content || ''}
           onChange={(val) => setFormData({ ...formData, content: val })}
         />
+
+        {/* SEO Settings Panel */}
+        <div className="p-8 bg-gray-50 rounded-[2.5rem] border-2 border-black/10 space-y-6 shadow-sm">
+          <div className="flex items-center gap-3 mb-4">
+            <Search size={20} className="text-[#c84b21]" />
+            <div>
+              <h4 className="font-bold text-lg tracking-tight text-[#1a1a1a]">SEO Settings</h4>
+              <p className="text-xs text-gray-400">Optimize how this report appears on Google and social media preview cards.</p>
+            </div>
+          </div>
+          <div className="space-y-6">
+            <div>
+              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-1">
+                SEO Title
+              </label>
+              <input
+                type="text"
+                value={formData.seoTitle || ''}
+                onChange={(e) => setFormData({ ...formData, seoTitle: e.target.value })}
+                placeholder="Custom SEO Title (optional)"
+                className="w-full p-5 bg-white rounded-2xl border border-black/5 outline-none focus:border-[#c84b21] transition-all font-bold text-sm placeholder:text-gray-300 shadow-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2 ml-1">
+                SEO Description
+              </label>
+              <textarea
+                value={formData.seoDescription || ''}
+                onChange={(e) => setFormData({ ...formData, seoDescription: e.target.value })}
+                placeholder="Custom SEO Description (optional)"
+                rows={3}
+                className="w-full p-5 bg-white rounded-2xl border border-black/5 outline-none focus:border-[#c84b21] transition-all font-bold text-sm resize-none placeholder:text-gray-300 shadow-sm"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
