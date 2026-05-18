@@ -93,7 +93,7 @@ export const ThumbSvg = ({ kind, id = 'thumb' }) => {
 };
 
 const Insights = () => {
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState('All');
   const [insights, setInsights] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -111,10 +111,10 @@ const Insights = () => {
     fetchInsights();
   }, []);
 
-  const filtered = insights.filter(a => filter === 'all' || a.tag === filter || a.category === filter);
-
-  const featured = filtered.length > 0 ? filtered[0] : null;
-  const gridPosts = filtered.length > 1 ? filtered.slice(1) : [];
+  const uniqueCategories = ['All', ...new Set(insights.map(i => i.category || i.tag).filter(Boolean))];
+  const featured = insights.length > 0 ? insights[0] : null;
+  const remainingInsights = insights.length > 1 ? insights.slice(1) : [];
+  const gridPosts = remainingInsights.filter(a => filter === 'All' || a.tag === filter || a.category === filter);
 
   return (
     <div className="bg-paper selection:bg-terra selection:text-paper min-h-screen relative">
@@ -144,13 +144,13 @@ const Insights = () => {
             {/* filter row */}
             <div className="mt-14 sm:mt-20 flex items-center flex-wrap gap-3 border-y border-ink/12 py-5 w-full">
               <span className="font-mono text-ink/45 mr-3 uppercase text-[11px] tracking-[0.22em] font-semibold">Filter</span>
-              {['all', 'Field Notes', 'Playbook', 'Case Note'].map(t => (
+              {uniqueCategories.map(t => (
                 <button 
                   key={t} 
                   onClick={() => setFilter(t)} 
                   className={`px-4 py-2 rounded-full font-mono text-[11px] uppercase tracking-[0.22em] font-semibold border transition-colors ${filter === t ? 'bg-ink text-paper border-ink' : 'border-ink/15 hover:border-ink text-ink'}`}
                 >
-                  {t === 'all' ? 'All' : t === 'Playbook' ? 'Playbooks' : t === 'Case Note' ? 'Case Notes' : t}
+                  {t}
                 </button>
               ))}
               <span className="ml-auto font-mono text-[11px] uppercase tracking-[0.22em] font-semibold text-ink/40 hidden sm:inline">↓ Newest first</span>

@@ -180,8 +180,7 @@ const InsightDetail = () => {
               <div className="font-mono text-[11px] uppercase tracking-[0.22em] font-semibold text-ink/45 mb-5">In this piece</div>
               <nav className="flex flex-col space-y-1 border-l border-ink/12 pl-4 py-1 font-sans text-[14px] text-ink/65">
                 <a href="#article-content" className="hover:text-terra transition-colors py-1 block font-medium text-ink">01 — Article Body</a>
-                <a href="#author-bio" className="hover:text-terra transition-colors py-1 block">02 — About the Author</a>
-                <a href="#related-writing" className="hover:text-terra transition-colors py-1 block">03 — Related Writing</a>
+                <a href="#related-writing" className="hover:text-terra transition-colors py-1 block">02 — Related Writing</a>
               </nav>
 
               <div className="mt-10 pt-6 border-t border-ink/12">
@@ -198,43 +197,18 @@ const InsightDetail = () => {
             <article id="article-content" className="col-span-12 lg:col-span-9 max-w-[68ch] text-ink">
               <Reveal>
                 <div 
-                  className="prose prose-lg max-w-none 
-                    prose-headings:font-sans prose-headings:font-bold prose-headings:text-ink prose-headings:tracking-tight
-                    prose-p:text-ink/85 prose-p:leading-[1.7] prose-p:text-[19px] prose-p:mb-6
-                    prose-strong:text-ink prose-strong:font-bold prose-a:text-terra prose-a:border-b prose-a:border-terra/35 hover:prose-a:border-terra prose-a:no-underline
-                    prose-img:rounded-3xl prose-img:border prose-img:border-ink/10 prose-code:font-mono prose-code:bg-cream prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded
-                    prose-ul:text-ink/80 prose-ul:text-[18px] prose-ul:leading-[1.65]"
-                  dangerouslySetInnerHTML={{ __html: insight.content }}
+                  className="text-ink/80 leading-[1.8] text-[16px] sm:text-[18px] 
+                  [&>p]:mb-6 
+                  [&>h2]:text-[24px] [&>h2]:font-bold [&>h2]:mt-12 [&>h2]:mb-4 [&>h2]:text-ink 
+                  [&>h3]:text-[20px] [&>h3]:font-semibold [&>h3]:mt-8 [&>h3]:mb-4 [&>h3]:text-ink 
+                  [&>ul]:list-disc [&>ul]:ml-6 [&>ul]:mb-6 
+                  [&>ol]:list-decimal [&>ol]:ml-6 [&>ol]:mb-6 
+                  [&>strong]:text-ink [&>strong]:font-bold"
+                  dangerouslySetInnerHTML={{ __html: insight.content }} 
                 />
               </Reveal>
             </article>
           </div>
-        </section>
-
-        {/* AUTHOR BIO */}
-        <section id="author-bio" className="px-6 md:px-10 lg:px-14 pb-24 max-w-7xl mx-auto">
-          <Reveal className="max-w-4xl mx-auto bg-cream rounded-2xl border border-ink/10 overflow-hidden">
-            <div className="flex items-center justify-between px-7 py-3 border-b border-ink/12 font-mono text-[11px] uppercase tracking-[0.22em] font-semibold">
-              <span className="text-terra">About the author</span>
-              <span className="text-ink/40">Partner</span>
-            </div>
-            <div className="px-7 py-10 sm:px-10 sm:py-12 flex flex-col sm:flex-row gap-8 items-start">
-              <div className="w-20 h-20 rounded-full bg-ink text-paper flex items-center justify-center font-serif italic shrink-0 text-3xl">
-                {insight.author?.name?.charAt(0) || 'N'}
-              </div>
-              <div>
-                <h4 className="font-sans font-semibold text-[22px] tracking-[-0.01em] text-ink">{insight.author?.name || 'Naveen Hari'}</h4>
-                <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.22em] text-ink/45">Partner · Strategy + Build</p>
-                <p className="mt-5 text-[15px] sm:text-[16px] leading-[1.65] text-ink/70 max-w-[60ch]">
-                  Naveen leads diagnostic engagements at HMH Labz. Before HMH, he ran operations at a 40-lawyer firm in Chennai and shipped two RAG platforms inside regulated industries.
-                </p>
-                <div className="mt-6 flex items-center gap-5 font-mono text-[11px] uppercase tracking-[0.22em] font-semibold">
-                  <a href="mailto:naveen@hmhlabz.com" className="text-ink hover:text-terra">naveen@hmhlabz.com</a>
-                  <span onClick={() => window.open('https://linkedin.com', '_blank')} className="text-ink/55 hover:text-terra cursor-pointer">LinkedIn ↗</span>
-                </div>
-              </div>
-            </div>
-          </Reveal>
         </section>
 
         {/* RELATED WRITING */}
