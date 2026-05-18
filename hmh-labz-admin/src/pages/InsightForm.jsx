@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import client from '../api/client';
 import ImageUpload from '../components/common/ImageUpload';
-import InsightEditor from '../components/common/InsightEditor';
+import InsightEditor from '../components/insights/InsightEditor';
 import { ArrowLeft, Save, Globe, Loader2 } from 'lucide-react';
 
 const slugify = (text) =>

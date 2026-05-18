@@ -6,6 +6,7 @@ import DashboardOverview from './pages/DashboardOverview';
 import ManageInsights from './pages/ManageInsights';
 import ManageUsers from './pages/ManageUsers';
 import ManageContent from './pages/ManageContent';
+import InsightForm from './pages/InsightForm';
 import Pages from './pages/Pages';
 import HubSpotSync from './pages/HubSpotSync';
 import Settings from './pages/Settings';
@@ -29,8 +30,8 @@ function App() {
           
           {/* Module Routes */}
           <Route path="insights" element={<ManageInsights />} />
-          <Route path="insights/new" element={<ManageContent />} />
-          <Route path="insights/edit/:id" element={<ManageContent />} />
+          <Route path="insights/new" element={<InsightForm />} />
+          <Route path="insights/edit/:id" element={<InsightForm />} />
           <Route path="content" element={<ManageContent />} />
           <Route path="pages" element={<Pages />} />
           <Route path="sync" element={<HubSpotSync />} />
