@@ -51,13 +51,13 @@ const About = () => {
 
           <div className="grid grid-cols-12 gap-6 lg:gap-8 items-end">
             <h1 
-              className="col-span-12 lg:col-span-9 font-sans font-bold text-ink tracking-[-0.035em] leading-[0.92]" 
-              style={{ fontSize: 'clamp(48px, 9.2vw, 148px)', textWrap: 'balance' }}
-              dangerouslySetInnerHTML={{ __html: data.heroTitle.replace(/tells\syou/g, '<span class="font-serif italic text-terra font-normal">tells you</span>') }}
+              className="col-span-12 lg:col-span-9 font-sans font-bold text-ink text-[40px] md:text-[80px] leading-[0.9] tracking-[-0.04em]" 
+              style={{ textWrap: 'balance' }}
+              dangerouslySetInnerHTML={{ __html: data.heroTitle.replace(/HMH\sLabz/g, '<span class="font-serif italic text-terra font-normal">HMH Labz</span>') }}
             />
             <div className="col-span-12 lg:col-span-3 lg:pb-4">
               <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/45 mb-4">Issue №&nbsp;26.05</div>
-              <p className="text-[14px] text-ink/65 leading-[1.6]" style={{ textWrap: 'pretty' }}>
+              <p className="text-[20px] md:text-[24px] text-ink/65 leading-[1.4] tracking-[-0.02em]" style={{ textWrap: 'pretty' }}>
                 {data.heroText}
               </p>
             </div>
@@ -127,21 +127,26 @@ const About = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-7">
             {data.linesOfWork?.map((item, i) => (
-              <article key={item.id} className="rounded-2xl border border-ink/12 bg-paper overflow-hidden flex flex-col">
-                <div className="px-6 py-3 border-b border-ink/12 flex items-center justify-between">
-                  <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-terra">{item.line}</span>
-                  <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/40">{item.title.split(' ')[0]}</span>
+              <article key={item.id} className="border-t border-b border-black/10 bg-paper flex flex-col pt-4 pb-6">
+                <div className="flex items-center justify-between mb-8">
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-terra">{item.line}</span>
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-ink/40">{item.title.split(' ')[0]}</span>
                 </div>
-                <div className="p-7 sm:p-9 flex-1 flex flex-col">
+                <div className="flex-1 flex flex-col">
                   <div className="font-serif italic text-ink/15 leading-none" style={{ fontSize: '96px' }}>0{i+1}</div>
                   <h3 className="mt-2 font-sans font-semibold text-[24px] tracking-[-0.015em] leading-[1.15]">{item.title}</h3>
                   <p className="mt-4 text-[15px] leading-[1.65] text-ink/70 flex-1" style={{ textWrap: 'pretty' }}>
                     {item.description}
                   </p>
-                  <div className="mt-7 pt-5 border-t border-ink/10 grid grid-cols-2 gap-y-3 text-[13px]">
-                    <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/45 flex items-center">Duration</span><span className="text-ink/80 text-right">{item.duration}</span>
-                    <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/45 flex items-center">Output</span><span className="text-ink/80 text-right">{item.output}</span>
-                    <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/45 flex items-center">Tier</span><span className="text-terra text-right">{item.tier}</span>
+                  <div className="mt-7 pt-5 border-t border-black/10 grid grid-cols-2 gap-y-3">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-ink/45 flex items-center">Duration</span>
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-ink/80 text-right">{item.duration}</span>
+                    
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-ink/45 flex items-center">Output</span>
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-ink/80 text-right">{item.output}</span>
+                    
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-ink/45 flex items-center">Tier</span>
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-terra text-right">{item.tier}</span>
                   </div>
                 </div>
               </article>
@@ -220,10 +225,10 @@ const About = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-ink/12">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {data.phases?.map((phase, i) => (
-                <div key={phase.id || i} className="px-7 py-8">
-                  <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-terra mb-2">{phase.timeframe}</div>
+                <div key={phase.id || i} className="p-6 border border-black/10 bg-paper">
+                  <div className="font-mono text-[10px] uppercase tracking-widest text-terra mb-3">{phase.timeframe}</div>
                   <h4 className="font-sans font-semibold text-[19px] tracking-[-0.01em]">{phase.title}</h4>
                   <p className="mt-3 text-[14px] leading-[1.6] text-ink/65" style={{ textWrap: 'pretty' }}>
                     {phase.description}
@@ -250,10 +255,10 @@ const About = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-ink/12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-10 border-t border-black/10">
             {data.capabilities?.map((cap, i) => (
-              <div key={cap.id || i} className="border-r border-b border-ink/12 px-7 py-9">
-                <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-terra mb-4">{cap.number}</div>
+              <div key={cap.id || i} className="flex flex-col">
+                <div className="font-serif italic text-ink/15 leading-none mb-4" style={{ fontSize: '80px' }}>{cap.number}</div>
                 <h4 className="font-sans font-semibold text-[20px] tracking-[-0.01em] leading-[1.15]">{cap.title}</h4>
                 <p className="mt-3 text-[14px] leading-[1.65] text-ink/65">{cap.description}</p>
               </div>
