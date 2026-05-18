@@ -66,6 +66,16 @@ const ManageInsights = () => {
         <div className="flex justify-center py-20">
           <Loader2 className="animate-spin text-[#c84b21]" size={48} />
         </div>
+      ) : insights.length === 0 ? (
+        <div className="py-20 text-center bg-white rounded-[32px] border border-black/5 shadow-sm">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-gray-400 font-bold mb-4">No insights found. Create your first post.</p>
+          <button
+            onClick={() => navigate('/insights/new')}
+            className="bg-[#1a1a1a] text-white px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#c84b21] transition-all inline-flex items-center gap-2 shadow-xl shadow-black/10"
+          >
+            <Plus size={16} /> New Draft
+          </button>
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {insights.map((insight, i) => (

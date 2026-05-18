@@ -164,6 +164,10 @@ const Insights = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
               {[1, 2, 3].map(i => <InsightSkeleton key={i} />)}
             </div>
+          ) : insights.length === 0 ? (
+            <div className="text-center py-32 bg-cream/50 border border-ink/10 rounded-[3rem] shadow-sm">
+              <p className="font-mono text-xs uppercase tracking-[0.25em] text-ink/40 font-bold">No insights published yet.</p>
+            </div>
           ) : featured ? (
             <Reveal className="group block cursor-pointer">
               <Link to={`/insights/${featured.slug}`}>
@@ -249,7 +253,7 @@ const Insights = () => {
         </section>
 
         {/* GRID */}
-        {!loading && (
+        {!loading && insights.length > 0 && (
           <section className="px-6 md:px-10 lg:px-14 pb-28 sm:pb-40 border-t border-ink/10 pt-16 sm:pt-20 max-w-7xl mx-auto">
             <div className="flex items-end justify-between mb-12">
               <h3 className="font-serif italic text-ink/85" style={{ fontSize: "clamp(28px, 3vw, 40px)" }}>More writing.</h3>
