@@ -10,6 +10,7 @@ import InsightForm from './pages/InsightForm';
 import Pages from './pages/Pages';
 import HubSpotSync from './pages/HubSpotSync';
 import Settings from './pages/Settings';
+import ManageAbout from './pages/ManageAbout';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="insights/edit/:id" element={<InsightForm />} />
           <Route path="content" element={<ManageContent />} />
           <Route path="pages" element={<Pages />} />
+          <Route path="about" element={<ManageAbout />} />
           <Route path="sync" element={<HubSpotSync />} />
           <Route path="settings" element={<Settings />} />
           

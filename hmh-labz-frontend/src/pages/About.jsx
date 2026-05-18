@@ -1,121 +1,268 @@
-import React, { useState, useEffect } from 'react';
-import Navbar from '../components/layout/Navbar';
-import Footer from '../components/layout/Footer';
-import Reveal from '../components/ui/Reveal';
-import MonoLabel from '../components/ui/MonoLabel';
-import SEO from '../components/seo/SEO';
-import api from '../api/client';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Loader2 } from 'lucide-react';
+import client from '../api/client';
 
 const About = () => {
-  const [pageData, setPageData] = useState(null);
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchAboutData = async () => {
+    const fetchAbout = async () => {
       try {
-        const response = await api.get('/pages/about');
-        setPageData(response.data);
+        const res = await client.get('/about');
+        setData(res.data);
       } catch (error) {
-        console.error('Failed to fetch about page data:', error);
+        console.error('Failed to fetch about page:', error);
       } finally {
         setLoading(false);
       }
     };
-    fetchAboutData();
+    fetchAbout();
   }, []);
 
-  const content = pageData?.content?.about;
+  if (loading || !data) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-paper">
+        <Loader2 className="w-8 h-8 animate-spin text-terra" />
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-paper selection:bg-terra selection:text-paper min-h-screen relative">
-      <SEO 
-        title={pageData?.title || 'About | HMH Labz'}
-        description={pageData?.metaDescription || 'Strategy + build, in one team. We founded HMH Labz to kill the traditional agency hand-off.'}
+    <div className="bg-paper text-ink selection:bg-terra selection:text-paper font-sans overflow-x-hidden relative min-h-screen pt-[68px] sm:pt-[76px]">
+      {/* Noise Overlay */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-0 opacity-100 mix-blend-multiply" 
+        style={{ backgroundImage: 'url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMjAiIGhlaWdodD0iMjIwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC44NSIgbnVtT2N0YXZlcz0iMiIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjxmZUNvbG9yTWF0cml4IHZhbHVlcz0iMCAwIDAgMCAwLjA4ICAwIDAgMCAwIDAuMDcgIDAgMCAwIDAgMC4wNiAgMCAwIDAgMC4wNCAwIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI24pIi8+PC9zdmc+")', backgroundSize: '220px 220px' }} 
       />
-      
-      <Navbar />
-      
-      <main className="pt-20 text-left">
-        <header className="px-6 md:px-10 lg:px-14 pt-16 sm:pt-24 pb-20 sm:pb-32 max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-12 gap-16 items-center">
-            <div className="lg:col-span-7">
-              <Reveal>
-                <MonoLabel>N° 01 — Mission</MonoLabel>
-                <h1 className="mt-10 sm:mt-12 font-sans font-bold text-ink tracking-tight leading-[0.94]" style={{ fontSize: "clamp(42px, 7vw, 100px)" }}>
-                  {content?.hero?.title || 'Strategy + build,'} <span className="font-serif italic text-terra font-normal">{content?.hero?.highlight || 'in one team.'}</span>
-                </h1>
-                <p className="mt-10 max-w-[48ch] text-ink/65 text-xl sm:text-2xl leading-relaxed">
-                  {content?.hero?.description || 'We founded HMH Labz to kill the traditional agency hand-off. The architects who diagnose your problems are the engineers who build the solutions.'}
-                </p>
-              </Reveal>
+
+      <div className="relative z-10">
+        {/* HERO SECTION */}
+        <header className="px-6 md:px-10 lg:px-14 pt-[120px] sm:pt-[140px] pb-20 sm:pb-28 border-b border-ink/12">
+          <div className="flex items-center gap-3 text-[13px] mb-10 sm:mb-14">
+            <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/45">File · 00</span>
+            <span className="text-ink/25">/</span>
+            <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-terra">About the studio</span>
+          </div>
+
+          <div className="grid grid-cols-12 gap-6 lg:gap-8 items-end">
+            <h1 
+              className="col-span-12 lg:col-span-9 font-sans font-bold text-ink tracking-[-0.035em] leading-[0.92]" 
+              style={{ fontSize: 'clamp(48px, 9.2vw, 148px)', textWrap: 'balance' }}
+              dangerouslySetInnerHTML={{ __html: data.heroTitle.replace(/tells\syou/g, '<span class="font-serif italic text-terra font-normal">tells you</span>') }}
+            />
+            <div className="col-span-12 lg:col-span-3 lg:pb-4">
+              <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/45 mb-4">Issue №&nbsp;26.05</div>
+              <p className="text-[14px] text-ink/65 leading-[1.6]" style={{ textWrap: 'pretty' }}>
+                {data.heroText}
+              </p>
             </div>
-            <div className="lg:col-span-5 relative">
-              <Reveal delay={0.2} direction="left">
-                <div className="aspect-[4/5] rounded-[3rem] bg-cream border border-ink/10 overflow-hidden relative">
-                  <svg viewBox="0 0 400 500" className="absolute inset-0 w-full h-full">
-                    <rect width="400" height="500" fill="#EDE6D3" />
-                    <g transform="translate(100 150)">
-                      <circle cx="100" cy="80" r="60" fill="#161513" opacity="0.1" />
-                      <path d="M40 250 Q100 200 160 250 L160 350 L40 350 Z" fill="#161513" opacity="0.1" />
-                    </g>
-                    <text x="200" y="460" fontFamily="Fraunces" fontStyle="italic" fontSize="14" fill="#C2410C" textAnchor="middle">EST. 2024</text>
-                  </svg>
-                </div>
-              </Reveal>
+          </div>
+
+          {/* Vital stats row */}
+          <div className="mt-20 sm:mt-24 grid grid-cols-2 md:grid-cols-4 border-t border-ink/12 divide-x divide-ink/12">
+            <div className="px-0 md:px-6 py-7">
+              <div className="font-serif italic text-terra leading-none" style={{ fontSize: 'clamp(40px, 4vw, 56px)' }}>2023</div>
+              <div className="mt-3 font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/45">Founded · Dubai</div>
+            </div>
+            <div className="px-6 py-7">
+              <div className="font-serif italic text-terra leading-none" style={{ fontSize: 'clamp(40px, 4vw, 56px)' }}>38</div>
+              <div className="mt-3 font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/45">Engagements shipped</div>
+            </div>
+            <div className="px-0 md:px-6 py-7">
+              <div className="font-serif italic text-terra leading-none" style={{ fontSize: 'clamp(40px, 4vw, 56px)' }}>06</div>
+              <div className="mt-3 font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/45">Active clients · hard cap</div>
+            </div>
+            <div className="px-6 py-7">
+              <div className="font-serif italic text-terra leading-none" style={{ fontSize: 'clamp(40px, 4vw, 56px)' }}>02</div>
+              <div className="mt-3 font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/45">Hubs · Dubai & Chennai</div>
             </div>
           </div>
         </header>
 
-        <section className="bg-ink text-paper py-32 px-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid md:grid-cols-12 gap-12 sm:gap-20 items-start">
-              <div className="md:col-span-5">
-                <Reveal>
-                  <MonoLabel color="terra">The Philosophy</MonoLabel>
-                  <h2 className="mt-8 text-4xl sm:text-6xl font-black leading-tight tracking-tight">
-                    {content?.story?.heading || "Scale shouldn't mean bloat."}
-                  </h2>
-                </Reveal>
-              </div>
-              <div className="md:col-span-7">
-                <Reveal delay={0.2}>
-                  <div className="space-y-10 text-paper/60 text-lg sm:text-xl leading-relaxed font-light">
-                    <p>{content?.story?.text || "At HMH Labz, we hire only senior technical leads. When you discuss your architecture with us, you're talking to the person who will be writing the PRs. This model reclaimed 84% of ops time for our clients last year."}</p>
-                  </div>
-                </Reveal>
+        {/* 01 — THE THESIS */}
+        <section className="px-6 md:px-10 lg:px-14 py-24 sm:py-32 border-b border-ink/12">
+          <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-terra mb-10 flex items-center">
+            <span className="inline-block w-[28px] h-[1px] bg-terra mr-3"></span>01 · Thesis
+          </div>
+
+          <div className="grid grid-cols-12 gap-8 lg:gap-12">
+            <div className="col-span-12 lg:col-span-7">
+              <p className="font-serif italic text-ink leading-[1.18] tracking-[-0.015em]" style={{ fontSize: 'clamp(32px, 4.6vw, 64px)', textWrap: 'balance' }}>
+                Most transformation work fails the same way. A strategy team writes the deck. An implementation team inherits it. The deck and the build never quite agree on the same problem, and twelve weeks in, the rollout is <span className="text-terra not-italic font-sans font-medium">"in phase two."</span>
+              </p>
+            </div>
+            <div className="col-span-12 lg:col-span-4 lg:col-start-9">
+              <div className="lg:pt-6 space-y-6 text-[17px] leading-[1.7] text-ink/72" style={{ textWrap: 'pretty' }}>
+                <p>
+                  We started HMH Labz because the model is broken. Diagnosis and delivery should live in the same room — same people, same contract, same incentive to get the thing actually used by month three.
+                </p>
+                <p>
+                  Everything else on this page is a consequence of that one decision.
+                </p>
               </div>
             </div>
           </div>
         </section>
 
-        {content?.team?.members && content.team.members.length > 0 && (
-          <section className="bg-paper py-32 px-6">
-            <div className="max-w-7xl mx-auto">
-              <Reveal>
-                <MonoLabel color="terra">The Team</MonoLabel>
-                <h2 className="mt-8 text-4xl sm:text-6xl font-black leading-tight tracking-tight text-ink mb-20">
-                  {content?.team?.heading || "The Operators"}
-                </h2>
-              </Reveal>
-              <div className="grid md:grid-cols-3 gap-12">
-                {content.team.members.map((member, i) => (
-                  <Reveal key={i} delay={i * 0.1}>
-                    <div className="space-y-6">
-                      <div className="aspect-square bg-cream rounded-3xl border border-ink/10" />
-                      <div>
-                        <h4 className="text-2xl font-bold text-ink">{member.name}</h4>
-                        <p className="text-terra font-mono text-xs uppercase tracking-widest mt-1">{member.role}</p>
-                      </div>
-                      <p className="text-ink/65 leading-relaxed">{member.bio}</p>
-                    </div>
-                  </Reveal>
+        {/* 02 — WHAT WE DO (Lines of Work) */}
+        <section className="px-6 md:px-10 lg:px-14 py-24 sm:py-32 border-b border-ink/12 bg-cream/45">
+          <div className="grid grid-cols-12 gap-8 mb-16">
+            <div className="col-span-12 lg:col-span-5">
+              <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-terra mb-6 flex items-center">
+                <span className="inline-block w-[28px] h-[1px] bg-terra mr-3"></span>02 · What we do
+              </div>
+              <h2 className="font-sans font-bold tracking-[-0.025em] leading-[1.02]" style={{ fontSize: 'clamp(34px, 4.8vw, 64px)' }}>
+                Three lines of work, <span className="font-serif italic text-terra font-normal">one team.</span>
+              </h2>
+            </div>
+            <p className="col-span-12 lg:col-span-5 lg:col-start-8 text-[16px] leading-[1.7] text-ink/72 self-end" style={{ textWrap: 'pretty' }}>
+              Engagements usually start on one line and grow into the next. The team doesn't change when they do.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-7">
+            {data.linesOfWork?.map((item, i) => (
+              <article key={item.id} className="rounded-2xl border border-ink/12 bg-paper overflow-hidden flex flex-col">
+                <div className="px-6 py-3 border-b border-ink/12 flex items-center justify-between">
+                  <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-terra">{item.line}</span>
+                  <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/40">{item.title.split(' ')[0]}</span>
+                </div>
+                <div className="p-7 sm:p-9 flex-1 flex flex-col">
+                  <div className="font-serif italic text-ink/15 leading-none" style={{ fontSize: '96px' }}>0{i+1}</div>
+                  <h3 className="mt-2 font-sans font-semibold text-[24px] tracking-[-0.015em] leading-[1.15]">{item.title}</h3>
+                  <p className="mt-4 text-[15px] leading-[1.65] text-ink/70 flex-1" style={{ textWrap: 'pretty' }}>
+                    {item.description}
+                  </p>
+                  <div className="mt-7 pt-5 border-t border-ink/10 grid grid-cols-2 gap-y-3 text-[13px]">
+                    <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/45 flex items-center">Duration</span><span className="text-ink/80 text-right">{item.duration}</span>
+                    <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/45 flex items-center">Output</span><span className="text-ink/80 text-right">{item.output}</span>
+                    <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/45 flex items-center">Tier</span><span className="text-terra text-right">{item.tier}</span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* 03 — PRINCIPLES */}
+        <section className="px-6 md:px-10 lg:px-14 py-24 sm:py-32 border-b border-ink/12">
+          <div className="grid grid-cols-12 gap-8 mb-20">
+            <div className="col-span-12 lg:col-span-7">
+              <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-terra mb-6 flex items-center">
+                <span className="inline-block w-[28px] h-[1px] bg-terra mr-3"></span>03 · How we think
+              </div>
+              <h2 className="font-sans font-bold tracking-[-0.028em] leading-[0.98]" style={{ fontSize: 'clamp(40px, 6.4vw, 92px)' }}>
+                Five opinions <br className="hidden md:block"/>that show up in <span className="font-serif italic text-terra font-normal">every</span> engagement.
+              </h2>
+            </div>
+          </div>
+
+          <ol className="space-y-0 divide-y divide-ink/12 border-y border-ink/12">
+            {[
+              { num: 'i.', title: 'Strategy without delivery is theatre.', desc: "A recommendation that nobody can implement is a sentence with a chart attached. We don't write anything we wouldn't be willing to ship ourselves the following Monday." },
+              { num: 'ii.', title: 'The wedge matters more than the vision.', desc: "Most rollouts die in month three because they tried to do everything at once. We pick the smallest workflow that still matters, ship it in eight weeks, then earn the right to do more." },
+              { num: 'iii.', title: 'Name one owner, or don\'t start.', desc: "Every engagement names one person on the client side who is accountable for the outcome. If they don't exist in the first meeting, we walk. It's the most reliable predictor we have." },
+              { num: 'iv.', title: 'Write the memo before you sign.', desc: "Two paragraphs, before any code: what this looks like at week four, and what it looks like at week twelve. Conservative numbers. If we hit them, we extend. If we don't, we say so." },
+              { num: 'v.', title: 'Hand it back on day one.', desc: "Your repo, your accounts, your model keys. We don't lock anyone in, and we never have a commercial reason to slow down a handover." }
+            ].map((principle) => (
+              <li key={principle.num} className="grid grid-cols-12 gap-6 lg:gap-10 py-10 sm:py-12">
+                <div className="col-span-2 md:col-span-1">
+                  <div className="font-serif italic text-terra leading-none" style={{ fontSize: 'clamp(40px, 4vw, 64px)' }}>{principle.num}</div>
+                </div>
+                <h3 className="col-span-10 md:col-span-6 font-sans font-semibold tracking-[-0.02em] leading-[1.08]" style={{ fontSize: 'clamp(24px, 2.8vw, 38px)', textWrap: 'balance' }}>
+                  {principle.title}
+                </h3>
+                <p className="col-span-12 md:col-span-5 text-[16px] leading-[1.65] text-ink/68 md:pt-2" style={{ textWrap: 'pretty' }}>
+                  {principle.desc}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        {/* 04 — THE SHAPE OF AN ENGAGEMENT (Phases) */}
+        <section className="px-6 md:px-10 lg:px-14 py-24 sm:py-32 border-b border-ink/12 bg-cream/45">
+          <div className="grid grid-cols-12 gap-8 mb-16">
+            <div className="col-span-12 lg:col-span-7">
+              <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-terra mb-6 flex items-center">
+                <span className="inline-block w-[28px] h-[1px] bg-terra mr-3"></span>04 · The shape of an engagement
+              </div>
+              <h2 className="font-sans font-bold tracking-[-0.025em] leading-[1.02]" style={{ fontSize: 'clamp(36px, 5vw, 68px)' }}>
+                Twelve weeks, <span className="font-serif italic text-terra font-normal">four movements.</span>
+              </h2>
+            </div>
+            <p className="col-span-12 lg:col-span-4 lg:col-start-9 text-[16px] leading-[1.7] text-ink/72 self-end" style={{ textWrap: 'pretty' }}>
+              A wedge engagement runs roughly like this. Phase boundaries are written into the contract — and so are the kill criteria.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-ink/12 bg-paper overflow-hidden">
+            <div className="px-6 py-3 border-b border-ink/12 flex items-center justify-between">
+              <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-terra">Fig. 01</span>
+              <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/40 hidden sm:block">Wedge engagement · weeks 01–12</span>
+            </div>
+            <div className="relative">
+              <div className="grid grid-cols-12 border-b border-ink/12 text-center font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/40">
+                {Array.from({length: 12}).map((_, i) => (
+                  <div key={i} className={`py-2 ${i < 11 ? 'border-r border-ink/10' : ''}`}>{(i+1).toString().padStart(2, '0')}</div>
                 ))}
               </div>
+              <div className="grid grid-cols-12 h-12 border-b border-ink/12">
+                <div className="col-span-2 bg-terra/85"></div>
+                <div className="col-span-3 bg-terra/55"></div>
+                <div className="col-span-5 bg-terra/35"></div>
+                <div className="col-span-2 bg-terra/70"></div>
+              </div>
             </div>
-          </section>
-        )}
-      </main>
-      <Footer />
+
+            <div className="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-ink/12">
+              {data.phases?.map((phase, i) => (
+                <div key={phase.id || i} className="px-7 py-8">
+                  <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-terra mb-2">{phase.timeframe}</div>
+                  <h4 className="font-sans font-semibold text-[19px] tracking-[-0.01em]">{phase.title}</h4>
+                  <p className="mt-3 text-[14px] leading-[1.6] text-ink/65" style={{ textWrap: 'pretty' }}>
+                    {phase.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 05 — CAPABILITIES */}
+        <section className="px-6 md:px-10 lg:px-14 py-24 sm:py-32 border-b border-ink/12">
+          <div className="grid grid-cols-12 gap-8 mb-16">
+            <div className="col-span-12 lg:col-span-7">
+              <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-terra mb-6 flex items-center">
+                <span className="inline-block w-[28px] h-[1px] bg-terra mr-3"></span>05 · The bench
+              </div>
+              <h2 className="font-sans font-bold tracking-[-0.025em] leading-[1.02]" style={{ fontSize: 'clamp(34px, 4.8vw, 64px)' }}>
+                What we can put <span className="font-serif italic text-terra font-normal">in the room.</span>
+              </h2>
+            </div>
+            <p className="col-span-12 lg:col-span-4 lg:col-start-9 text-[16px] leading-[1.7] text-ink/72 self-end" style={{ textWrap: 'pretty' }}>
+              The studio is deliberately narrow. We say no to anything that doesn't sit cleanly inside these capabilities.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-ink/12">
+            {data.capabilities?.map((cap, i) => (
+              <div key={cap.id || i} className="border-r border-b border-ink/12 px-7 py-9">
+                <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-terra mb-4">{cap.number}</div>
+                <h4 className="font-sans font-semibold text-[20px] tracking-[-0.01em] leading-[1.15]">{cap.title}</h4>
+                <p className="mt-3 text-[14px] leading-[1.65] text-ink/65">{cap.description}</p>
+              </div>
+            ))}
+          </div>
+
+          <p className="mt-10 text-[14px] font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-ink/45">
+            →&nbsp;&nbsp;Things we don't do: pure brand work, pure decks, vendor reselling, anything where we can't sign for the outcome.
+          </p>
+        </section>
+
+      </div>
     </div>
   );
 };

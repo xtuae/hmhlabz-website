@@ -65,6 +65,16 @@ model Page {
   updatedAt       DateTime @updatedAt
 }
 
+model AboutContent {
+  id           String   @id @default("global")
+  heroTitle    String   @default("About HMH Labz")
+  heroText     String   @default("We build systems.")
+  linesOfWork  Json     @default("[]") // e.g., [{ id, line, title, description, duration, output, tier }]
+  phases       Json     @default("[]") // e.g., [{ id, timeframe, title, description }]
+  capabilities Json     @default("[]") // e.g., [{ id, number, title, description }]
+  updatedAt    DateTime @updatedAt
+}
+
 model Lead {
   id           String   @id @default(uuid())
   name         String

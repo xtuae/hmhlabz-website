@@ -7,7 +7,8 @@ import {
   LogOut, 
   Settings,
   ShieldAlert,
-  Zap
+  Zap,
+  LayoutTemplate
 } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import logo from '../../assets/logo.png';
