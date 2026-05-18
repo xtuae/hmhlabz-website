@@ -7,7 +7,8 @@ import ManageInsights from './pages/ManageInsights';
 import ManageUsers from './pages/ManageUsers';
 import ManageContent from './pages/ManageContent';
 import Pages from './pages/Pages';
-import { Sync, Legal, Settings } from './pages/Modules';
+import HubSpotSync from './pages/HubSpotSync';
+import Settings from './pages/Settings';
 
 function App() {
   return (
@@ -32,8 +33,7 @@ function App() {
           <Route path="insights/edit/:id" element={<ManageContent />} />
           <Route path="content" element={<ManageContent />} />
           <Route path="pages" element={<Pages />} />
-          <Route path="sync" element={<Sync />} />
-          <Route path="legal" element={<Legal />} />
+          <Route path="sync" element={<HubSpotSync />} />
           <Route path="settings" element={<Settings />} />
           
           {/* Superadmin Only Routes */}

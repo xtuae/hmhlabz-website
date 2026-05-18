@@ -26,7 +26,6 @@ const Sidebar = () => {
     { name: 'Site Pages', icon: Zap, path: '/pages' },
     { name: 'HubSpot Sync', icon: RefreshCw, path: '/sync' },
     { name: 'Insights', icon: FileText, path: '/insights' },
-    { name: 'Compliance', icon: ShieldAlert, path: '/legal' },
     { name: 'Manage Users', icon: Users, path: '/users', roles: ['SUPERADMIN'] },
     { name: 'Settings', icon: Settings, path: '/settings' },
   ];

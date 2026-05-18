@@ -15,15 +15,15 @@ const ManageUsers = () => {
     setLoading(true);
     try {
       // Note: This endpoint needs to be implemented/accessible for SUPERADMIN
-      const response = await client.get('/auth/users');
+      const response = await client.get('/admin/users');
       setUsers(response.data);
     } catch (error) {
       console.error('Failed to fetch users:', error);
       // Fallback/Mock for demonstration if API is not fully ready
       setUsers([
-        { id: 1, firstName: 'Alex', lastName: 'Thompson', email: 'alex@hmhlabz.com', role: 'SUPERADMIN', createdAt: '2026-01-12' },
-        { id: 2, firstName: 'Sarah', lastName: 'Lund', email: 'sarah@hmhlabz.com', role: 'ADMIN', createdAt: '2026-02-15' },
-        { id: 3, firstName: 'James', lastName: 'Chen', email: 'james@hmhlabz.com', role: 'MODERATOR', createdAt: '2026-03-20' },
+        { id: 1, name: 'Alex Thompson', email: 'alex@hmhlabz.com', role: 'SUPERADMIN', createdAt: '2026-01-12' },
+        { id: 2, name: 'Sarah Lund', email: 'sarah@hmhlabz.com', role: 'ADMIN', createdAt: '2026-02-15' },
+        { id: 3, name: 'James Chen', email: 'james@hmhlabz.com', role: 'MODERATOR', createdAt: '2026-03-20' },
       ]);
     } finally {
       setLoading(false);
@@ -76,11 +76,11 @@ const ManageUsers = () => {
                   <tr key={user.id} className="hover:bg-brand-cream/30 transition-colors">
                     <td className="px-10 py-8">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-2xl bg-brand-tan flex items-center justify-center font-black text-brand-charcoal text-lg">
-                          {user.firstName[0]}{user.lastName[0]}
+                        <div className="w-12 h-12 rounded-2xl bg-brand-tan flex items-center justify-center font-black text-brand-charcoal text-lg uppercase">
+                          {user.name?.substring(0, 2)}
                         </div>
                         <div>
-                          <p className="font-bold text-brand-charcoal">{user.firstName} {user.lastName}</p>
+                          <p className="font-bold text-brand-charcoal">{user.name}</p>
                           <p className="text-xs text-gray-400 font-medium">{user.email}</p>
                         </div>
                       </div>

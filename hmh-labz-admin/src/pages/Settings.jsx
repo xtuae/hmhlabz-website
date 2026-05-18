@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { User, Shield, Key, Save, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { useAuthStore } from '../store/authStore';
 import client from '../api/client';
 
 const Settings = () => {
-  const { user, login } = useAuth();
+  const { user } = useAuthStore();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
   const [formData, setFormData] = useState({

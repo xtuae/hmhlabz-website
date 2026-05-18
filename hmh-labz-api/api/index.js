@@ -4,6 +4,7 @@ import authRoutes from './routes/auth.js';
 import contentRoutes from './routes/content.js';
 import leadsRoutes from './routes/leads.js';
 import pagesRoutes from './routes/pages.js';
+import adminRoutes from './routes/admin.js';
 
 const app = express();
 
@@ -54,6 +55,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api', contentRoutes);
 app.use('/api/leads', leadsRoutes);
 app.use('/api/pages', pagesRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
