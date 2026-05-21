@@ -12,14 +12,21 @@ import prisma from './lib/prisma.js';
 const app = express();
 
 // --- Middleware ---
+const allowedOrigins = [
+  'http://localhost:5173', 
+  'http://localhost:5174',
+  'https://hmhlabz.com',
+  'https://www.hmhlabz.com'
+];
+
 app.use(cors({
-  origin: [
-    'https://demo.hmhlabz.com', 
-    'https://hmhlabz.com', 
-    'http://localhost:5178', 
-    'http://localhost:5177',
-    'https://hmhlabz-website.vercel.app'
-  ],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 app.use(express.json());
