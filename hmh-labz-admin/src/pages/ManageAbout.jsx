@@ -51,28 +51,19 @@ const ManageAbout = () => {
     }
   };
 
-  // Generic array helpers
-  const addItem = (arrayName, defaultItem) => {
-    setFormData(prev => ({
-      ...prev,
-      [arrayName]: [...prev[arrayName], { id: Date.now().toString(), ...defaultItem }]
-    }));
+  const handleArrayChange = (field, index, key, value) => {
+    const newArray = [...formData[field]];
+    newArray[index][key] = value;
+    setFormData({ ...formData, [field]: newArray });
   };
 
-  const removeItem = (arrayName, id) => {
-    setFormData(prev => ({
-      ...prev,
-      [arrayName]: prev[arrayName].filter(item => item.id !== id)
-    }));
+  const addItem = (field, defaultObj) => {
+    setFormData({ ...formData, [field]: [...formData[field], { id: Date.now().toString(), ...defaultObj }] });
   };
 
-  const updateItem = (arrayName, id, field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [arrayName]: prev[arrayName].map(item => 
-        item.id === id ? { ...item, [field]: value } : item
-      )
-    }));
+  const removeItem = (field, index) => {
+    const newArray = formData[field].filter((_, i) => i !== index);
+    setFormData({ ...formData, [field]: newArray });
   };
 
   if (loading) {
@@ -156,53 +147,83 @@ const ManageAbout = () => {
               Lines of Work
             </h2>
             <button
-              onClick={() => addItem('linesOfWork', { line: 'Line · 0X', title: '', description: '', duration: '', output: '', tier: '' })}
+              onClick={() => addItem('linesOfWork', { line: '', title: '', description: '', duration: '', output: '', tier: '' })}
               className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-[#c84b21] bg-[#c84b21]/10 rounded-lg hover:bg-[#c84b21]/20 transition-colors"
             >
-              <Plus className="w-4 h-4" /> Add Line
+              <Plus className="w-4 h-4" /> Add Line of Work
             </button>
           </div>
           
-          <div className="space-y-6">
-            {formData.linesOfWork.map((item) => (
-              <div key={item.id} className="p-6 border border-black/5 rounded-xl bg-[#f5f1e8]/30 relative">
+          <div className="space-y-4">
+            {(formData.linesOfWork || []).map((item, index) => (
+              <div key={item.id || index} className="p-4 border border-black/10 mb-4 rounded-xl relative bg-[#f5f1e8]/10">
                 <button 
-                  onClick={() => removeItem('linesOfWork', item.id)}
+                  onClick={() => removeItem('linesOfWork', index)}
                   className="absolute top-4 right-4 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
-                <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 pr-10">
                   <div>
-                    <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">Line Label (e.g. Line · 01)</label>
-                    <input type="text" value={item.line} onChange={(e) => updateItem('linesOfWork', item.id, 'line', e.target.value)} className="w-full bg-white border border-black/5 p-2 rounded-lg" />
+                    <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">Line (e.g. 01)</label>
+                    <input 
+                      type="text" 
+                      value={item.line} 
+                      onChange={(e) => handleArrayChange('linesOfWork', index, 'line', e.target.value)} 
+                      className="w-full bg-transparent border-b border-black/20 p-2 text-ink focus:border-terra outline-none" 
+                    />
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">Title</label>
-                    <input type="text" value={item.title} onChange={(e) => updateItem('linesOfWork', item.id, 'title', e.target.value)} className="w-full bg-white border border-black/5 p-2 rounded-lg" />
+                    <input 
+                      type="text" 
+                      value={item.title} 
+                      onChange={(e) => handleArrayChange('linesOfWork', index, 'title', e.target.value)} 
+                      className="w-full bg-transparent border-b border-black/20 p-2 text-ink focus:border-terra outline-none" 
+                    />
                   </div>
                 </div>
                 <div className="mb-4">
                   <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">Description</label>
-                  <textarea rows={2} value={item.description} onChange={(e) => updateItem('linesOfWork', item.id, 'description', e.target.value)} className="w-full bg-white border border-black/5 p-2 rounded-lg resize-none" />
+                  <textarea 
+                    rows={2} 
+                    value={item.description} 
+                    onChange={(e) => handleArrayChange('linesOfWork', index, 'description', e.target.value)} 
+                    className="w-full bg-transparent border-b border-black/20 p-2 text-ink focus:border-terra outline-none resize-none" 
+                  />
                 </div>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">Duration</label>
-                    <input type="text" value={item.duration} onChange={(e) => updateItem('linesOfWork', item.id, 'duration', e.target.value)} className="w-full bg-white border border-black/5 p-2 rounded-lg" />
+                    <input 
+                      type="text" 
+                      value={item.duration} 
+                      onChange={(e) => handleArrayChange('linesOfWork', index, 'duration', e.target.value)} 
+                      className="w-full bg-transparent border-b border-black/20 p-2 text-ink focus:border-terra outline-none" 
+                    />
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">Output</label>
-                    <input type="text" value={item.output} onChange={(e) => updateItem('linesOfWork', item.id, 'output', e.target.value)} className="w-full bg-white border border-black/5 p-2 rounded-lg" />
+                    <input 
+                      type="text" 
+                      value={item.output} 
+                      onChange={(e) => handleArrayChange('linesOfWork', index, 'output', e.target.value)} 
+                      className="w-full bg-transparent border-b border-black/20 p-2 text-ink focus:border-terra outline-none" 
+                    />
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">Tier</label>
-                    <input type="text" value={item.tier} onChange={(e) => updateItem('linesOfWork', item.id, 'tier', e.target.value)} className="w-full bg-white border border-black/5 p-2 rounded-lg" />
+                    <input 
+                      type="text" 
+                      value={item.tier} 
+                      onChange={(e) => handleArrayChange('linesOfWork', index, 'tier', e.target.value)} 
+                      className="w-full bg-transparent border-b border-black/20 p-2 text-ink focus:border-terra outline-none" 
+                    />
                   </div>
                 </div>
               </div>
             ))}
-            {formData.linesOfWork.length === 0 && <p className="text-sm text-gray-400 italic">No lines of work added yet.</p>}
+            {(formData.linesOfWork || []).length === 0 && <p className="text-sm text-gray-400 italic">No lines of work added yet.</p>}
           </div>
         </section>
 
@@ -214,7 +235,7 @@ const ManageAbout = () => {
               Phases (The Shape of an Engagement)
             </h2>
             <button
-              onClick={() => addItem('phases', { timeframe: 'Wk 0X-0Y', title: '', description: '' })}
+              onClick={() => addItem('phases', { timeframe: '', title: '', description: '' })}
               className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-[#c84b21] bg-[#c84b21]/10 rounded-lg hover:bg-[#c84b21]/20 transition-colors"
             >
               <Plus className="w-4 h-4" /> Add Phase
@@ -222,26 +243,46 @@ const ManageAbout = () => {
           </div>
           
           <div className="space-y-4">
-            {formData.phases.map((item) => (
-              <div key={item.id} className="p-5 border border-black/5 rounded-xl bg-[#f5f1e8]/30 flex gap-4 items-start relative">
-                <button onClick={() => removeItem('phases', item.id)} className="absolute top-4 right-4 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+            {(formData.phases || []).map((item, index) => (
+              <div key={item.id || index} className="p-4 border border-black/10 mb-4 rounded-xl relative bg-[#f5f1e8]/10">
+                <button 
+                  onClick={() => removeItem('phases', index)} 
+                  className="absolute top-4 right-4 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                >
                   <Trash2 className="w-4 h-4" />
                 </button>
-                <div className="w-1/4">
-                  <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">Timeframe</label>
-                  <input type="text" value={item.timeframe} onChange={(e) => updateItem('phases', item.id, 'timeframe', e.target.value)} className="w-full bg-white border border-black/5 p-2 rounded-lg" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 pr-10">
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">Timeframe (e.g. Wk 01-02)</label>
+                    <input 
+                      type="text" 
+                      value={item.timeframe} 
+                      onChange={(e) => handleArrayChange('phases', index, 'timeframe', e.target.value)} 
+                      className="w-full bg-transparent border-b border-black/20 p-2 text-ink focus:border-terra outline-none" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">Title</label>
+                    <input 
+                      type="text" 
+                      value={item.title} 
+                      onChange={(e) => handleArrayChange('phases', index, 'title', e.target.value)} 
+                      className="w-full bg-transparent border-b border-black/20 p-2 text-ink focus:border-terra outline-none" 
+                    />
+                  </div>
                 </div>
-                <div className="w-1/3">
-                  <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">Title</label>
-                  <input type="text" value={item.title} onChange={(e) => updateItem('phases', item.id, 'title', e.target.value)} className="w-full bg-white border border-black/5 p-2 rounded-lg" />
-                </div>
-                <div className="flex-1 mr-10">
+                <div>
                   <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">Description</label>
-                  <textarea rows={2} value={item.description} onChange={(e) => updateItem('phases', item.id, 'description', e.target.value)} className="w-full bg-white border border-black/5 p-2 rounded-lg resize-none" />
+                  <textarea 
+                    rows={2} 
+                    value={item.description} 
+                    onChange={(e) => handleArrayChange('phases', index, 'description', e.target.value)} 
+                    className="w-full bg-transparent border-b border-black/20 p-2 text-ink focus:border-terra outline-none resize-none" 
+                  />
                 </div>
               </div>
             ))}
-            {formData.phases.length === 0 && <p className="text-sm text-gray-400 italic">No phases added yet.</p>}
+            {(formData.phases || []).length === 0 && <p className="text-sm text-gray-400 italic">No phases added yet.</p>}
           </div>
         </section>
 
@@ -253,36 +294,54 @@ const ManageAbout = () => {
               Capabilities (The Bench)
             </h2>
             <button
-              onClick={() => addItem('capabilities', { number: '0X', title: '', description: '' })}
+              onClick={() => addItem('capabilities', { number: '', title: '', description: '' })}
               className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-[#c84b21] bg-[#c84b21]/10 rounded-lg hover:bg-[#c84b21]/20 transition-colors"
             >
               <Plus className="w-4 h-4" /> Add Capability
             </button>
           </div>
           
-          <div className="grid grid-cols-2 gap-6">
-            {formData.capabilities.map((item) => (
-              <div key={item.id} className="p-5 border border-black/5 rounded-xl bg-[#f5f1e8]/30 relative">
-                <button onClick={() => removeItem('capabilities', item.id)} className="absolute top-4 right-4 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+          <div className="space-y-4">
+            {(formData.capabilities || []).map((item, index) => (
+              <div key={item.id || index} className="p-4 border border-black/10 mb-4 rounded-xl relative bg-[#f5f1e8]/10">
+                <button 
+                  onClick={() => removeItem('capabilities', index)} 
+                  className="absolute top-4 right-4 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                >
                   <Trash2 className="w-4 h-4" />
                 </button>
-                <div className="flex gap-4 mb-3 pr-8">
-                  <div className="w-16">
-                    <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">Number</label>
-                    <input type="text" value={item.number} onChange={(e) => updateItem('capabilities', item.id, 'number', e.target.value)} className="w-full bg-white border border-black/5 p-2 rounded-lg" />
+                <div className="flex flex-col md:flex-row gap-4 mb-4 pr-10">
+                  <div className="w-full md:w-32">
+                    <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">Number (e.g. 01)</label>
+                    <input 
+                      type="text" 
+                      value={item.number} 
+                      onChange={(e) => handleArrayChange('capabilities', index, 'number', e.target.value)} 
+                      className="w-full bg-transparent border-b border-black/20 p-2 text-ink focus:border-terra outline-none" 
+                    />
                   </div>
                   <div className="flex-1">
                     <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">Title</label>
-                    <input type="text" value={item.title} onChange={(e) => updateItem('capabilities', item.id, 'title', e.target.value)} className="w-full bg-white border border-black/5 p-2 rounded-lg" />
+                    <input 
+                      type="text" 
+                      value={item.title} 
+                      onChange={(e) => handleArrayChange('capabilities', index, 'title', e.target.value)} 
+                      className="w-full bg-transparent border-b border-black/20 p-2 text-ink focus:border-terra outline-none" 
+                    />
                   </div>
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold uppercase text-gray-400 mb-1">Description</label>
-                  <textarea rows={2} value={item.description} onChange={(e) => updateItem('capabilities', item.id, 'description', e.target.value)} className="w-full bg-white border border-black/5 p-2 rounded-lg resize-none" />
+                  <textarea 
+                    rows={2} 
+                    value={item.description} 
+                    onChange={(e) => handleArrayChange('capabilities', index, 'description', e.target.value)} 
+                    className="w-full bg-transparent border-b border-black/20 p-2 text-ink focus:border-terra outline-none resize-none" 
+                  />
                 </div>
               </div>
             ))}
-            {formData.capabilities.length === 0 && <p className="text-sm text-gray-400 italic col-span-2">No capabilities added yet.</p>}
+            {(formData.capabilities || []).length === 0 && <p className="text-sm text-gray-400 italic">No capabilities added yet.</p>}
           </div>
         </section>
 
