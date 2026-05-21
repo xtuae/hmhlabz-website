@@ -31,22 +31,27 @@ const About = () => {
     <>
       <Navbar />
       <main>
-        {/* Hero Section */}
+        {/* 01 HERO SECTION */}
         <div className="pt-32 pb-20 md:pt-48 md:pb-32 px-6">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-10">
+            
+            {/* Huge Title with dynamic italics support */}
             <h1 
-              style={{ fontSize: "clamp(48px, 9.2vw, 148px)", textWrap: "balance" }} 
-              className="leading-[0.9] tracking-[-0.04em] max-w-[14ch] [&>em]:font-fraunces [&>em]:italic [&>em]:font-normal [&>em]:tracking-normal text-ink"
-              dangerouslySetInnerHTML={{ __html: aboutData.heroTitle }}
+              style={{ fontSize: "clamp(48px, 9vw, 148px)", textWrap: "balance" }} 
+              className="leading-[0.9] tracking-[-0.04em] max-w-[14ch] text-black [&>em]:font-serif [&>em]:italic [&>em]:font-normal [&>em]:tracking-normal"
+              dangerouslySetInnerHTML={{ __html: aboutData?.heroTitle || "A studio that tells you what to do, and then <em>does it.</em>" }}
             />
+            
+            {/* Right-Side Badge & Text */}
             <div className="flex flex-col gap-8 max-w-[280px] pb-2 md:pb-6">
-              <span className="font-mono text-terra text-[12px] uppercase tracking-widest font-semibold">
-                {aboutData.heroBadge || "WE BUILD SYSTEMS."}
+              <span className="font-mono text-[#c84b21] text-[12px] uppercase tracking-widest font-bold">
+                {aboutData?.heroBadge || "WE BUILD SYSTEMS."}
               </span>
-              <p className="text-[18px] text-ink/80 leading-[1.4]">
-                {aboutData.heroText}
+              <p className="text-[18px] text-black/80 leading-[1.4]">
+                {aboutData?.heroText || "HMH Labz is a small strategy & build studio for legal, recruitment and professional-services firms. We diagnose, recommend, and ship — under one roof, on one contract."}
               </p>
             </div>
+
           </div>
         </div>
 
@@ -395,103 +400,70 @@ const About = () => {
     </section>
 
     
-    <section className="border-y border-ink/12 bg-ink text-paper py-10 overflow-hidden">
-      <div className="flex whitespace-nowrap drift" style={{ width: 'max-content' }}>
-        <span className="font-sans font-bold tracking-[-0.02em] pr-16" style={{ fontSize: 'clamp(40px, 6vw, 88px)' }}>
-          Diagnose · <span className="frauncesItalic text-terra">Recommend</span> · Ship · Hand over · Diagnose · <span className="frauncesItalic text-terra">Recommend</span> · Ship · Hand over ·
-        </span>
-        <span className="font-sans font-bold tracking-[-0.02em] pr-16" aria-hidden="true" style={{ fontSize: 'clamp(40px, 6vw, 88px)' }}>
-          Diagnose · <span className="frauncesItalic text-terra">Recommend</span> · Ship · Hand over · Diagnose · <span className="frauncesItalic text-terra">Recommend</span> · Ship · Hand over ·
-        </span>
+    {/* 07 THE DRIFT STRIP (MARQUEE) */}
+    <section className="mb-24 md:mb-32 px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex justify-between items-center mb-8 md:mb-12">
+          <h2 className="text-[32px] md:text-[40px] leading-[1.1] tracking-[-0.02em] text-black font-medium">The Drift Strip</h2>
+          <span className="font-mono text-[10px] uppercase tracking-widest text-black/40">07</span>
+        </div>
+        
+        {/* CSS block to force the infinite marquee scroll */}
+        <style dangerouslySetInnerHTML={{__html: `
+          @keyframes drift {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          .animate-drift {
+            animation: drift 25s linear infinite;
+            display: flex;
+            width: max-content;
+          }
+        `}} />
+
+        <div className="pt-10 border-t border-black/10 overflow-hidden w-full">
+          <div className="animate-drift">
+            {[...Array(20)].map((_, i) => (
+              <span key={i} className="font-mono text-[11px] uppercase tracking-widest mr-8 text-black/60">
+                GET IN TOUCH — LET'S BUILD
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
 
     
-    <section className="px-6 md:px-10 lg:px-14 py-24 sm:py-32 border-b border-ink/12">
-      <div className="grid grid-cols-12 gap-8 lg:gap-12">
-        <div className="col-span-12 lg:col-span-5">
-          <div className="mono text-terra mb-6"><span className="rule"></span>07 · Where we work</div>
-          <h2 className="font-sans font-bold tracking-[-0.025em] leading-[1.02]" style={{ fontSize: 'clamp(34px, 4.6vw, 60px)' }}>
-            Two cities, <span className="frauncesItalic text-terra">one&nbsp;team.</span>
-          </h2>
-          <p className="mt-7 text-[16px] leading-[1.7] text-ink/72 max-w-md" style={{ textWrap: 'pretty' }}>
-            Remote-first studio with two physical hubs. Most engagements run hybrid — one site visit at week one, weekly working sessions on a call, a second visit at launch.
-          </p>
-          <div className="mt-10 pt-6 border-t border-ink/12 grid grid-cols-2 gap-y-4 max-w-md">
-            <span className="mono text-ink/45">Languages</span><span className="text-[14px] text-right">English · Arabic · Tamil</span>
-            <span className="mono text-ink/45">Coverage</span><span className="text-[14px] text-right">GMT +4 to +5:30</span>
-            <span className="mono text-ink/45">Travel</span><span className="text-[14px] text-right">Included in fee</span>
-          </div>
+    {/* 08 WHERE WE WORK (LOCATIONS) */}
+    <section className="mb-32 md:mb-48 px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex justify-between items-center mb-8 md:mb-12">
+          <h2 className="text-[32px] md:text-[40px] leading-[1.1] tracking-[-0.02em] text-black font-medium">Where we work</h2>
+          <span className="font-mono text-[10px] uppercase tracking-widest text-black/40">08</span>
         </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-7">
+          
+          {/* Dubai */}
+          <div className="border-t border-black/10 pt-4 pb-2">
+            <h5 className="font-mono text-[#c84b21] text-[11px] font-bold uppercase tracking-widest mb-4">Dubai</h5>
+            <p className="text-[14px] leading-[1.6] text-black/70">
+              AL Quais 2, Dubai<br />
+              United Arab Emirates
+            </p>
+          </div>
 
-        <div className="col-span-12 lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <article className="rounded-2xl border border-ink/12 bg-paper overflow-hidden">
-            <div className="px-6 py-3 border-b border-ink/12 flex items-center justify-between">
-              <span className="mono text-terra">Hub · 01</span>
-              <span className="mono text-ink/40">GMT +4</span>
-            </div>
-            <div className="aspect-[4/3] bg-cream relative">
-              <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 w-full h-full">
-                <rect width="400" height="300" fill="#EDE6D3" />
-                <rect x="40" y="200" width="22" height="60" fill="#161513" opacity=".75" />
-                <polygon points="80,140 90,260 70,260" fill="#161513" opacity=".85" />
-                <rect x="100" y="170" width="18" height="90" fill="#161513" opacity=".7" />
-                <rect x="124" y="190" width="30" height="70" fill="#161513" opacity=".75" />
-                <polygon points="180,60 200,260 160,260" fill="#161513" />
-                <line x1="190" y1="40" x2="190" y2="60" stroke="#161513" strokeWidth="2" />
-                <rect x="210" y="150" width="28" height="110" fill="#161513" opacity=".8" />
-                <rect x="244" y="180" width="22" height="80" fill="#161513" opacity=".7" />
-                <polygon points="280,120 296,260 264,260" fill="#161513" opacity=".85" />
-                <rect x="306" y="170" width="20" height="90" fill="#161513" opacity=".7" />
-                <rect x="332" y="190" width="32" height="70" fill="#161513" opacity=".75" />
-                <rect x="0" y="258" width="400" height="42" fill="#C2410C" opacity=".18" />
-                <circle cx="320" cy="80" r="22" fill="#C2410C" />
-              </svg>
-            </div>
-            <div className="px-6 py-6">
-              <h4 className="font-sans font-semibold text-[22px] tracking-[-0.01em]">Dubai</h4>
-              <p className="mt-1 mono text-ink/45">Strategy &amp; design</p>
-              <p className="mt-4 text-[14px] text-ink/65 leading-[1.6]">
-                DIFC, Index Tower. Discovery, design and most fit calls happen here.
-              </p>
-            </div>
-          </article>
+          {/* Chennai */}
+          <div className="border-t border-black/10 pt-4 pb-2">
+            <h5 className="font-mono text-[#c84b21] text-[11px] font-bold uppercase tracking-widest mb-4">Chennai</h5>
+            <p className="text-[14px] leading-[1.6] text-black/70">
+              W-32/117, Plot No. C-10,<br />
+              2nd Floor, 3rd Avenue,<br />
+              Anna Nagar, Chennai,<br />
+              Tamil Nadu, India 600040.
+            </p>
+          </div>
 
-          <article className="rounded-2xl border border-ink/12 bg-paper overflow-hidden">
-            <div className="px-6 py-3 border-b border-ink/12 flex items-center justify-between">
-              <span className="mono text-terra">Hub · 02</span>
-              <span className="mono text-ink/40">GMT +5:30</span>
-            </div>
-            <div className="aspect-[4/3] bg-cream relative">
-              <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 w-full h-full">
-                <rect width="400" height="300" fill="#EDE6D3" />
-                <polygon points="60,180 90,180 80,210 70,210" fill="#161513" opacity=".8" />
-                <rect x="55" y="210" width="40" height="50" fill="#161513" opacity=".8" />
-                <polygon points="115,150 165,150 155,200 125,200" fill="#161513" />
-                <rect x="110" y="200" width="60" height="60" fill="#161513" />
-                <rect x="125" y="220" width="10" height="40" fill="#EDE6D3" />
-                <rect x="145" y="220" width="10" height="40" fill="#EDE6D3" />
-                <path d="M0 260 Q200 240 400 268 L400 300 L0 300 Z" fill="#C2410C" opacity=".22" />
-                <rect x="220" y="120" width="44" height="140" fill="#161513" opacity=".85" />
-                <rect x="228" y="130" width="6" height="6" fill="#EDE6D3" />
-                <rect x="240" y="130" width="6" height="6" fill="#EDE6D3" />
-                <rect x="252" y="130" width="6" height="6" fill="#EDE6D3" />
-                <rect x="228" y="150" width="6" height="6" fill="#EDE6D3" />
-                <rect x="240" y="150" width="6" height="6" fill="#EDE6D3" />
-                <rect x="252" y="150" width="6" height="6" fill="#EDE6D3" />
-                <rect x="280" y="170" width="36" height="90" fill="#161513" opacity=".75" />
-                <rect x="330" y="190" width="40" height="70" fill="#161513" opacity=".7" />
-                <circle cx="80" cy="80" r="20" fill="#C2410C" />
-              </svg>
-            </div>
-            <div className="px-6 py-6">
-              <h4 className="font-sans font-semibold text-[22px] tracking-[-0.01em]">Chennai</h4>
-              <p className="mt-1 mono text-ink/45">Build &amp; ops</p>
-              <p className="mt-4 text-[14px] text-ink/65 leading-[1.6]">
-                Nungambakkam, third floor. Engineering bench, daily standups, and an unreasonable filter coffee setup.
-              </p>
-            </div>
-          </article>
         </div>
       </div>
     </section>
