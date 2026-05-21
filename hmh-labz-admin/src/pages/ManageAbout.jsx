@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 import client from '../api/client';
-import { motion } from 'framer-motion';
-import { Save, Plus, Trash2, Loader2 } from 'lucide-react';
 
 const ManageAbout = () => {
   const [loading, setLoading] = useState(true);
@@ -69,17 +67,13 @@ const ManageAbout = () => {
   if (loading) {
     return (
       <div className="flex h-[80vh] items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-[#c84b21]" />
+        <div className="text-xl font-bold text-[#c84b21]">⏳ Loading...</div>
       </div>
     );
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="max-w-5xl mx-auto pb-24"
-    >
+    <div className="max-w-5xl mx-auto pb-24">
       <div className="flex items-center justify-between mb-10">
         <div>
           <h1 className="text-3xl font-serif italic font-bold text-[#1a1a1a]">Manage About Page</h1>
@@ -90,8 +84,7 @@ const ManageAbout = () => {
           disabled={saving}
           className="flex items-center gap-2 px-6 py-3 bg-[#1a1a1a] text-white rounded-xl font-bold hover:bg-[#c84b21] transition-colors disabled:opacity-50"
         >
-          {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
-          {saving ? 'Saving...' : 'Save Changes'}
+          {saving ? '⏳ Saving...' : '💾 Save Changes'}
         </button>
       </div>
 
@@ -151,7 +144,7 @@ const ManageAbout = () => {
               onClick={() => addItem('linesOfWork', { line: '', title: '', description: '', duration: '', output: '', tier: '' })}
               className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-[#c84b21] bg-[#c84b21]/10 rounded-lg hover:bg-[#c84b21]/20 transition-colors"
             >
-              <Plus className="w-4 h-4" /> Add Line
+              + Add Line
             </button>
           </div>
           <div className="space-y-4">
@@ -160,9 +153,9 @@ const ManageAbout = () => {
                 <button
                   type="button"
                   onClick={() => removeItem('linesOfWork', index)}
-                  className="absolute top-4 right-4 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                  className="absolute top-4 right-4 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors text-xs font-bold"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  ❌ Remove
                 </button>
                 <div className="grid grid-cols-2 gap-4 mt-4 pr-10">
                   <div>
@@ -244,7 +237,7 @@ const ManageAbout = () => {
               onClick={() => addItem('phases', { timeframe: '', title: '', description: '' })}
               className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-[#c84b21] bg-[#c84b21]/10 rounded-lg hover:bg-[#c84b21]/20 transition-colors"
             >
-              <Plus className="w-4 h-4" /> Add Phase
+              + Add Phase
             </button>
           </div>
           <div className="space-y-4">
@@ -253,9 +246,9 @@ const ManageAbout = () => {
                 <button
                   type="button"
                   onClick={() => removeItem('phases', index)}
-                  className="absolute top-4 right-4 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                  className="absolute top-4 right-4 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors text-xs font-bold"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  ❌ Remove
                 </button>
                 <div className="grid grid-cols-2 gap-4 mt-4 pr-10">
                   <div>
@@ -307,7 +300,7 @@ const ManageAbout = () => {
               onClick={() => addItem('capabilities', { number: '', title: '', description: '' })}
               className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-[#c84b21] bg-[#c84b21]/10 rounded-lg hover:bg-[#c84b21]/20 transition-colors"
             >
-              <Plus className="w-4 h-4" /> Add Capability
+              + Add Capability
             </button>
           </div>
           <div className="space-y-4">
@@ -316,9 +309,9 @@ const ManageAbout = () => {
                 <button
                   type="button"
                   onClick={() => removeItem('capabilities', index)}
-                  className="absolute top-4 right-4 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                  className="absolute top-4 right-4 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors text-xs font-bold"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  ❌ Remove
                 </button>
                 <div className="grid grid-cols-2 gap-4 mt-4 pr-10">
                   <div>
@@ -366,12 +359,11 @@ const ManageAbout = () => {
             disabled={saving}
             className="flex items-center gap-2 px-8 py-4 bg-[#1a1a1a] text-white rounded-xl font-bold hover:bg-[#c84b21] transition-colors disabled:opacity-50 text-base shadow-md"
           >
-            {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
-            {saving ? 'Saving...' : 'Save Changes'}
+            {saving ? '⏳ Saving...' : '💾 Save Changes'}
           </button>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
