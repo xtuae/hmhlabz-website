@@ -8,6 +8,7 @@ const ManageAbout = () => {
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState({
     heroTitle: 'About HMH Labz',
+    heroBadge: 'WE BUILD SYSTEMS.',
     heroText: 'We build systems.',
     linesOfWork: [],
     phases: [],
@@ -23,6 +24,7 @@ const ManageAbout = () => {
       const { data } = await client.get('/about');
       setFormData({
         heroTitle: data.heroTitle || 'About HMH Labz',
+        heroBadge: data.heroBadge || 'WE BUILD SYSTEMS.',
         heroText: data.heroText || 'We build systems.',
         linesOfWork: Array.isArray(data.linesOfWork) ? data.linesOfWork : [],
         phases: Array.isArray(data.phases) ? data.phases : [],
@@ -107,7 +109,7 @@ const ManageAbout = () => {
         <section className="bg-white p-8 rounded-2xl border border-black/5 shadow-sm">
           <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#c84b21]"></span>
-            Hero Section
+            Hero Settings
           </h2>
           <div className="space-y-5">
             <div>
@@ -119,9 +121,22 @@ const ManageAbout = () => {
                 className="w-full bg-[#f5f1e8]/50 border border-black/5 rounded-xl p-4 focus:outline-none focus:border-[#c84b21]/30 transition-colors"
                 placeholder="A studio that tells you what to do..."
               />
+              <p className="text-[11px] text-gray-400 mt-1">
+                Tip: Wrap words in <code>&lt;em&gt; &lt;/em&gt;</code> to apply the serif italic styling (e.g., and then <code>&lt;em&gt;does it.&lt;/em&gt;</code>).
+              </p>
             </div>
             <div>
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Hero Text</label>
+              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Hero Badge</label>
+              <input
+                type="text"
+                value={formData.heroBadge}
+                onChange={(e) => setFormData({...formData, heroBadge: e.target.value})}
+                className="w-full bg-[#f5f1e8]/50 border border-black/5 rounded-xl p-4 focus:outline-none focus:border-[#c84b21]/30 transition-colors"
+                placeholder="WE BUILD SYSTEMS."
+              />
+            </div>
+            <div>
+              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Hero Description</label>
               <textarea
                 value={formData.heroText}
                 onChange={(e) => setFormData({...formData, heroText: e.target.value})}

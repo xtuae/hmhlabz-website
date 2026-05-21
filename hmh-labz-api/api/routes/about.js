@@ -14,7 +14,8 @@ router.get('/', async (req, res) => {
       about = await prisma.aboutContent.create({
         data: {
           id: 'global',
-          heroTitle: "A studio that tells you what to do, and then does it.",
+          heroTitle: "A studio that tells you what to do, and then <em>does it.</em>",
+          heroBadge: "WE BUILD SYSTEMS.",
           heroText: "HMH Labz is a small strategy & build studio for legal, recruitment and professional-services firms. We diagnose, recommend, and ship — under one roof, on one contract.",
           linesOfWork: [
             { id: "1", line: "01", title: "Diagnose", description: "AI & opportunity audits.", duration: "2 weeks", output: "Written roadmap", tier: "01 · Wedge" },
@@ -49,12 +50,13 @@ router.get('/', async (req, res) => {
 // PUT update global AboutContent
 router.put('/', async (req, res) => {
   try {
-    const { heroTitle, heroText, linesOfWork, phases, capabilities } = req.body;
+    const { heroTitle, heroBadge, heroText, linesOfWork, phases, capabilities } = req.body;
     
     const about = await prisma.aboutContent.upsert({
       where: { id: 'global' },
       update: { 
         heroTitle, 
+        heroBadge,
         heroText, 
         linesOfWork: linesOfWork || [], 
         phases: phases || [], 
@@ -63,6 +65,7 @@ router.put('/', async (req, res) => {
       create: { 
         id: 'global', 
         heroTitle, 
+        heroBadge,
         heroText, 
         linesOfWork: linesOfWork || [], 
         phases: phases || [], 

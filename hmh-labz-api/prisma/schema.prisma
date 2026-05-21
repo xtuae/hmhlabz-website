@@ -68,6 +68,7 @@ model Page {
 model AboutContent {
   id           String   @id @default("global")
   heroTitle    String   @default("About HMH Labz")
+  heroBadge    String   @default("WE BUILD SYSTEMS.")
   heroText     String   @default("We build systems.")
   linesOfWork  Json     @default("[]") // e.g., [{ id, line, title, description, duration, output, tier }]
   phases       Json     @default("[]") // e.g., [{ id, timeframe, title, description }]

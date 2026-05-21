@@ -23,44 +23,37 @@ const About = () => {
     fetchAbout();
   }, []);
 
-  if (loading || !data) { return ( <div className='min-h-screen flex items-center justify-center bg-paper'><Loader2 className='w-8 h-8 animate-spin text-terra' /></div> ); } return ( <> <Navbar />
+  if (loading || !data) { return ( <div className='min-h-screen flex items-center justify-center bg-paper'><Loader2 className='w-8 h-8 animate-spin text-terra' /></div> ); }
+  
+  const aboutData = data;
+
+  return (
+    <>
+      <Navbar />
       <main>
-    
-    <header className="px-6 md:px-10 lg:px-14 pt-[120px] sm:pt-[140px] pb-20 sm:pb-28 border-b border-ink/12">
-      <div className="flex items-center gap-3 text-[13px] mb-10 sm:mb-14">
-        <span className="mono text-ink/45">File · 00</span>
-        <span className="text-ink/25">/</span>
-        <span className="mono text-terra">About the studio</span>
-      </div>
+        {/* Hero Section */}
+        <div className="pt-32 pb-20 md:pt-48 md:pb-32 px-6">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-10">
+            
+            {/* Main Title with HTML Injection for <em> tags */}
+            <h1 
+              style={{ fontSize: "clamp(48px, 9.2vw, 148px)", textWrap: "balance" }} 
+              className="leading-[0.9] tracking-[-0.04em] max-w-[14ch] [&>em]:font-fraunces [&>em]:italic [&>em]:font-normal [&>em]:tracking-normal"
+              dangerouslySetInnerHTML={{ __html: aboutData.heroTitle }}
+            />
+            
+            {/* Right-Side Badge & Description */}
+            <div className="flex flex-col gap-8 max-w-[280px] pb-2 md:pb-6">
+              <span className="font-mono text-terra text-[12px] uppercase tracking-widest font-semibold">
+                {aboutData.heroBadge || "WE BUILD SYSTEMS."}
+              </span>
+              <p className="text-[18px] text-ink/80 leading-[1.4]">
+                {aboutData.heroText}
+              </p>
+            </div>
 
-      <div className="grid grid-cols-12 gap-6 lg:gap-8 items-end">
-        <h1 className="col-span-12 lg:col-span-9 font-sans font-bold text-ink tracking-[-0.035em] leading-[0.92]" style={{ fontSize: 'clamp(48px, 9.2vw, 148px)', textWrap: 'balance' }}>{data.heroTitle}</h1>
-        <div className="col-span-12 lg:col-span-3 lg:pb-4">
-          <div className="mono text-ink/45 mb-4">Issue №&nbsp;26.05</div>
-          <p className="text-[14px] text-ink/65 leading-[1.6]" style={{ textWrap: 'pretty' }}>{data.heroText}</p>
+          </div>
         </div>
-      </div>
-
-      
-      <div className="mt-20 sm:mt-24 grid grid-cols-2 md:grid-cols-4 border-t border-ink/12 divide-x divide-ink/12">
-        <div className="px-0 md:px-6 py-7">
-          <div className="font-serif italic text-terra leading-none" style={{ fontSize: 'clamp(40px, 4vw, 56px)' }}>2023</div>
-          <div className="mt-3 mono text-ink/45">Founded · Dubai</div>
-        </div>
-        <div className="px-6 py-7">
-          <div className="font-serif italic text-terra leading-none" style={{ fontSize: 'clamp(40px, 4vw, 56px)' }}>38</div>
-          <div className="mt-3 mono text-ink/45">Engagements shipped</div>
-        </div>
-        <div className="px-0 md:px-6 py-7">
-          <div className="font-serif italic text-terra leading-none" style={{ fontSize: 'clamp(40px, 4vw, 56px)' }}>06</div>
-          <div className="mt-3 mono text-ink/45">Active clients · hard cap</div>
-        </div>
-        <div className="px-6 py-7">
-          <div className="font-serif italic text-terra leading-none" style={{ fontSize: 'clamp(40px, 4vw, 56px)' }}>02</div>
-          <div className="mt-3 mono text-ink/45">Hubs · Dubai &amp; Chennai</div>
-        </div>
-      </div>
-    </header>
 
     
     <section className="px-6 md:px-10 lg:px-14 py-24 sm:py-32 border-b border-ink/12">
