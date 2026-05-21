@@ -66,14 +66,42 @@ model Page {
 }
 
 model AboutContent {
-  id           String   @id @default("global")
-  heroTitle    String   @default("About HMH Labz")
-  heroBadge    String   @default("WE BUILD SYSTEMS.")
-  heroText     String   @default("We build systems.")
-  linesOfWork  Json     @default("[]") // e.g., [{ id, line, title, description, duration, output, tier }]
-  phases       Json     @default("[]") // e.g., [{ id, timeframe, title, description }]
-  capabilities Json     @default("[]") // e.g., [{ id, number, title, description }]
-  updatedAt    DateTime @updatedAt
+  id                  String   @id @default("global")
+  heroTitle           String   @default("A studio that tells you what to do, and then does it.")
+  heroBadge           String   @default("WE BUILD SYSTEMS.")
+  heroText            String   @default("HMH Labz is a small strategy & build studio for legal, recruitment and professional-services firms. We diagnose, recommend, and ship — under one roof, on one contract.")
+  heroStats           Json     @default("[]")
+  thesisTitle         String   @default("01 · Thesis")
+  thesisHeading       String   @default("Most transformation work fails the same way. A strategy team writes the deck. An implementation team inherits it. The deck and the build never quite agree on the same problem, and twelve weeks in, the rollout is \"in phase two.\"")
+  thesisParagraphs    Json     @default("[]")
+  linesOfWorkHeading  String   @default("Three lines of work, one team.")
+  linesOfWorkSubtext  String   @default("Engagements usually start on one line and grow into the next. The team doesn't change when they do.")
+  linesOfWork         Json     @default("[]")
+  opinionsHeading     String   @default("Five opinions that show up in every engagement.")
+  opinions            Json     @default("[]")
+  phasesHeading       String   @default("Twelve weeks, four movements.")
+  phasesSubtext       String   @default("A wedge engagement runs roughly like this. Phase boundaries are written into the contract — and so are the kill criteria.")
+  phasesFigLabel      String   @default("Fig. 01")
+  phasesFigSub        String   @default("Wedge engagement · weeks 01–12")
+  phases              Json     @default("[]")
+  capabilitiesHeading String   @default("What we can put in the room.")
+  capabilitiesSubtext String   @default("The studio is deliberately narrow. We say no to anything that doesn't sit cleanly inside these capabilities.")
+  capabilitiesFooter  String   @default("→  Things we don't do: pure brand work, pure decks, vendor reselling, anything where we can't sign for the outcome.")
+  capabilities        Json     @default("[]")
+  casesHeading        String   @default("Three engagements, told sparely.")
+  casesSubtext        String   @default("Clients prefer not to be named. We prefer the work to be specific. Below: shape, scope, and the number we hit.")
+  cases               Json     @default("[]")
+  driftText           String   @default("Diagnose · Recommend · Ship · Hand over ·")
+  whereWeWorkHeading  String   @default("Two cities, one team.")
+  whereWeWorkSubtext  String   @default("Remote-first studio with two physical hubs. Most engagements run hybrid — one site visit at week one, weekly working sessions on a call, a second visit at launch.")
+  whereWeWorkDetails  Json     @default("[]")
+  hubs                Json     @default("[]")
+  fitCallIntro        String   @default("If you've read this far")
+  fitCallHeading      String   @default("You probably want to talk to us.")
+  fitCallText         String   @default("20 minutes. No deck. No pitch. We tell you whether AI or digital systems would actually move the needle for a firm like yours — and whether we're the right team to do it.")
+  fitCallButtonText   String   @default("Book a 20-min Fit Call →")
+  fitCallButtonLink   String   @default("/#book")
+  updatedAt           DateTime @updatedAt
 }
 
 model Lead {
