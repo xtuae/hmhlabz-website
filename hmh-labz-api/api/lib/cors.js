@@ -1,9 +1,9 @@
 const allowedOrigins = [
-  'https://hmhlabz.com',
+  'http://localhost:5173', 
+  'http://localhost:5174',
   'https://demo.hmhlabz.com',
-  'http://localhost:3000',
-  'http://localhost:5173',
-  'http://localhost:5174'
+  'https://hmhlabz.com',
+  'https://www.hmhlabz.com'
 ];
 
 export const allowCors = (fn) => async (req, res) => {

@@ -15,6 +15,7 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:5173', 
   'http://localhost:5174',
+  'https://demo.hmhlabz.com',
   'https://hmhlabz.com',
   'https://www.hmhlabz.com'
 ];
