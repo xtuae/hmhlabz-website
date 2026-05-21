@@ -138,7 +138,7 @@ function App() {
       <BrandContext.Provider value={brand}>
         <ModalContext.Provider value={{ openFitCall, closeFitCall }}>
           <Analytics />
-          <Router basename={import.meta.env.VITE_BASE_PATH || '/'}>
+          <Router basename="/">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />

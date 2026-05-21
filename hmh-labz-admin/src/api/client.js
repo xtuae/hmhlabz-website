@@ -31,7 +31,7 @@ client.interceptors.response.use(
     if (error.response?.status === 401) {
       const { logout } = useAuthStore.getState();
       logout();
-      window.location.href = '/hmhlabz/admin/login';
+      window.location.href = '/kudoadmin/login';
     }
     return Promise.reject(error);
   }

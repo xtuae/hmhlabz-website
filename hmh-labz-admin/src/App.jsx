@@ -14,7 +14,7 @@ import ManageAbout from './pages/ManageAbout';
 
 function App() {
   return (
-    <Router basename={import.meta.env.BASE_URL}>
+    <Router basename="/kudoadmin">
       <Routes>
         {/* Public Auth Routes */}
         <Route path="/login" element={<Login />} />

@@ -218,7 +218,7 @@ const ManageAbout = () => {
             </section>
 
             <section className="bg-white p-8 rounded-2xl border border-black/5 shadow-sm space-y-6">
-              <h2 className="text-xl font-bold border-b border-black/5 pb-3">01 · Thesis Settings</h2>
+              <h2 className="text-xl font-bold border-b border-black/5 pb-3">01 . Thesis Settings</h2>
               <div className="space-y-5">
                 <div>
                   <label className="block text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">Thesis Title Label</label>
@@ -253,7 +253,7 @@ const ManageAbout = () => {
         {activeTab === 'work' && (
           <>
             <section className="bg-white p-8 rounded-2xl border border-black/5 shadow-sm space-y-6">
-              <h2 className="text-xl font-bold border-b border-black/5 pb-3">02 · Lines of Work</h2>
+              <h2 className="text-xl font-bold border-b border-black/5 pb-3">02 . Lines of Work</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">Section Heading</label>
@@ -268,7 +268,7 @@ const ManageAbout = () => {
               <div className="mt-6 space-y-4">
                 <div className="flex justify-between items-center">
                   <h3 className="text-sm font-bold uppercase tracking-wider text-stone-700">Lines list</h3>
-                  <button type="button" onClick={() => addItem('linesOfWork', { line: '', title: '', description: '', duration: '', output: '', tier: '' })} className="px-3 py-1.5 text-xs font-bold text-orange-600 bg-orange-50 rounded-lg">➕ Add Line</button>
+                  <button type="button" onClick={() => addItem('linesOfWork', { line: '', sublabel: '', title: '', description: '', duration: '', output: '', tier: '' })} className="px-3 py-1.5 text-xs font-bold text-orange-600 bg-orange-50 rounded-lg">➕ Add Line</button>
                 </div>
                 <div className="space-y-4">
                   {(formData.linesOfWork || []).map((item, index) => (
@@ -277,7 +277,8 @@ const ManageAbout = () => {
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 pr-16">
                         <input placeholder="Line Number (e.g. 01)" value={item.line || ''} onChange={(e) => handleArrayChange('linesOfWork', index, 'line', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2.5 text-sm focus:border-orange-500 outline-none" />
                         <input placeholder="Title" value={item.title || ''} onChange={(e) => handleArrayChange('linesOfWork', index, 'title', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2.5 text-sm focus:border-orange-500 outline-none" />
-                        <input placeholder="Tier (e.g. 01 · Wedge)" value={item.tier || ''} onChange={(e) => handleArrayChange('linesOfWork', index, 'tier', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2.5 text-sm focus:border-orange-500 outline-none" />
+                        <input placeholder="Sublabel (e.g. DIAGNOSE)" value={item.sublabel || ''} onChange={(e) => handleArrayChange('linesOfWork', index, 'sublabel', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2.5 text-sm focus:border-orange-500 outline-none" />
+                        <input placeholder="Tier (e.g. 01 . Wedge)" value={item.tier || ''} onChange={(e) => handleArrayChange('linesOfWork', index, 'tier', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2.5 text-sm focus:border-orange-500 outline-none" />
                         <input placeholder="Duration (e.g. 2 weeks)" value={item.duration || ''} onChange={(e) => handleArrayChange('linesOfWork', index, 'duration', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2.5 text-sm focus:border-orange-500 outline-none" />
                         <input placeholder="Output (e.g. Written roadmap)" value={item.output || ''} onChange={(e) => handleArrayChange('linesOfWork', index, 'output', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2.5 text-sm focus:border-orange-500 outline-none" />
                         <textarea placeholder="Description" value={item.description || ''} onChange={(e) => handleArrayChange('linesOfWork', index, 'description', e.target.value)} rows={2} className="w-full bg-white border border-black/10 rounded-lg p-2.5 text-sm focus:border-orange-500 outline-none md:col-span-3 resize-none" />
@@ -289,7 +290,7 @@ const ManageAbout = () => {
             </section>
 
             <section className="bg-white p-8 rounded-2xl border border-black/5 shadow-sm space-y-6">
-              <h2 className="text-xl font-bold border-b border-black/5 pb-3">03 · How We Think (Opinions)</h2>
+              <h2 className="text-xl font-bold border-b border-black/5 pb-3">03 . How We Think (Opinions)</h2>
               <div>
                 <label className="block text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">Opinions Section Heading</label>
                 <input type="text" value={formData.opinionsHeading} onChange={(e) => setFormData({...formData, opinionsHeading: e.target.value})} className="w-full bg-stone-100 border border-black/5 rounded-xl p-4 focus:outline-none focus:border-orange-500" />
@@ -321,7 +322,7 @@ const ManageAbout = () => {
         {activeTab === 'phases' && (
           <>
             <section className="bg-white p-8 rounded-2xl border border-black/5 shadow-sm space-y-6">
-              <h2 className="text-xl font-bold border-b border-black/5 pb-3">04 · Shape of an Engagement (Phases)</h2>
+              <h2 className="text-xl font-bold border-b border-black/5 pb-3">04 . Shape of an Engagement (Phases)</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">Section Heading</label>
@@ -362,7 +363,7 @@ const ManageAbout = () => {
             </section>
 
             <section className="bg-white p-8 rounded-2xl border border-black/5 shadow-sm space-y-6">
-              <h2 className="text-xl font-bold border-b border-black/5 pb-3">05 · Capabilities (The Bench)</h2>
+              <h2 className="text-xl font-bold border-b border-black/5 pb-3">05 . Capabilities (The Bench)</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">Section Heading</label>
@@ -404,7 +405,7 @@ const ManageAbout = () => {
         {activeTab === 'cases' && (
           <>
             <section className="bg-white p-8 rounded-2xl border border-black/5 shadow-sm space-y-6">
-              <h2 className="text-xl font-bold border-b border-black/5 pb-3">06 · Selected Work (Cases)</h2>
+              <h2 className="text-xl font-bold border-b border-black/5 pb-3">06 . Selected Work (Cases)</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">Section Heading</label>
@@ -426,7 +427,7 @@ const ManageAbout = () => {
                     <div key={item.id || index} className="p-5 border border-black/10 rounded-xl relative bg-stone-50">
                       <button type="button" onClick={() => removeItem('cases', index)} className="absolute top-4 right-4 text-red-500 font-bold text-xs">❌ Remove</button>
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4 pr-16">
-                        <input placeholder="Letter Group (e.g. Case · A)" value={item.caseLetter || ''} onChange={(e) => handleArrayChange('cases', index, 'caseLetter', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2 text-xs focus:border-orange-500 outline-none font-bold" />
+                        <input placeholder="Letter Group (e.g. Case . A)" value={item.caseLetter || ''} onChange={(e) => handleArrayChange('cases', index, 'caseLetter', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2 text-xs focus:border-orange-500 outline-none font-bold" />
                         <input placeholder="Year (e.g. 2024)" value={item.year || ''} onChange={(e) => handleArrayChange('cases', index, 'year', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2 text-xs focus:border-orange-500 outline-none" />
                         <div className="flex flex-col">
                           <select value={item.type || 'RAG'} onChange={(e) => handleArrayChange('cases', index, 'type', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2 text-xs focus:border-orange-500 outline-none">
@@ -451,7 +452,7 @@ const ManageAbout = () => {
             </section>
 
             <section className="bg-white p-8 rounded-2xl border border-black/5 shadow-sm space-y-6">
-              <h2 className="text-xl font-bold border-b border-black/5 pb-3">07 · Drift Strip (Mantra)</h2>
+              <h2 className="text-xl font-bold border-b border-black/5 pb-3">07 . Drift Strip (Mantra)</h2>
               <div>
                 <label className="block text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">Marquee Text (Looping strip contents)</label>
                 <input type="text" value={formData.driftText} onChange={(e) => setFormData({...formData, driftText: e.target.value})} className="w-full bg-stone-100 border border-black/5 rounded-xl p-4 focus:outline-none focus:border-orange-500 font-mono text-sm" />
@@ -465,7 +466,7 @@ const ManageAbout = () => {
         {activeTab === 'locations' && (
           <>
             <section className="bg-white p-8 rounded-2xl border border-black/5 shadow-sm space-y-6">
-              <h2 className="text-xl font-bold border-b border-black/5 pb-3">08 · Where We Work</h2>
+              <h2 className="text-xl font-bold border-b border-black/5 pb-3">08 . Where We Work</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">Section Heading</label>
@@ -489,7 +490,7 @@ const ManageAbout = () => {
                       <button type="button" onClick={() => removeItem('whereWeWorkDetails', index)} className="absolute top-2 right-2 text-red-500 font-bold text-xs">❌</button>
                       <div className="space-y-3 mt-4">
                         <input placeholder="Label (e.g. Languages)" value={item.label || ''} onChange={(e) => handleArrayChange('whereWeWorkDetails', index, 'label', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2 text-xs focus:border-orange-500 outline-none" />
-                        <input placeholder="Value (e.g. English · Tamil)" value={item.value || ''} onChange={(e) => handleArrayChange('whereWeWorkDetails', index, 'value', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2 text-xs focus:border-orange-500 outline-none" />
+                        <input placeholder="Value (e.g. English . Tamil)" value={item.value || ''} onChange={(e) => handleArrayChange('whereWeWorkDetails', index, 'value', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2 text-xs focus:border-orange-500 outline-none" />
                       </div>
                     </div>
                   ))}
@@ -507,11 +508,11 @@ const ManageAbout = () => {
                     <div key={item.id || index} className="p-5 border border-black/10 rounded-xl relative bg-stone-50">
                       <button type="button" onClick={() => removeItem('hubs', index)} className="absolute top-4 right-4 text-red-500 font-bold text-xs">❌ Remove</button>
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4 pr-16">
-                        <input placeholder="Hub number (e.g. Hub · 01)" value={item.number || ''} onChange={(e) => handleArrayChange('hubs', index, 'number', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2.5 text-xs focus:border-orange-500 outline-none" />
+                        <input placeholder="Hub number (e.g. Hub . 01)" value={item.number || ''} onChange={(e) => handleArrayChange('hubs', index, 'number', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2.5 text-xs focus:border-orange-500 outline-none" />
                         <input placeholder="Timezone (e.g. GMT +4)" value={item.timezone || ''} onChange={(e) => handleArrayChange('hubs', index, 'timezone', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2.5 text-xs focus:border-orange-500 outline-none" />
                         <input placeholder="City Name" value={item.name || ''} onChange={(e) => handleArrayChange('hubs', index, 'name', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2.5 text-xs focus:border-orange-500 outline-none font-bold" />
                         <input placeholder="Label (e.g. Strategy & design)" value={item.label || ''} onChange={(e) => handleArrayChange('hubs', index, 'label', e.target.value)} className="w-full bg-white border border-black/10 rounded-lg p-2.5 text-xs focus:border-orange-500 outline-none" />
-                        <textarea placeholder="Description" value={item.description || ''} onChange={(e) => handleArrayChange('hubs', index, 'description', e.target.value)} rows={2} className="w-full bg-white border border-black/10 rounded-lg p-2.5 text-xs focus:border-orange-500 outline-none sm:col-span-2 md:col-span-4 resize-none" />
+                        <textarea placeholder="Description" value={item.description || ''} onChange={(e) => handleArrayChange('hubs', index, 'description', e.target.value)} rows={2} className="w-full bg-white border border-black/10 rounded-lg p-2.5 text-xs focus:border-orange-500 outline-none sm:col-span-2 md:col-span-4 resize-y" />
                       </div>
                     </div>
                   ))}
@@ -520,7 +521,7 @@ const ManageAbout = () => {
             </section>
 
             <section className="bg-white p-8 rounded-2xl border border-black/5 shadow-sm space-y-6">
-              <h2 className="text-xl font-bold border-b border-black/5 pb-3">09 · Fit Call CTA Banner</h2>
+              <h2 className="text-xl font-bold border-b border-black/5 pb-3">09 . Fit Call CTA Banner</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-[10px] font-black uppercase tracking-widest text-black/40 mb-2">Intro Label (e.g. If you've read this far)</label>

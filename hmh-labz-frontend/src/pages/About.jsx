@@ -3,10 +3,17 @@ import { Loader2 } from 'lucide-react';
 import client from '../api/client';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
+import { useModal } from '../App';
 
 const About = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { openFitCall } = useModal();
+
+  const cleanDots = (str) => {
+    if (typeof str !== 'string') return str;
+    return str.replace(/·/g, '.');
+  };
 
   useEffect(() => {
     const fetchAbout = async () => {
@@ -31,16 +38,16 @@ const About = () => {
   }
 
   const defaultAboutData = {
-    heroTitle: "A studio that <span class=\"frauncesItalic text-terra\">tells&nbsp;you</span> what to do, and then does it.",
-    heroBadge: "WE BUILD SYSTEMS.",
+    heroTitle: "A studio that<br class=\"hidden md:block\" /> <span class=\"frauncesItalic text-terra\">tells&nbsp;you</span> what to do,<br class=\"hidden md:block\" /> and then does it.",
+    heroBadge: "ISSUE # 26.05",
     heroText: "HMH Labz is a small strategy & build studio for legal, recruitment and professional-services firms. We diagnose, recommend, and ship — under one roof, on one contract.",
     heroStats: [
-      { id: "1", value: "2023", label: "Founded · Dubai" },
-      { id: "2", value: "38", label: "Engagements shipped" },
-      { id: "3", value: "06", label: "Active clients · hard cap" },
-      { id: "4", value: "02", label: "Hubs · Dubai & Chennai" }
+      { id: "1", value: "2023", label: "FOUNDED . DUBAI" },
+      { id: "2", value: "38", label: "ENGAGEMENTS SHIPPED" },
+      { id: "3", value: "06", label: "ACTIVE CLIENTS - HARD CAP" },
+      { id: "4", value: "02", label: "HUBS - DUBAI & CHENNAI" }
     ],
-    thesisTitle: "01 · Thesis",
+    thesisTitle: "01 . Thesis",
     thesisHeading: "Most transformation work fails the same way. A strategy team writes the deck. An implementation team inherits it. The deck and the build never quite agree on the same problem, and twelve weeks in, the rollout is <span class=\"text-terra not-italic font-sans font-medium\" style=\"font-style: normal;\">\"in&nbsp;phase&nbsp;two.\"</span>",
     thesisParagraphs: [
       "We started HMH Labz because the model is broken. Diagnosis and delivery should live in the same room — same people, same contract, same incentive to get the thing actually used by month three.",
@@ -49,9 +56,9 @@ const About = () => {
     linesOfWorkHeading: "Three lines of work, <span class=\"frauncesItalic text-terra\">one&nbsp;team.</span>",
     linesOfWorkSubtext: "Engagements usually start on one line and grow into the next. The team doesn't change when they do.",
     linesOfWork: [
-      { id: "1", line: "01", title: "AI & opportunity audits.", description: "A two-week diagnostic across one team or one workflow. The output is a scored, written roadmap — not a slide deck — that ranks every opportunity by impact, effort, and risk of stalling.", duration: "2 weeks", output: "Written roadmap", tier: "01 · Wedge" },
-      { id: "2", line: "02", title: "Implementation sprints.", description: "Eight to twelve weeks shipping one workflow into production. RAG systems, intake automation, internal tools — built on your stack, handed back on day one, with adoption baked in.", duration: "8–12 weeks", output: "Production system", tier: "02 · Sprint" },
-      { id: "3", line: "03", title: "Digital transformation, long-form.", description: "Twelve-month engagements for firms reshaping a practice area or a function. We sit alongside the operating team, ship in monthly cycles, and write the playbook as we go.", duration: "12 months", output: "Embedded team", tier: "03 · Embed" }
+      { id: "1", line: "01", sublabel: "DIAGNOSE", title: "AI & opportunity audits.", description: "A two-week diagnostic across one team or one workflow. The output is a scored, written roadmap — not a slide deck — that ranks every opportunity by impact, effort, and risk of stalling.", duration: "2 weeks", output: "Written roadmap", tier: "01 . Wedge" },
+      { id: "2", line: "02", sublabel: "BUILD", title: "Implementation sprints.", description: "Eight to twelve weeks shipping one workflow into production. RAG systems, intake automation, internal tools — built on your stack, handed back on day one, with adoption baked in.", duration: "8–12 weeks", output: "Production system", tier: "02 . Sprint" },
+      { id: "3", line: "03", sublabel: "EMBED", title: "Digital transformation, long-form.", description: "Twelve-month engagements for firms reshaping a practice area or a function. We sit alongside the operating team, ship in monthly cycles, and write the playbook as we go.", duration: "12 months", output: "Embedded team", tier: "03 . Embed" }
     ],
     opinionsHeading: "Five opinions <br class=\"hidden md:block\">that show up in <span class=\"frauncesItalic text-terra\">every</span> engagement.",
     opinions: [
@@ -64,7 +71,7 @@ const About = () => {
     phasesHeading: "Twelve weeks, <span class=\"frauncesItalic text-terra\">four&nbsp;movements.</span>",
     phasesSubtext: "A wedge engagement runs roughly like this. Phase boundaries are written into the contract — and so are the kill criteria.",
     phasesFigLabel: "Fig. 01",
-    phasesFigSub: "Wedge engagement · weeks 01–12",
+    phasesFigSub: "Wedge engagement . weeks 01–12",
     phases: [
       { id: "1", timeframe: "Wk 01–02", title: "Diagnose", description: "Two weeks inside the workflow. Interviews, shadowing, scoring. Output: a written roadmap and a kill memo." },
       { id: "2", timeframe: "Wk 03–05", title: "Wedge", description: "The smallest version of the system that produces real numbers. Daily standups, weekly demos." },
@@ -85,21 +92,21 @@ const About = () => {
     casesHeading: "Three engagements, <span class=\"frauncesItalic text-terra\">told&nbsp;sparely.</span>",
     casesSubtext: "Clients prefer not to be named. We prefer the work to be specific. Below: shape, scope, and the number we hit.",
     cases: [
-      { id: "1", caseLetter: "Case · A", year: "2024", type: "RAG", location: "Mid-size law firm · Dubai", title: "An intake-triage RAG, shipped in nine weeks.", description: "Replaced a six-step manual triage with a retrieval-backed assistant trained on six years of matter files. Lawyers review, not type.", wedge: "Intake", result: "12 hrs / lawyer / wk saved", resultLabel: "Wk 12 result" },
-      { id: "2", caseLetter: "Case · B", year: "2025", type: "Pipeline", location: "Recruitment group · MENA", title: "Mapping the handoff before automating it.", description: "Two-week diagnostic, then a six-six build of the sourcing-to-shortlist pipeline. We refused to start until one named owner existed.", wedge: "Sourcing", result: "3.4× shortlist throughput", resultLabel: "Wk 08 result" },
-      { id: "3", caseLetter: "Case · C", year: "2025", type: "Embed", location: "Professional services · India", title: "A twelve-month embed inside a 200-person practice.", description: "Three workflows reshaped in monthly cycles, a written playbook handed over at month twelve, and an internal team trained to run the next three without us.", wedge: "Doc review", result: "28% gross-margin lift", resultLabel: "Yr 01 result" }
+      { id: "1", caseLetter: "Case . A", year: "2024", type: "RAG", location: "Mid-size law firm . Dubai", title: "An intake-triage RAG, shipped in nine weeks.", description: "Replaced a six-step manual triage with a retrieval-backed assistant trained on six years of matter files. Lawyers review, not type.", wedge: "Intake", result: "12 hrs / lawyer / wk saved", resultLabel: "Wk 12 result" },
+      { id: "2", caseLetter: "Case . B", year: "2025", type: "Pipeline", location: "Recruitment group . MENA", title: "Mapping the handoff before automating it.", description: "Two-week diagnostic, then a six-six build of the sourcing-to-shortlist pipeline. We refused to start until one named owner existed.", wedge: "Sourcing", result: "3.4× shortlist throughput", resultLabel: "Wk 08 result" },
+      { id: "3", caseLetter: "Case . C", year: "2025", type: "Embed", location: "Professional services . India", title: "A twelve-month embed inside a 200-person practice.", description: "Three workflows reshaped in monthly cycles, a written playbook handed over at month twelve, and an internal team trained to run the next three without us.", wedge: "Doc review", result: "28% gross-margin lift", resultLabel: "Yr 01 result" }
     ],
-    driftText: "Diagnose · Recommend · Ship · Hand over · ",
+    driftText: "Diagnose . <span class=\"frauncesItalic text-terra\">Recommend</span> . Ship . Hand over . Diagnose . <span class=\"frauncesItalic text-terra\">Recommend</span> . Ship . Hand over . ",
     whereWeWorkHeading: "Two cities, <span class=\"frauncesItalic text-terra\">one&nbsp;team.</span>",
     whereWeWorkSubtext: "Remote-first studio with two physical hubs. Most engagements run hybrid — one site visit at week one, weekly working sessions on a call, a second visit at launch.",
     whereWeWorkDetails: [
-      { id: "1", label: "Languages", value: "English · Arabic · Tamil" },
+      { id: "1", label: "Languages", value: "English . Arabic . Tamil" },
       { id: "2", label: "Coverage", value: "GMT +4 to +5:30" },
       { id: "3", label: "Travel", value: "Included in fee" }
     ],
     hubs: [
-      { id: "1", number: "Hub · 01", timezone: "GMT +4", name: "Dubai", label: "Strategy & design", description: "DIFC, Index Tower. Discovery, design and most fit calls happen here." },
-      { id: "2", number: "Hub · 02", timezone: "GMT +5:30", name: "Chennai", label: "Build & ops", description: "Nungambakkam, third floor. Engineering bench, daily standups, and an unreasonable filter coffee setup." }
+      { id: "1", number: "Hub . 01", timezone: "GMT +4", name: "Dubai", label: "Strategy & design", description: "Al Quasis 2,\nDubai, United Arab Emirates" },
+      { id: "2", number: "Hub . 02", timezone: "GMT +5:30", name: "Chennai", label: "Build & ops", description: "W-32/117, Plot No. C-10,\n2nd Floor, 3rd Avenue,\nAnna Nagar, Chennai,\nTamil Nadu, India 600040." }
     ],
     fitCallIntro: "If you've read this far",
     fitCallHeading: "You probably want to <span class=\"frauncesItalic text-terra\">talk&nbsp;to&nbsp;us.</span>",
@@ -250,7 +257,7 @@ const About = () => {
           from { transform: translate3d(0, 0, 0); }
           to   { transform: translate3d(-50%, 0, 0); }
         }
-        .drift { animation: drift 80s linear infinite; }
+        .drift { animation: drift 20s linear infinite; }
       `}} />
 
       {/* Noise background overlay */}
@@ -267,16 +274,16 @@ const About = () => {
       <main className="relative z-20">
         {/* HERO SECTION */}
         <header className="px-6 md:px-10 lg:px-14 pt-[120px] sm:pt-[140px] pb-20 sm:pb-28 border-b border-[#161513]/12">
-          <div className="flex items-center gap-3 text-[13px] mb-10 sm:mb-14">
-            <span className="mono text-[#161513]/45">File · 00</span>
+          <div className="flex items-center gap-2 mono mb-10 sm:mb-14">
+            <span className="text-[#161513]/45">FILE . 00</span>
             <span className="text-[#161513]/25">/</span>
-            <span className="mono text-[#C2410C]">About the studio</span>
+            <span className="text-[#C2410C]">ABOUT THE STUDIO</span>
           </div>
 
           <div className="grid grid-cols-12 gap-6 lg:gap-8 items-end">
             <h1 
               className="col-span-12 lg:col-span-9 font-sans font-bold text-[#161513] tracking-[-0.035em] leading-[0.92] [&>span]:frauncesItalic [&>span]:text-[#C2410C]" 
-              style={{ fontSize: 'clamp(48px, 9.2vw, 148px)', textWrap: 'balance' }}
+              style={{ fontSize: 'clamp(48px, 9.2vw, 148px)' }}
               dangerouslySetInnerHTML={{ __html: aboutData.heroTitle }}
             />
             <div className="col-span-12 lg:col-span-3 lg:pb-4">
@@ -288,13 +295,21 @@ const About = () => {
           </div>
 
           {/* Stats Row */}
-          <div className="mt-20 sm:mt-24 grid grid-cols-2 md:grid-cols-4 border-t border-[#161513]/12 divide-x divide-[#161513]/12">
-            {(aboutData.heroStats || []).map((stat) => (
-              <div key={stat.id} className="px-3 md:px-6 py-7">
+          <div className="mt-20 sm:mt-24 grid grid-cols-2 md:grid-cols-4 border-t border-[#161513]/12">
+            {(aboutData.heroStats || []).map((stat, index) => (
+              <div 
+                key={stat.id} 
+                className={`py-7 ${
+                  index === 0 ? "pl-0 pr-3 md:pl-0 md:pr-6 border-r border-b md:border-b-0 border-[#161513]/12" :
+                  index === 1 ? "pl-3 pr-0 md:px-6 border-b md:border-b-0 md:border-r border-[#161513]/12" :
+                  index === 2 ? "pl-0 pr-3 md:px-6 border-r border-[#161513]/12" :
+                  "pl-3 pr-0 md:pl-6 md:pr-0"
+                }`}
+              >
                 <div className="font-serif italic text-[#C2410C] leading-none" style={{ fontSize: 'clamp(40px, 4vw, 56px)' }}>
                   {stat.value}
                 </div>
-                <div className="mt-3 mono text-[#161513]/45">{stat.label}</div>
+                <div className="mt-3 mono text-[#161513]/45">{cleanDots(stat.label)}</div>
               </div>
             ))}
           </div>
@@ -304,7 +319,7 @@ const About = () => {
         <section className="px-6 md:px-10 lg:px-14 py-24 sm:py-32 border-b border-[#161513]/12">
           <div className="mono text-[#C2410C] mb-10">
             <span className="rule"></span>
-            {aboutData.thesisTitle}
+            {cleanDots(aboutData.thesisTitle)}
           </div>
 
           <div className="grid grid-cols-12 gap-8 lg:gap-12">
@@ -330,7 +345,7 @@ const About = () => {
           <div className="grid grid-cols-12 gap-8 mb-16">
             <div className="col-span-12 lg:col-span-5">
               <div className="mono text-[#C2410C] mb-6">
-                <span className="rule"></span>02 · What we do
+                <span className="rule"></span>02 . WHAT WE DO
               </div>
               <h2 
                 className="font-sans font-bold tracking-[-0.025em] leading-[1.02] [&>span]:frauncesItalic [&>span]:text-[#C2410C]" 
@@ -347,8 +362,10 @@ const About = () => {
             {(aboutData.linesOfWork || []).map((item) => (
               <article key={item.id} className="rounded-2xl border border-[#161513]/12 bg-[#F4F1EA] overflow-hidden flex flex-col">
                 <div className="px-6 py-3 border-b border-[#161513]/12 flex items-center justify-between">
-                  <span className="mono text-[#C2410C]">Line · {item.line}</span>
-                  <span className="mono text-[#161513]/40">Diagnose</span>
+                  <span className="mono text-[#C2410C]">LINE . {item.line}</span>
+                  <span className="mono text-[#161513]/40">
+                    {item.sublabel || (item.line === '01' ? 'DIAGNOSE' : item.line === '02' ? 'BUILD' : 'EMBED')}
+                  </span>
                 </div>
                 <div className="p-7 sm:p-9 flex-1 flex flex-col">
                   <div className="font-serif italic text-[#161513]/15 leading-none" style={{ fontSize: '96px' }}>
@@ -361,12 +378,12 @@ const About = () => {
                     {item.description}
                   </p>
                   <div className="mt-7 pt-5 border-t border-[#161513]/10 grid grid-cols-2 gap-y-3 text-[13px]">
-                    <span className="mono text-[#161513]/45">Duration</span>
+                    <span className="mono text-[#161513]/45">DURATION</span>
                     <span className="text-[#161513]/80 text-right">{item.duration}</span>
-                    <span className="mono text-[#161513]/45">Output</span>
+                    <span className="mono text-[#161513]/45">OUTPUT</span>
                     <span className="text-[#161513]/80 text-right">{item.output}</span>
-                    <span className="mono text-[#161513]/45">Tier</span>
-                    <span className="text-[#C2410C] text-right">{item.tier}</span>
+                    <span className="mono text-[#161513]/45">TIER</span>
+                    <span className="text-[#C2410C] text-right font-medium">{cleanDots(item.tier)}</span>
                   </div>
                 </div>
               </article>
@@ -379,7 +396,7 @@ const About = () => {
           <div className="grid grid-cols-12 gap-8 mb-20">
             <div className="col-span-12 lg:col-span-7">
               <div className="mono text-[#C2410C] mb-6">
-                <span className="rule"></span>03 · How we think
+                <span className="rule"></span>03 . HOW WE THINK
               </div>
               <h2 
                 className="font-sans font-bold tracking-[-0.028em] leading-[0.98] [&>span]:frauncesItalic [&>span]:text-[#C2410C]" 
@@ -413,7 +430,7 @@ const About = () => {
           <div className="grid grid-cols-12 gap-8 mb-16">
             <div className="col-span-12 lg:col-span-7">
               <div className="mono text-[#C2410C] mb-6">
-                <span className="rule"></span>04 · The shape of an engagement
+                <span className="rule"></span>04 . THE SHAPE OF AN ENGAGEMENT
               </div>
               <h2 
                 className="font-sans font-bold tracking-[-0.025em] leading-[1.02] [&>span]:frauncesItalic [&>span]:text-[#C2410C]" 
@@ -429,8 +446,8 @@ const About = () => {
           {/* Phase ruler */}
           <div className="rounded-2xl border border-[#161513]/12 bg-[#F4F1EA] overflow-hidden">
             <div className="px-6 py-3 border-b border-[#161513]/12 flex items-center justify-between">
-              <span className="mono text-[#C2410C]">{aboutData.phasesFigLabel}</span>
-              <span className="mono text-[#161513]/40">{aboutData.phasesFigSub}</span>
+              <span className="mono text-[#C2410C]">{cleanDots(aboutData.phasesFigLabel)}</span>
+              <span className="mono text-[#161513]/40">{cleanDots(aboutData.phasesFigSub)}</span>
             </div>
             <div className="relative">
               <div className="grid grid-cols-12 border-b border-[#161513]/12 text-center">
@@ -453,7 +470,7 @@ const About = () => {
             <div className="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-[#161513]/12">
               {(aboutData.phases || []).map((phase) => (
                 <div key={phase.id} className="px-7 py-8">
-                  <div className="mono text-[#C2410C] mb-2">{phase.timeframe}</div>
+                  <div className="mono text-[#C2410C] mb-2">{phase.timeframe?.replace('–', '-')}</div>
                   <h4 className="font-sans font-semibold text-[19px] tracking-[-0.01em]">
                     {phase.title}
                   </h4>
@@ -471,7 +488,7 @@ const About = () => {
           <div className="grid grid-cols-12 gap-8 mb-16">
             <div className="col-span-12 lg:col-span-7">
               <div className="mono text-[#C2410C] mb-6">
-                <span className="rule"></span>05 · The bench
+                <span className="rule"></span>05 . THE BENCH
               </div>
               <h2 
                 className="font-sans font-bold tracking-[-0.025em] leading-[1.02] [&>span]:frauncesItalic [&>span]:text-[#C2410C]" 
@@ -508,7 +525,7 @@ const About = () => {
           <div className="grid grid-cols-12 gap-8 mb-16">
             <div className="col-span-12 lg:col-span-7">
               <div className="mono text-[#C2410C] mb-6">
-                <span className="rule"></span>06 · Selected work
+                <span className="rule"></span>06 . SELECTED WORK
               </div>
               <h2 
                 className="font-sans font-bold tracking-[-0.025em] leading-[1.02] [&>span]:frauncesItalic [&>span]:text-[#C2410C]" 
@@ -525,7 +542,7 @@ const About = () => {
             {(aboutData.cases || []).map((item) => (
               <article key={item.id} className="rounded-2xl border border-[#161513]/12 bg-[#F4F1EA] overflow-hidden flex flex-col">
                 <div className="px-6 py-3 border-b border-[#161513]/12 flex items-center justify-between">
-                  <span className="mono text-[#C2410C]">{item.caseLetter}</span>
+                  <span className="mono text-[#C2410C]">{cleanDots(item.caseLetter)}</span>
                   <span className="mono text-[#161513]/40">{item.year}</span>
                 </div>
                 <div className="aspect-[4/3] bg-[#EDE6D3] relative overflow-hidden">
@@ -533,7 +550,7 @@ const About = () => {
                 </div>
                 <div className="p-7 flex-1 flex flex-col justify-between">
                   <div>
-                    <div className="mono text-[#161513]/40 mb-3">{item.location}</div>
+                    <div className="mono text-[#161513]/40 mb-3">{cleanDots(item.location)}</div>
                     <h4 className="font-sans font-semibold text-[20px] tracking-[-0.01em] leading-[1.2]">
                       {item.title}
                     </h4>
@@ -559,13 +576,13 @@ const About = () => {
             <span 
               className="font-sans font-bold tracking-[-0.02em] pr-16 [&>span]:frauncesItalic [&>span]:text-[#C2410C]" 
               style={{ fontSize: 'clamp(40px, 6vw, 88px)' }}
-              dangerouslySetInnerHTML={{ __html: aboutData.driftText }}
+              dangerouslySetInnerHTML={{ __html: cleanDots(aboutData.driftText) }}
             />
             <span 
               className="font-sans font-bold tracking-[-0.02em] pr-16 [&>span]:frauncesItalic [&>span]:text-[#C2410C]" 
               aria-hidden="true" 
               style={{ fontSize: 'clamp(40px, 6vw, 88px)' }}
-              dangerouslySetInnerHTML={{ __html: aboutData.driftText }}
+              dangerouslySetInnerHTML={{ __html: cleanDots(aboutData.driftText) }}
             />
           </div>
         </section>
@@ -575,7 +592,7 @@ const About = () => {
           <div className="grid grid-cols-12 gap-8 lg:gap-12">
             <div className="col-span-12 lg:col-span-5">
               <div className="mono text-[#C2410C] mb-6">
-                <span className="rule"></span>07 · Where we work
+                <span className="rule"></span>07 . WHERE WE WORK
               </div>
               <h2 
                 className="font-sans font-bold tracking-[-0.025em] leading-[1.02] [&>span]:frauncesItalic [&>span]:text-[#C2410C]" 
@@ -588,8 +605,8 @@ const About = () => {
               <div className="mt-10 pt-6 border-t border-[#161513]/12 grid grid-cols-2 gap-y-4 max-w-md">
                 {(aboutData.whereWeWorkDetails || []).map((detail) => (
                   <span key={detail.id} className="contents">
-                    <span className="mono text-[#161513]/45">{detail.label}</span>
-                    <span className="text-[14px] text-right">{detail.value}</span>
+                    <span className="mono text-[#161513]/45">{cleanDots(detail.label)}</span>
+                    <span className="text-[14px] text-right">{cleanDots(detail.value)}</span>
                   </span>
                 ))}
               </div>
@@ -599,7 +616,7 @@ const About = () => {
               {(aboutData.hubs || []).map((hub) => (
                 <article key={hub.id} className="rounded-2xl border border-[#161513]/12 bg-[#F4F1EA] overflow-hidden flex flex-col">
                   <div className="px-6 py-3 border-b border-[#161513]/12 flex items-center justify-between">
-                    <span className="mono text-[#C2410C]">{hub.number}</span>
+                    <span className="mono text-[#C2410C]">{cleanDots(hub.number)}</span>
                     <span className="mono text-[#161513]/40">{hub.timezone}</span>
                   </div>
                   <div className="aspect-[4/3] bg-[#EDE6D3] relative overflow-hidden">
@@ -611,7 +628,7 @@ const About = () => {
                         {hub.name}
                       </h4>
                       <p className="mt-1 mono text-[#161513]/45">{hub.label}</p>
-                      <p className="mt-4 text-[14px] text-[#161513]/65 leading-[1.6]">
+                      <p className="mt-4 text-[14px] text-[#161513]/65 leading-[1.6] whitespace-pre-line">
                         {hub.description}
                       </p>
                     </div>
@@ -634,12 +651,15 @@ const About = () => {
             <p className="mt-6 max-w-[52ch] mx-auto text-[#161513]/65 text-[17px] leading-[1.6]">
               {aboutData.fitCallText}
             </p>
-            <a 
-              href={aboutData.fitCallButtonLink} 
+            <button 
+              onClick={(e) => {
+                e.preventDefault();
+                openFitCall();
+              }}
               className="mt-12 inline-flex items-center gap-3 bg-[#C2410C] hover:bg-[#9A330A] text-[#F4F1EA] px-12 py-5 rounded-full font-mono font-bold text-[11px] uppercase tracking-[0.28em] transition-colors"
             >
               {aboutData.fitCallButtonText}
-            </a>
+            </button>
           </div>
         </section>
       </main>
