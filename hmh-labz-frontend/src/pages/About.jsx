@@ -6,9 +6,18 @@ import Footer from '../components/layout/Footer';
 import { useModal } from '../App';
 import SEO from '../components/seo/SEO';
 
+// Fallback data structure for instant hydration and SEO pre-rendering
+const getFallbackData = () => ({
+  heroTitle: "A studio that tells you what to do, and then <em>does it.</em>",
+  heroBadge: "WE BUILD SYSTEMS.",
+  heroText: "HMH Labz is a small strategy & build studio for legal, recruitment and professional-services firms. We diagnose, recommend, and ship — under one roof, on one contract.",
+  linesOfWork: [],
+  phases: [],
+  capabilities: []
+});
+
 const About = () => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState(getFallbackData());
   const { openFitCall } = useModal();
 
   const cleanDots = (str) => {
@@ -20,42 +29,15 @@ const About = () => {
     const fetchAbout = async () => {
       try {
         const res = await client.get('/about');
-        // If API returns empty, use fallback
-        setData(res.data || getFallbackData());
+        if (res.data) {
+          setData(res.data);
+        }
       } catch (error) {
         console.error('Failed to fetch about page:', error);
-        // Inject fallback data on failure to break the infinite loading trap
-        setData(getFallbackData());
-      } finally {
-        setLoading(false);
       }
     };
-
-    // Helper function for fallback data
-    const getFallbackData = () => ({
-      heroTitle: "A studio that tells you what to do, and then <em>does it.</em>",
-      heroBadge: "WE BUILD SYSTEMS.",
-      heroText: "HMH Labz is a small strategy & build studio for legal, recruitment and professional-services firms. We diagnose, recommend, and ship — under one roof, on one contract.",
-      linesOfWork: [],
-      phases: [],
-      capabilities: []
-    });
     fetchAbout();
   }, []);
-
-  if (loading || !data) {
-    return (
-      <>
-        <SEO 
-          title="About Us" 
-          description="Strategy + build, in one team. We diagnose what your business needs, then we ship it." 
-        />
-        <div className="min-h-screen flex items-center justify-center bg-[#F4F1EA]">
-          <Loader2 className="w-8 h-8 animate-spin text-[#C2410C]" />
-        </div>
-      </>
-    );
-  }
 
   const defaultAboutData = {
     heroTitle: "A studio that<br class=\"hidden md:block\" /> <span class=\"frauncesItalic text-terra\">tells&nbsp;you</span> what to do,<br class=\"hidden md:block\" /> and then does it.",
