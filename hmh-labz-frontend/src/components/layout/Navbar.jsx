@@ -55,7 +55,7 @@ const Navbar = () => {
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-paper/85 backdrop-blur-md border-b border-ink/10" : ""}`}>
         <div className="px-6 md:px-10 lg:px-14 h-[84px] sm:h-[92px] flex items-center justify-between max-w-7xl mx-auto">
           <Link to="/" className="flex-shrink-0">
-            <img src={logoUrl || localLogo} alt="HMH Labz" className="h-10 sm:h-12 w-auto object-contain" />
+            <img src={localLogo} alt="HMH Labz" className="h-10 sm:h-12 w-auto object-contain" />
           </Link>
 
           <div className="hidden md:flex items-center gap-8 text-[13px] text-ink font-bold uppercase tracking-widest">
@@ -95,7 +95,7 @@ const Navbar = () => {
             className="fixed inset-0 z-[100] bg-paper flex flex-col p-6"
           >
             <div className="flex items-center justify-between mb-20">
-              <img src={logoUrl || localLogo} alt="HMH Labz" className="h-6 object-contain" />
+              <img src={localLogo} alt="HMH Labz" className="h-6 object-contain" />
               <button onClick={() => setIsMobileMenuOpen(false)} className="w-10 h-10 border border-ink/10 rounded-full text-2xl flex items-center justify-center">&times;</button>
             </div>
             <div className="flex flex-col gap-10">
