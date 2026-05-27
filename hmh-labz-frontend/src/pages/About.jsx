@@ -20,13 +20,26 @@ const About = () => {
     const fetchAbout = async () => {
       try {
         const res = await client.get('/about');
-        setData(res.data);
+        // If API returns empty, use fallback
+        setData(res.data || getFallbackData());
       } catch (error) {
         console.error('Failed to fetch about page:', error);
+        // Inject fallback data on failure to break the infinite loading trap
+        setData(getFallbackData());
       } finally {
         setLoading(false);
       }
     };
+
+    // Helper function for fallback data
+    const getFallbackData = () => ({
+      heroTitle: "A studio that tells you what to do, and then <em>does it.</em>",
+      heroBadge: "WE BUILD SYSTEMS.",
+      heroText: "HMH Labz is a small strategy & build studio for legal, recruitment and professional-services firms. We diagnose, recommend, and ship — under one roof, on one contract.",
+      linesOfWork: [],
+      phases: [],
+      capabilities: []
+    });
     fetchAbout();
   }, []);
 
@@ -293,9 +306,9 @@ const About = () => {
 
           <div className="grid grid-cols-12 gap-6 lg:gap-8 items-end">
             <h1 
-              className="col-span-12 lg:col-span-9 font-sans font-bold text-[#161513] tracking-[-0.035em] leading-[0.92] [&>span]:frauncesItalic [&>span]:text-[#C2410C]" 
-              style={{ fontSize: 'clamp(48px, 9.2vw, 148px)' }}
-              dangerouslySetInnerHTML={{ __html: aboutData.heroTitle }}
+              style={{ fontSize: "clamp(48px, 9.2vw, 148px)", textWrap: "balance" }} 
+              className="col-span-12 lg:col-span-9 font-sans font-bold text-[#161513] leading-[0.9] tracking-[-0.04em] max-w-[14ch] [&>span]:frauncesItalic [&>span]:text-[#C2410C] [&>em]:font-fraunces [&>em]:italic [&>em]:font-normal [&>em]:tracking-normal"
+              dangerouslySetInnerHTML={{ __html: aboutData.heroTitle || "A studio that tells you what to do, and then <em>does it.</em>" }}
             />
             <div className="col-span-12 lg:col-span-3 lg:pb-4">
               <div className="mono text-[#161513]/45 mb-4">{aboutData.heroBadge}</div>
