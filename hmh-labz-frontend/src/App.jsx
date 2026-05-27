@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
+import { useTracking } from './hooks/useTracking';
 import Home from './pages/Home';
 import Insights from './pages/Insights';
 import InsightDetail from './pages/InsightDetail';
@@ -24,6 +24,7 @@ export const useBrand = () => useContext(BrandContext);
 // Dynamic Analytics & Tracking Injector
 const Analytics = () => {
   const brand = useBrand();
+  useTracking();
 
   useEffect(() => {
     if (!brand) return;
@@ -38,9 +39,9 @@ const Analytics = () => {
       const script2 = document.createElement('script');
       script2.innerHTML = `
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', '${brand.googleAnalyticsId}');
+        window.gtag = function(){window.dataLayer.push(arguments);}
+        window.gtag('js', new Date());
+        window.gtag('config', '${brand.googleAnalyticsId}');
       `;
       document.head.appendChild(script2);
     }
@@ -134,31 +135,29 @@ function App() {
   const closeFitCall = () => setIsFitCallOpen(false);
 
   return (
-    <HelmetProvider>
-      <BrandContext.Provider value={brand}>
-        <ModalContext.Provider value={{ openFitCall, closeFitCall }}>
+    <BrandContext.Provider value={brand}>
+      <ModalContext.Provider value={{ openFitCall, closeFitCall }}>
+        <Router basename="/">
           <Analytics />
-          <Router basename="/">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/insights" element={<Insights />} />
-              <Route path="/insights/:slug" element={<InsightDetail />} />
-              <Route path="/legal/:slug" element={<Legal />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/dashboard" element={<UserDashboard />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Router>
-          
-          <FitCallModal 
-            isOpen={isFitCallOpen} 
-            onClose={closeFitCall} 
-          />
-        </ModalContext.Provider>
-      </BrandContext.Provider>
-    </HelmetProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/insights" element={<Insights />} />
+            <Route path="/insights/:slug" element={<InsightDetail />} />
+            <Route path="/legal/:slug" element={<Legal />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/dashboard" element={<UserDashboard />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Router>
+        
+        <FitCallModal 
+          isOpen={isFitCallOpen} 
+          onClose={closeFitCall} 
+        />
+      </ModalContext.Provider>
+    </BrandContext.Provider>
   );
 }
 

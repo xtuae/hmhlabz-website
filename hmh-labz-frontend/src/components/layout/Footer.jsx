@@ -11,7 +11,11 @@ const Footer = () => {
         <div className="grid md:grid-cols-12 gap-12 sm:gap-16 pb-20 border-b border-paper/10">
           <div className="md:col-span-4">
             <Link to="/" className="block mb-8">
-              <img src={faviconUrl} alt="HMH Labz" className="h-10 w-auto invert brightness-0" />
+              {faviconUrl ? (
+                <img src={faviconUrl} alt="HMH Labz" className="h-10 w-auto invert brightness-0" />
+              ) : (
+                <div className="h-10 w-10 animate-pulse bg-white/10 rounded"></div>
+              )}
             </Link>
             <p className="font-serif italic text-paper/40 leading-relaxed max-w-sm text-xl text-left">
               Strategy + build, in one team. We tell you what to do, then we ship it.

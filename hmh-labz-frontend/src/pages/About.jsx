@@ -4,6 +4,7 @@ import client from '../api/client';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import { useModal } from '../App';
+import SEO from '../components/seo/SEO';
 
 const About = () => {
   const [data, setData] = useState(null);
@@ -31,9 +32,15 @@ const About = () => {
 
   if (loading || !data) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F4F1EA]">
-        <Loader2 className="w-8 h-8 animate-spin text-[#C2410C]" />
-      </div>
+      <>
+        <SEO 
+          title="About Us" 
+          description="Strategy + build, in one team. We diagnose what your business needs, then we ship it." 
+        />
+        <div className="min-h-screen flex items-center justify-center bg-[#F4F1EA]">
+          <Loader2 className="w-8 h-8 animate-spin text-[#C2410C]" />
+        </div>
+      </>
     );
   }
 
@@ -241,6 +248,10 @@ const About = () => {
 
   return (
     <div className="bg-[#F4F1EA] text-[#161513] selection:bg-[#C2410C] selection:text-[#F4F1EA] min-h-screen relative font-sans">
+      <SEO 
+        title="About Us" 
+        description="Strategy + build, in one team. We diagnose what your business needs, then we ship it." 
+      />
       {/* Dynamic styles to inject fonts, principles animation, and rules */}
       <style dangerouslySetInnerHTML={{ __html: `
         .mono { font-family: 'Geist Mono', monospace; text-transform: uppercase; letter-spacing: 0.22em; font-size: 11px; font-weight: 600; }
