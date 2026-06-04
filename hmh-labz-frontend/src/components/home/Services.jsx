@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Reveal from '../ui/Reveal';
 import { useModal } from '../../App';
 
@@ -64,12 +65,20 @@ const Services = ({ content }) => {
                 </div>
 
                 <div className="flex-1"></div>
-                <button 
-                  onClick={() => openModal(t.tag)}
-                  className={`mt-8 w-full py-4 rounded-full font-mono text-[10px] uppercase tracking-[0.22em] font-semibold transition-all ${t.featured ? 'bg-terra text-paper hover:bg-terra-deep' : 'border border-paper/25 text-paper hover:bg-paper hover:text-ink'}`}
-                >
-                  Discuss this →
-                </button>
+                <div className="mt-8 flex flex-col gap-3 w-full">
+                  <Link 
+                    to={`/services/${t.n === "01" ? "audit" : t.n === "02" ? "sprint" : "transform"}`}
+                    className="w-full py-4 rounded-full font-mono text-[10px] uppercase tracking-[0.22em] font-semibold transition-all bg-terra text-paper hover:bg-terra-deep text-center"
+                  >
+                    View full service →
+                  </Link>
+                  <button 
+                    onClick={() => openModal(t.tag)}
+                    className="w-full py-4 rounded-full font-mono text-[10px] uppercase tracking-[0.22em] font-semibold transition-all border border-paper/25 text-paper hover:bg-paper hover:text-ink text-center"
+                  >
+                    Discuss this →
+                  </button>
+                </div>
               </div>
             </Reveal>
           ))}

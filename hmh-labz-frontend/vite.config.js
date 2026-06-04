@@ -20,7 +20,7 @@ export default defineConfig({
     react(),
     vitePrerender({
       staticDir: path.join(__dirname, 'dist'),
-      routes: ['/', '/about', '/insights', '/contact', '/services'],
+      routes: ['/', '/about', '/insights', '/contact', '/services', '/services/audit', '/services/sprint', '/services/transform'],
       renderer: new PuppeteerRenderer({
         headless: true,
         renderAfterTime: 3000, // Wait 3s for React to mount and fetch live API data

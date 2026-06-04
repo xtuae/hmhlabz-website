@@ -11,6 +11,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 import FitCallModal from './components/ui/FitCallModal';
+import ServiceDetail from './pages/ServiceDetail';
 import api from './api/client';
 
 // Modal Context for global access
@@ -150,6 +151,7 @@ function App() {
           <Analytics />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/services/:slug" element={<ServiceDetail />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/insights" element={<Insights />} />
