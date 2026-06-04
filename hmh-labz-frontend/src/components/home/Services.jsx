@@ -3,7 +3,7 @@ import Reveal from '../ui/Reveal';
 import { useModal } from '../../App';
 
 const Services = ({ content }) => {
-  const { openFitCall } = useModal();
+  const { openModal } = useModal();
   const tiers = [
     { n: "01", tag: "Tier 01 · Wedge", title: "AI Opportunity Audit", sub: "Clarity, before commitment.", walk: "A prioritised list of what to fix, and what to ignore.", scale: "● ○ ○" },
     { n: "02", tag: "Tier 02 · Build", title: "Implementation Sprint", sub: "One system. Shipped.", walk: "One high-impact system live in production, owned by you.", scale: "● ● ○", featured: true },
@@ -65,7 +65,7 @@ const Services = ({ content }) => {
 
                 <div className="flex-1"></div>
                 <button 
-                  onClick={openFitCall}
+                  onClick={() => openModal(t.tag)}
                   className={`mt-8 w-full py-4 rounded-full font-mono text-[10px] uppercase tracking-[0.22em] font-semibold transition-all ${t.featured ? 'bg-terra text-paper hover:bg-terra-deep' : 'border border-paper/25 text-paper hover:bg-paper hover:text-ink'}`}
                 >
                   Discuss this →
@@ -75,7 +75,7 @@ const Services = ({ content }) => {
           ))}
         </div>
         <p className="mt-20 text-center text-paper/45 text-[15px] font-sans">
-          Not sure which one fits? <button onClick={openFitCall} className="text-paper underline underline-offset-8 decoration-terra/50 hover:decoration-terra">That's exactly what the Fit Call is for →</button>
+          Not sure which one fits? <button onClick={() => openModal()} className="text-paper underline underline-offset-8 decoration-terra/50 hover:decoration-terra">That's exactly what the Fit Call is for →</button>
         </p>
       </div>
     </section>

@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, CheckCircle2, Loader2 } from 'lucide-react';
+import { X, CheckCircle2, Loader2, ChevronDown } from 'lucide-react';
 import api from '../../api/client';
-import MonoLabel from './MonoLabel';
 
-const FitCallModal = ({ isOpen, onClose }) => {
+const FitCallModal = ({ isOpen, onClose, selectedTier }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -17,6 +16,22 @@ const FitCallModal = ({ isOpen, onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setFormData({
+        name: '',
+        email: '',
+        businessName: '',
+        phone: '',
+        employees: '',
+        tier: selectedTier || 'General Inquiry',
+        message: ''
+      });
+      setSent(false);
+      setError(null);
+    }
+  }, [isOpen, selectedTier]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +46,7 @@ const FitCallModal = ({ isOpen, onClose }) => {
     try {
       await api.post('/leads/fit-call', {
         ...formData,
-        company: formData.businessName // Map to HubSpot expectation if needed
+        company: formData.businessName // Map to HubSpot expectation
       });
       setSent(true);
     } catch (err) {
@@ -57,98 +72,115 @@ const FitCallModal = ({ isOpen, onClose }) => {
             initial={{ opacity: 0, scale: 0.95, y: 20 }} 
             animate={{ opacity: 1, scale: 1, y: 0 }} 
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-lg bg-paper rounded-[2.5rem] p-8 sm:p-14 shadow-2xl overflow-hidden border border-white/5"
+            className="relative w-full max-w-lg bg-[#161616] rounded-2xl p-8 sm:p-14 shadow-2xl overflow-hidden border border-white/10"
           >
-            <button onClick={onClose} className="absolute top-6 right-6 text-2xl text-ink/30 hover:text-ink transition-colors focus:outline-none">
-              <X size={24} />
+            <button 
+              onClick={onClose} 
+              className="absolute top-6 right-6 w-8 h-8 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-colors focus:outline-none"
+            >
+              <X size={16} />
             </button>
 
             {!sent ? (
               <>
-                <MonoLabel color="terra">Fit Call</MonoLabel>
-                <h3 className="text-3xl font-bold mt-4 mb-10 text-ink leading-tight tracking-tight">Schedule your session</h3>
+                <div className="mb-8">
+                  <span className="text-terra tracking-widest text-xs uppercase font-mono block mb-2">FIT CALL</span>
+                  <h3 className="text-white font-bold text-3xl mb-2 leading-tight tracking-tight">Schedule your session</h3>
+                  <p className="text-white/60 text-sm">Let's discuss if AI ops is the right move for your business now.</p>
+                </div>
                 
-                <form className="space-y-4" onSubmit={handleSubmit}>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <input 
-                      required 
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder="Name" 
-                      className="w-full bg-ink/5 border border-ink/10 p-4 rounded-xl outline-none focus:border-terra text-ink font-medium" 
-                    />
-                    <input 
-                      required 
-                      type="email" 
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="Email" 
-                      className="w-full bg-ink/5 border border-ink/10 p-4 rounded-xl focus:border-terra text-ink font-medium" 
-                    />
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <input 
-                      required 
-                      name="businessName"
-                      value={formData.businessName}
-                      onChange={handleChange}
-                      placeholder="Business Name" 
-                      className="w-full bg-ink/5 border border-ink/10 p-4 rounded-xl focus:border-terra text-ink font-medium" 
-                    />
-                    <input 
-                      required 
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      placeholder="Phone No" 
-                      type="tel" 
-                      className="w-full bg-ink/5 border border-ink/10 p-4 rounded-xl focus:border-terra text-ink font-medium" 
-                    />
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-4">
+                <form className="grid grid-cols-1 sm:grid-cols-2 gap-4" onSubmit={handleSubmit}>
+                  <input 
+                    required 
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Name" 
+                    type="text"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-terra transition-colors" 
+                  />
+                  <input 
+                    required 
+                    type="email" 
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="Work Email" 
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-terra transition-colors" 
+                  />
+                  <input 
+                    required 
+                    name="businessName"
+                    value={formData.businessName}
+                    onChange={handleChange}
+                    placeholder="Company Name" 
+                    type="text"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-terra transition-colors" 
+                  />
+                  <input 
+                    required 
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="Phone Number" 
+                    type="tel" 
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-terra transition-colors" 
+                  />
+                  
+                  <div className="relative">
                     <select 
                       required 
                       name="employees"
                       value={formData.employees}
                       onChange={handleChange}
-                      className="w-full bg-ink/5 border border-ink/10 p-4 rounded-xl focus:border-terra text-ink cursor-pointer font-medium"
+                      className={`w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 placeholder-white/40 focus:outline-none focus:border-terra transition-colors appearance-none cursor-pointer ${formData.employees === '' ? 'text-white/40' : 'text-white'}`}
                     >
-                      <option value="" disabled>No. of Employees</option>
-                      <option value="1-10">1-10</option>
-                      <option value="11-50">11-50</option>
-                      <option value="51-200">51-200</option>
+                      <option value="" disabled className="bg-[#161616] text-white/40">No. of Employees</option>
+                      <option value="1-10" className="bg-[#161616] text-white">1-10</option>
+                      <option value="11-50" className="bg-[#161616] text-white">11-50</option>
+                      <option value="51-200" className="bg-[#161616] text-white">51-200</option>
+                      <option value="200+" className="bg-[#161616] text-white">200+</option>
                     </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-white/40">
+                      <ChevronDown size={16} />
+                    </div>
+                  </div>
+
+                  <div className="relative">
                     <select 
                       required 
                       name="tier"
                       value={formData.tier}
                       onChange={handleChange}
-                      className="w-full bg-ink/5 border border-ink/10 p-4 rounded-xl focus:border-terra text-ink cursor-pointer font-medium"
+                      className={`w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 placeholder-white/40 focus:outline-none focus:border-terra transition-colors appearance-none cursor-pointer ${formData.tier === '' ? 'text-white/40' : 'text-white'}`}
                     >
-                      <option value="" disabled>Tier looking for</option>
-                      <option value="Tier 01">Tier 01 · Wedge</option>
-                      <option value="Tier 02">Tier 02 · Build</option>
-                      <option value="Tier 03">Tier 03 · Flagship</option>
+                      <option value="Tier 01 · Wedge" className="bg-[#161616] text-white">Tier 01 · Wedge</option>
+                      <option value="Tier 02 · Build" className="bg-[#161616] text-white">Tier 02 · Build</option>
+                      <option value="Tier 03 · Flagship" className="bg-[#161616] text-white">Tier 03 · Flagship</option>
+                      <option value="General Inquiry" className="bg-[#161616] text-white">General Inquiry</option>
                     </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-white/40">
+                      <ChevronDown size={16} />
+                    </div>
                   </div>
+
                   <textarea 
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     placeholder="Anything else we should know?" 
-                    className="w-full bg-ink/5 border border-ink/10 p-4 rounded-xl focus:border-terra h-24 resize-none text-ink font-medium" 
+                    style={{ minHeight: '100px' }}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-terra transition-colors col-span-1 sm:col-span-2 resize-none" 
                   />
                   
                   {error && (
-                    <p className="text-terra text-xs font-bold text-center italic">{error}</p>
+                    <p className="col-span-1 sm:col-span-2 text-terra text-xs font-bold text-center italic">{error}</p>
                   )}
 
                   <button 
                     type="submit" 
                     disabled={isSubmitting}
-                    className="w-full py-5 bg-terra text-paper rounded-full font-mono font-bold text-[11px] uppercase tracking-widest shadow-lg shadow-terra/20 hover:bg-terra-deep transition-all flex items-center justify-center gap-3 disabled:opacity-70"
+                    className="col-span-1 sm:col-span-2 w-full bg-terra hover:bg-terra-deep text-white py-4 rounded-full font-mono text-xs uppercase tracking-[0.2em] font-bold transition-all flex items-center justify-center gap-3 disabled:opacity-70"
                   >
                     {isSubmitting ? (
                       <>
@@ -156,23 +188,23 @@ const FitCallModal = ({ isOpen, onClose }) => {
                         Transmitting...
                       </>
                     ) : (
-                      'Request Fit Call →'
+                      'REQUEST FIT CALL →'
                     )}
                   </button>
                 </form>
               </>
             ) : (
-              <div className="text-center py-10 animate-in fade-in zoom-in duration-500">
+              <div className="text-center py-10 animate-in fade-in zoom-in duration-500 text-white">
                 <div className="w-24 h-24 rounded-full bg-terra/10 border-2 border-terra flex items-center justify-center mx-auto mb-8 text-terra">
                   <CheckCircle2 size={48} />
                 </div>
-                <h3 className="text-3xl font-black mb-4 text-ink tracking-tight">Request Sent</h3>
-                <p className="text-ink/50 text-lg font-medium leading-relaxed">
+                <h3 className="text-3xl font-black mb-4 text-white tracking-tight">Request Sent</h3>
+                <p className="text-white/60 text-lg font-medium leading-relaxed">
                   The diagnostics are underway.<br />We'll reach out within 24 hours.
                 </p>
                 <button 
                   onClick={onClose}
-                  className="mt-10 text-[10px] font-black uppercase tracking-[0.2em] text-terra hover:underline"
+                  className="mt-10 text-[10px] font-black uppercase tracking-[0.2em] text-terra hover:underline focus:outline-none"
                 >
                   Close Terminal
                 </button>

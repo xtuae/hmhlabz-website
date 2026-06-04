@@ -92,6 +92,7 @@ const Analytics = () => {
 
 function App() {
   const [isFitCallOpen, setIsFitCallOpen] = useState(false);
+  const [selectedTier, setSelectedTier] = useState('General Inquiry');
   const [brand, setBrand] = useState({
     logoUrl: 'https://www.hmhlabz.com/wp-content/uploads/hmh-labz-black.png',
     faviconUrl: 'https://www.hmhlabz.com/wp-content/uploads/hmh-icon.webp',
@@ -127,16 +128,24 @@ function App() {
 
   // Expose global trigger for legacy/scripted access if needed
   useEffect(() => {
-    window.openFitCall = () => setIsFitCallOpen(true);
-    return () => { delete window.openFitCall; };
+    window.openFitCall = (tier) => openModal(tier);
+    window.openModal = (tier) => openModal(tier);
+    return () => {
+      delete window.openFitCall;
+      delete window.openModal;
+    };
   }, []);
 
-  const openFitCall = () => setIsFitCallOpen(true);
+  const openModal = (tier) => {
+    setSelectedTier(typeof tier === 'string' ? tier : 'General Inquiry');
+    setIsFitCallOpen(true);
+  };
+  const openFitCall = (tier) => openModal(tier);
   const closeFitCall = () => setIsFitCallOpen(false);
 
   return (
     <BrandContext.Provider value={brand}>
-      <ModalContext.Provider value={{ openFitCall, closeFitCall }}>
+      <ModalContext.Provider value={{ openFitCall, openModal, closeFitCall, selectedTier }}>
         <Router basename="/">
           <Analytics />
           <Routes>
@@ -155,6 +164,7 @@ function App() {
         <FitCallModal 
           isOpen={isFitCallOpen} 
           onClose={closeFitCall} 
+          selectedTier={selectedTier}
         />
       </ModalContext.Provider>
     </BrandContext.Provider>
