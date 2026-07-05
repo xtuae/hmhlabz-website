@@ -1,13 +1,13 @@
 import express from 'express';
 import cors from 'cors';
-import authRoutes from './routes/auth.js';
-import contentRoutes from './routes/content.js';
-import leadsRoutes from './routes/leads.js';
-import pagesRoutes from './routes/pages.js';
-import adminRoutes from './routes/admin.js';
-import uploadRoutes from './routes/upload.js';
-import aboutRoutes from './routes/about.js';
-import prisma from './lib/prisma.js';
+import authRoutes from '../routes/auth.js';
+import contentRoutes from '../routes/content.js';
+import leadsRoutes from '../routes/leads.js';
+import pagesRoutes from '../routes/pages.js';
+import adminRoutes from '../routes/admin.js';
+import uploadRoutes from '../routes/upload.js';
+import aboutRoutes from '../routes/about.js';
+import prisma from '../lib/prisma.js';
 
 const app = express();
 
