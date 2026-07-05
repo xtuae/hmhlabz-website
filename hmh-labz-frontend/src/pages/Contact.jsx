@@ -3,6 +3,7 @@ import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import client from '../api/client';
 import { Loader2 } from 'lucide-react';
+import SEO from '../components/seo/SEO';
 
 const Contact = () => {
   const [data, setData] = useState(null);
@@ -42,6 +43,7 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F4F1EA] text-[#161513] font-sans selection:bg-[#C2410C] selection:text-[#F4F1EA]">
+      <SEO />
       <Navbar />
       
       <main className="flex-grow pt-32 pb-24 md:pt-40 md:pb-32 relative z-10">

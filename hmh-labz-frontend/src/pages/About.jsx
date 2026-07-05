@@ -3,6 +3,7 @@ import { Loader2 } from 'lucide-react';
 import client from '../api/client';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
+import SEO from '../components/seo/SEO';
 import { useModal } from '../App';
 
 // Fallback data structure for instant hydration and SEO pre-rendering
@@ -242,6 +243,7 @@ const About = () => {
 
   return (
     <div className="bg-[#F4F1EA] text-[#161513] selection:bg-[#C2410C] selection:text-[#F4F1EA] min-h-screen relative font-sans">
+      <SEO />
       {/* Dynamic styles to inject fonts, principles animation, and rules */}
       <style dangerouslySetInnerHTML={{ __html: `
         .mono { font-family: 'Geist Mono', monospace; text-transform: uppercase; letter-spacing: 0.22em; font-size: 11px; font-weight: 600; }
