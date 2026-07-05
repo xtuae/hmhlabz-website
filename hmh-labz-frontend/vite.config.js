@@ -14,20 +14,39 @@ globalThis.require = createRequire(import.meta.url);
 const vitePrerender = (await import('vite-plugin-prerender')).default;
 const PuppeteerRenderer = vitePrerender.PuppeteerRenderer;
 
+async function getInsightRoutes() {
+  try {
+    const res = await fetch('https://api.hmhlabz.com/api/insights');
+    const posts = await res.json();
+    return posts.map(post => `/insights/${post.slug}`);
+  } catch (err) {
+    console.warn('Could not fetch insight slugs for prerendering — falling back to static routes only.', err);
+    return [];
+  }
+}
+
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [
-    react(),
-    vitePrerender({
-      staticDir: path.join(__dirname, 'dist'),
-      routes: ['/', '/about', '/insights', '/contact', '/services', '/services/audit', '/services/sprint', '/services/transform'],
-      renderer: new PuppeteerRenderer({
-        headless: true,
-        renderAfterTime: 3000, // Wait 3s for React to mount and fetch live API data
-        executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+export default defineConfig(async () => {
+  const insightRoutes = await getInsightRoutes();
+
+  return {
+    plugins: [
+      react(),
+      vitePrerender({
+        staticDir: path.join(__dirname, 'dist'),
+        routes: [
+          '/', '/about', '/insights', '/contact',
+          '/services', '/services/audit', '/services/sprint', '/services/transform',
+          ...insightRoutes
+        ],
+        renderer: new PuppeteerRenderer({
+          headless: true,
+          renderAfterTime: 8000, // Wait 8s for React to mount and fetch live API data
+          executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+          args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-web-security']
+        })
       })
-    })
-  ],
-  base: '/',
+    ],
+    base: '/',
+  };
 });

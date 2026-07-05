@@ -4,7 +4,6 @@ import client from '../api/client';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import { useModal } from '../App';
-import SEO from '../components/seo/SEO';
 
 // Fallback data structure for instant hydration and SEO pre-rendering
 const getFallbackData = () => ({
@@ -243,10 +242,6 @@ const About = () => {
 
   return (
     <div className="bg-[#F4F1EA] text-[#161513] selection:bg-[#C2410C] selection:text-[#F4F1EA] min-h-screen relative font-sans">
-      <SEO 
-        title="About Us" 
-        description="Strategy + build, in one team. We diagnose what your business needs, then we ship it." 
-      />
       {/* Dynamic styles to inject fonts, principles animation, and rules */}
       <style dangerouslySetInnerHTML={{ __html: `
         .mono { font-family: 'Geist Mono', monospace; text-transform: uppercase; letter-spacing: 0.22em; font-size: 11px; font-weight: 600; }

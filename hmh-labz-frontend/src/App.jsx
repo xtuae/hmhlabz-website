@@ -13,6 +13,7 @@ import NotFound from './pages/NotFound';
 import FitCallModal from './components/ui/FitCallModal';
 import ServiceDetail from './pages/ServiceDetail';
 import api from './api/client';
+import SEO from './components/seo/SEO';
 
 // Modal Context for global access
 const ModalContext = createContext();
@@ -149,6 +150,7 @@ function App() {
       <ModalContext.Provider value={{ openFitCall, openModal, closeFitCall, selectedTier }}>
         <Router basename="/">
           <Analytics />
+          <SEO />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/services/:slug" element={<ServiceDetail />} />

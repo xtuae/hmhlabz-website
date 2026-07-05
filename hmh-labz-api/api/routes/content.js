@@ -86,6 +86,13 @@ router.post('/insights', async (req, res) => {
             authorId: req.user?.id || null,
           },
         });
+        
+        if (insight.status === 'PUBLISHED' && process.env.VERCEL_DEPLOY_HOOK_URL) {
+          fetch(process.env.VERCEL_DEPLOY_HOOK_URL, { method: 'POST' }).catch(err =>
+            console.error('Failed to trigger frontend rebuild:', err)
+          );
+        }
+
         res.status(201).json(insight);
       } catch (error) {
         console.error('Prisma Error creating insight:', error);
@@ -140,6 +147,13 @@ router.put('/insights/:id', async (req, res) => {
             publishedAt: publishedDate
           }
         });
+        
+        if (insight.status === 'PUBLISHED' && process.env.VERCEL_DEPLOY_HOOK_URL) {
+          fetch(process.env.VERCEL_DEPLOY_HOOK_URL, { method: 'POST' }).catch(err =>
+            console.error('Failed to trigger frontend rebuild:', err)
+          );
+        }
+
         res.status(200).json(insight);
       } catch (error) {
         console.error('Prisma Error updating insight:', error);

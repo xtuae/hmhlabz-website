@@ -116,12 +116,21 @@ const Insights = () => {
   const remainingInsights = insights.length > 1 ? insights.slice(1) : [];
   const gridPosts = remainingInsights.filter(a => filter === 'All' || a.tag === filter || a.category === filter);
 
+  const blogSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    url: 'https://hmhlabz.com/insights',
+    name: 'Insights & Field Notes',
+    blogPost: insights.map(post => ({
+      '@type': 'BlogPosting',
+      headline: post.title,
+      url: `https://hmhlabz.com/insights/${post.slug}`
+    }))
+  };
+
   return (
     <div className="bg-paper selection:bg-terra selection:text-paper min-h-screen relative">
-      <SEO 
-        title="Insights & Field Notes | HMH Labz"
-        description="Deep dives into AI strategy, workflow automation, and the systems driving modern service businesses."
-      />
+      {insights.length > 0 && <SEO schema={blogSchema} />}
       
       <Navbar />
       

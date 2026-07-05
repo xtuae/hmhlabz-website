@@ -51,12 +51,33 @@ const InsightDetail = () => {
 
   const relatedInsights = allInsights.filter(a => a.id !== insight.id).slice(0, 3);
 
+  const canonicalUrl = `https://hmhlabz.com/insights/${slug}`;
+  const metaTitle = insight.seoTitle || `${insight.title} | HMH Labz Insights`;
+  const metaDescription = insight.seoDescription || insight.excerpt || 'Deep dives into operations, AI, and workflow automation.';
+
+  const blogPostingSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: insight.title,
+    url: canonicalUrl,
+    author: { '@type': 'Person', name: insight.author?.name || 'HMH Labz' },
+    publisher: { '@type': 'Organization', name: 'HMH Labz', url: 'https://hmhlabz.com' },
+    datePublished: insight.publishedAt || insight.createdAt || '',
+    dateModified: insight.updatedAt || insight.publishedAt || insight.createdAt || '',
+    description: metaDescription
+  };
+  
+  if (insight.coverImage) {
+    blogPostingSchema.image = insight.coverImage;
+  }
+
   return (
     <div className="bg-paper selection:bg-terra selection:text-paper min-h-screen relative">
       <SEO 
-        title={insight.seoTitle || `${insight.title} | HMH Labz Insights`}
-        description={insight.seoDescription || insight.excerpt || 'Deep dives into operations, AI, and workflow automation.'}
+        title={metaTitle}
+        description={metaDescription}
         image={insight.coverImage}
+        schema={blogPostingSchema}
       />
       
       <Navbar />
